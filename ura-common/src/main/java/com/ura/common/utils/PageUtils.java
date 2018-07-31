@@ -5,7 +5,7 @@
 
 package com.ura.common.utils;
 
-import org.apache.commons.lang.math.NumberUtils;
+import com.baomidou.mybatisplus.plugins.Page;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +27,14 @@ public class PageUtils implements Serializable {
             pageSize = 1;
         }
         this.total = (int)Math.ceil((double)count / pageSize);
+    }
+
+    public PageUtils (Page<?> page){
+        this.list = page.getRecords();
+        this.count = page.getTotal();
+        this.pageNo = page.getCurrent();
+        this.pageSize = page.getSize();
+        this.total = page.getPages();
     }
 
     public int getCount() {

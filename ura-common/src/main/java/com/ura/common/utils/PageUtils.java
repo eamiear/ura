@@ -5,6 +5,8 @@
 
 package com.ura.common.utils;
 
+import org.apache.commons.lang.math.NumberUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class PageUtils implements Serializable {
         this.count = count;
         this.pageNo = pageNo;
         this.pageSize = pageSize;
+        if (pageSize == 0) {
+            pageSize = 1;
+        }
         this.total = (int)Math.ceil((double)count / pageSize);
     }
 

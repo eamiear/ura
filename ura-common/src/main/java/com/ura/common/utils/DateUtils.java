@@ -6,14 +6,14 @@
 package com.ura.common.utils;
 
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
-    private static final Logger logger = Logger.getLogger(DateUtils.class);
+//    private static final Logger logger = Logger.getLogger(DateUtils.class);
 
     public final static String DATE_PATTERN = "yyyy-MM-dd";
     public final static String DATE_TIME_PATERN = "yyyy-MM-dd HH:mm:ss";

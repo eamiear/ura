@@ -5,6 +5,8 @@
 
 package com.ura.common.utils;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,11 +20,15 @@ public class Query extends LinkedHashMap<String, Object>{
     public Query(Map<String, Object> params) {
         this.putAll(params);
 
-        this.page = Integer.parseInt(params.get("page").toString());
-        this.limit = Integer.parseInt(params.get("limit").toString());
-        this.put("offset", (page - 1) * limit);
-        this.put("page", page);
-        this.put("limit", limit);
+        Object _page = params.get("page");
+        Object _limit = params.get("limit");
+        if (_page != null && _limit != null) {
+            this.page = Integer.parseInt(_page.toString());
+            this.limit = Integer.parseInt(_limit.toString());
+            this.put("offset", (page - 1) * limit);
+            this.put("page", page);
+            this.put("limit", limit);
+        }
     }
 
     public int getPage() {

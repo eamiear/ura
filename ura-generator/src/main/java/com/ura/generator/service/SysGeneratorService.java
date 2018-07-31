@@ -8,7 +8,6 @@ package com.ura.generator.service;
 import com.ura.generator.dao.SysGeneratorDao;
 import com.ura.generator.utils.GenUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.ibatis.javassist.bytecode.ByteArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

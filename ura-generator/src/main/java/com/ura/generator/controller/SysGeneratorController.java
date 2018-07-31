@@ -56,7 +56,7 @@ public class SysGeneratorController {
         byte[] data = sysGeneratorService.generateCode(tableNames);
 
         response.reset();
-        response.setHeader("Content-Disposition", "attachment: filename=\"ura-code.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"uracode.zip\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 

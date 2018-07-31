@@ -6,6 +6,9 @@
 
 package ${package}.entity;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
 import java.io.Serializable;
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -15,10 +18,19 @@ import java.math.BigDecimal;
  *  ${comments}实体
  *  表名 ${tableName}
 */
+
+@TableName("${tableName}")
 public class ${className}Entity implements Serializable {
     #foreach($column in $columns)
-        // $column.comments
+        /**
+        *  $column.comments
+        */
+        #if ($column.columnName == $pk.columnName) {
+            @TableId
+        }
         private $column.attrType $column.attrname;
+        #end
+
     #end
 
     #foreach($column in $columns)

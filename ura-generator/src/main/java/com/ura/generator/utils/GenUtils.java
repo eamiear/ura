@@ -39,12 +39,12 @@ public class GenUtils {
         templates.add("template/list.vue.vm");
         templates.add("template/list.html.vm");
         templates.add("template/list.js.vm");
-        templates.add("template/menu.sql.vm");
+//        templates.add("template/menu.sql.vm");
 
         return templates;
     }
 
-    public static void generateCode(Map<String, String> table, List<Map<String, String>> colums, ZipOutputStream zip) {
+    public static void generateCode(Map<String, String> table, List<Map<String, String>> columns, ZipOutputStream zip) {
         Configuration config = getConfig();
         boolean hasBigDecimal = false;
 
@@ -57,7 +57,7 @@ public class GenUtils {
         tableEntity.setClassname(StringUtils.uncapitalize(className));
 
         List<ColumnEntity> columnList = new ArrayList<>();
-        for (Map<String, String> column : colums) {
+        for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             columnEntity.setColumnName(column.get("columnName"));
             columnEntity.setDataType(column.get("dataType"));

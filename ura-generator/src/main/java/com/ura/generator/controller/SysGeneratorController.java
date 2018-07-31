@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/sys/generator")
 public class SysGeneratorController {

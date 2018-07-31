@@ -2,9 +2,9 @@ package ${package}.controller;
 
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
-import ${package}.${moduleCommon}.utils.PageUtils;
-import ${package}.${moduleCommon}.utils.Query;
-import ${package}.${moduleCommon}.utils.R;
+import ${mainPath}.common.utils.PageUtils;
+import ${mainPath}.common.utils.Query;
+import ${mainPath}.common.utils.R;
 
 import ${package}.common.utils.R;
 import ${package}.common.utils.Query;

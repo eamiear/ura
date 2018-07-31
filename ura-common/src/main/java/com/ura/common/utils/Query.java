@@ -11,9 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Query extends LinkedHashMap<String, Object>{
+public class Query<T> extends LinkedHashMap<String, Object>{
 
-    private Page<?> mybatisPlusPage;
+    private Page<T> mybatisPlusPage;
     // 页码
     private int page = 1;
     // 记录数/每页

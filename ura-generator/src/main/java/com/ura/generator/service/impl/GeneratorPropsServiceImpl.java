@@ -27,6 +27,10 @@ public class GeneratorPropsServiceImpl extends ServiceImpl<GeneratorPropsDao, Pr
         return new PageUtils(page);
     }
 
+    @Override
+    public PropsEntity queryPropRecord(Long id) {
+        return this.selectOne(new EntityWrapper<PropsEntity>());
+    }
 
     @Override
     public boolean save(PropsEntity props) {

@@ -32,7 +32,7 @@ public class GeneratorPropsController {
     }
 
     @RequestMapping("/record")
-    public R queryPropRecord(@RequestParam Long id) {
+    public R queryPropRecord(Long id) {
         if (id == null) {
             return R.error("id 不能为空!");
         }
@@ -55,7 +55,7 @@ public class GeneratorPropsController {
     }
 
     @RequestMapping("/delete")
-    public R deleteById(@RequestParam Long id){
+    public R deleteById(Long id){
         if (id == null) {
             return R.error("id不能为空!");
         }

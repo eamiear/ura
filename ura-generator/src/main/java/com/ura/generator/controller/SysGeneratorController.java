@@ -6,7 +6,6 @@
 package com.ura.generator.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ura.common.utils.HttpContextUtils;
 import com.ura.generator.service.SysGeneratorService;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.Query;

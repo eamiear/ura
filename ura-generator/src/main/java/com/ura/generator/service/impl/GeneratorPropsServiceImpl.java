@@ -13,10 +13,12 @@ import com.ura.common.utils.Query;
 import com.ura.generator.dao.GeneratorPropsDao;
 import com.ura.generator.entity.PropsEntity;
 import com.ura.generator.service.GeneratorPropsService;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
+@Service("generatorPropsService")
 public class GeneratorPropsServiceImpl extends ServiceImpl<GeneratorPropsDao, PropsEntity> implements GeneratorPropsService {
 
     @Override

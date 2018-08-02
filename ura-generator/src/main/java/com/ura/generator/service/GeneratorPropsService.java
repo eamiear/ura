@@ -14,13 +14,13 @@ import java.util.Map;
 public interface GeneratorPropsService extends IService<PropsEntity>{
     PageUtils queryPropsList(Map<String, Object> map);
 
-    public PropsEntity queryPropRecord(Long id);
+    PropsEntity queryPropRecord(Long id);
 
-    public boolean save(PropsEntity props);
+    boolean save(PropsEntity props);
 
-    public boolean update(PropsEntity props);
+    boolean update(PropsEntity props);
 
-    public boolean delete(Long id);
+    boolean delete(Long id);
 
-    public boolean deleteById(Long id);
+    boolean deleteById(Long id);
 }

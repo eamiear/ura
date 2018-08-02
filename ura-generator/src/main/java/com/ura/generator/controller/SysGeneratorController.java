@@ -41,7 +41,7 @@ public class SysGeneratorController {
         Query query = new Query(params);
         List<Map<String, String>> list = sysGeneratorService.getTableList(query);
         int total = sysGeneratorService.getTableTotal(query);
-        PageUtils pageUtil = new PageUtils(list, total, query.getLimit(), query.getPage());
+        PageUtils pageUtil = new PageUtils(list, total, query.getLimit(), query.getPageNo());
         logger.info("表格列表：" + JSON.toJSONString(pageUtil));
         logger.info("项目package：" + this.getClass().getPackage().getName());
         return R.success().put("data", pageUtil);

@@ -20,4 +20,5 @@ public interface SysGeneratorDao {
     Map<String, String> getTableByTableName(String tableName);
 
     List<Map<String, String>> getColumnsByTableName(String tableName);
+
 }

@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class Query<T> extends LinkedHashMap<String, Object>{
 
-    private Page<T> mybatisPlusPage;
+    private Page<T> page;
     // 页码
-    private int page = 1;
+    private int pageNo = 1;
     // 记录数/每页
     private int limit = 10;
 
@@ -25,25 +25,33 @@ public class Query<T> extends LinkedHashMap<String, Object>{
         Object _page = params.get("page");
         Object _limit = params.get("limit");
         if (_page != null) {
-            this.page = Integer.parseInt(_page.toString());
+            this.pageNo = Integer.parseInt(_page.toString());
         }
         if (_limit != null) {
             this.limit = Integer.parseInt(_limit.toString());
         }
 
-        this.put("offset", (page - 1) * limit);
-        this.put("page", page);
+        this.put("offset", (pageNo - 1) * limit);
+        this.put("page", pageNo);
         this.put("limit", limit);
 
-        this.mybatisPlusPage = new Page<>(page, limit);
+        this.page = new Page<>(pageNo, limit);
     }
 
-    public int getPage() {
+    public Page<T> getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(Page<T> page) {
         this.page = page;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
     }
 
     public int getLimit() {

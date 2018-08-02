@@ -26,5 +26,15 @@ spring:
 # Mybatis配置
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
+  typeAliasesPackage: com.ura.generator.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
 #mybatis:
 #    mapperLocations: classpath*:mapper/**/*.xml
+
+logging:
+  level: debug
+  level.com.ura: debug
+  path: logs
+  file: generator.log

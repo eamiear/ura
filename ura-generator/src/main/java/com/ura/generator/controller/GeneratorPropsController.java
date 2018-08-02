@@ -24,14 +24,18 @@ public class GeneratorPropsController {
     @Autowired
     GeneratorPropsService generatorPropsService;
 
+
     @RequestMapping("/list")
-    public R queryPropsList(@RequestBody Map<String, Object> params) {
+    public R queryPropsList(@RequestParam Map<String, Object> params) {
         PageUtils pageUtils = generatorPropsService.queryPropsList(params);
         return R.success().put("data", pageUtils);
     }
 
     @RequestMapping("/record")
     public R queryPropRecord(@RequestParam Long id) {
+        if (id == null) {
+            return R.error("id 不能为空!");
+        }
         PropsEntity propsEntity = generatorPropsService.queryPropRecord(id);
         return R.success().put("data", propsEntity);
     }
@@ -52,6 +56,9 @@ public class GeneratorPropsController {
 
     @RequestMapping("/delete")
     public R deleteById(@RequestParam Long id){
+        if (id == null) {
+            return R.error("id不能为空!");
+        }
         boolean isDel = generatorPropsService.deleteById(id);
         R r = isDel ? R.success("删除成功") : R.error("删除失败");
         return r;

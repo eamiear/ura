@@ -29,7 +29,6 @@ mybatis-plus:
   typeAliasesPackage: com.ura.generator.entity
   configuration:
     map-underscore-to-camel-case: true
-    call-setters-on-nulls: true
   global-config:
     id-type: 0
 

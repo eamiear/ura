@@ -6,9 +6,10 @@
 package com.ura.generator.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.ura.common.utils.R;
 import com.ura.generator.entity.PropsEntity;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface GeneratorPropsDao extends BaseMapper<PropsEntity>{
-    public boolean deleteById(Long id);
+    boolean deleteById(Long id);
 }

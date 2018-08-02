@@ -23,10 +23,9 @@ public class GeneratorPropsServiceImpl extends ServiceImpl<GeneratorPropsDao, Pr
 
     @Override
     public PageUtils queryPropsList(Map<String, Object> params) {
-        int status = Integer.parseInt(params.get("status").toString());
         Page<PropsEntity> page = this.selectPage(
                 new Query<PropsEntity>(params).getPage(),
-                new EntityWrapper<PropsEntity>().eq("status", 1));
+                new EntityWrapper<PropsEntity>().eq("status", 0));
         return new PageUtils(page);
     }
 

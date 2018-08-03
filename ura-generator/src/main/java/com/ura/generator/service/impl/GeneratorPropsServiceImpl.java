@@ -31,7 +31,12 @@ public class GeneratorPropsServiceImpl extends ServiceImpl<GeneratorPropsDao, Pr
 
     @Override
     public PropsEntity queryPropRecord(Long id) {
-        return this.selectOne(new EntityWrapper<PropsEntity>());
+        return this.selectOne(new EntityWrapper<PropsEntity>().eq("id", id));
+    }
+
+    @Override
+    public PropsEntity queryPropRecordByKey(String key) {
+        return this.selectOne(new EntityWrapper<PropsEntity>().eq("key", key));
     }
 
     @Override
@@ -47,7 +52,7 @@ public class GeneratorPropsServiceImpl extends ServiceImpl<GeneratorPropsDao, Pr
 
     @Override
     public boolean delete(Long id) {
-        return true;
+        return baseMapper.deleteById(id);
     }
 
     @Override

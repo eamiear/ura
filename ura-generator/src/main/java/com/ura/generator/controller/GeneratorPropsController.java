@@ -59,7 +59,7 @@ public class GeneratorPropsController {
         if (id == null) {
             return R.error("id不能为空!");
         }
-        boolean isDel = generatorPropsService.deleteById(id);
+        boolean isDel = generatorPropsService.delete(id);
         R r = isDel ? R.success("删除成功") : R.error("删除失败");
         return r;
     }

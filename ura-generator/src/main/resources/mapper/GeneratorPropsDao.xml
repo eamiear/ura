@@ -3,6 +3,6 @@
 
 <mapper namespace="com.ura.generator.dao.GeneratorPropsDao">
     <update id="deleteById">
-        update gen_config set status = #{status} where id = #{id}
+        update gen_config set status = 1 where id = #{id}
     </update>
 </mapper>

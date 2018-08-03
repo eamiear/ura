@@ -16,6 +16,8 @@ public interface GeneratorPropsService extends IService<PropsEntity>{
 
     PropsEntity queryPropRecord(Long id);
 
+    PropsEntity queryPropRecordByKey(String key);
+
     boolean save(PropsEntity props);
 
     boolean update(PropsEntity props);

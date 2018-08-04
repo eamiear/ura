@@ -5,13 +5,17 @@
 
 package com.ura.generator.service;
 
+import com.ura.common.utils.PageUtils;
 import com.ura.generator.dao.SysGeneratorDao;
+import com.ura.generator.entity.PropsEntity;
+import com.ura.generator.redis.GeneratorRedis;
 import com.ura.generator.utils.GenUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
@@ -21,6 +25,12 @@ public class SysGeneratorService {
 
     @Autowired
     private SysGeneratorDao sysGeneratorDao;
+
+    @Autowired
+    private GeneratorPropsService generatorPropsService;
+
+    @Autowired
+    private GeneratorRedis generatorRedis;
 
     public List<Map<String, String>> getTableList(Map<String, Object> map){
         return sysGeneratorDao.getTableList(map);
@@ -41,6 +51,14 @@ public class SysGeneratorService {
     public byte[] generateCode(String[] tableNames){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
+
+        PageUtils pageUtils = generatorPropsService.queryPropsList(new HashMap<>());
+        if (pageUtils.getList().size() > 0) {
+            List<PropsEntity> list = (List<PropsEntity>)pageUtils.getList();
+            for (PropsEntity propsEntity : list) {
+                generatorRedis.set(propsEntity);
+            }
+        }
 
         for (String tableName : tableNames) {
             Map<String, String> table = getTableByTableName(tableName);

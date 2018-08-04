@@ -19,7 +19,18 @@ spring:
     jackson:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
-
+    redis:
+      database: 0
+      host: 127.0.0.1
+      port: 6379
+      password:
+      timeout: 6000ms
+      jedis:
+        pool:
+          max-active: 1000
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 5
 #    resources:
 #            static-locations: classpath:/static/,classpath:/views/
 
@@ -38,5 +49,5 @@ mybatis-plus:
 logging:
   level: debug
   level.com.ura: debug
-  path: logs
   file: generator.log
+  path: logs/

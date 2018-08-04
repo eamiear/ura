@@ -9,6 +9,7 @@ import com.ura.common.utils.DateUtils;
 import com.ura.common.utils.URAException;
 import com.ura.generator.entity.ColumnEntity;
 import com.ura.generator.entity.TableEntity;
+import com.ura.generator.redis.GeneratorRedis;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -18,6 +19,7 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +29,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class GenUtils {
+    @Autowired
+    private static GeneratorRedis generatorRedis;
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
@@ -46,6 +50,12 @@ public class GenUtils {
 
     public static void generateCode(Map<String, String> table, List<Map<String, String>> columns, ZipOutputStream zip) {
         Configuration config = getConfig();
+        Iterator keys = config.getKeys();
+        while (keys.hasNext()){
+            String value = generatorRedis.get(keys.next().toString()).getValue();
+            config.addProperty(keys.next().toString(), value);
+        }
+
         boolean hasBigDecimal = false;
 
         TableEntity tableEntity = new TableEntity();

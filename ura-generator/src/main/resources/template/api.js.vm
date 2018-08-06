@@ -23,7 +23,7 @@ const API = {
         if (status === 0) {
             return this.create${className}Record(model)
         } else {
-            return this.update${className}Record(props)
+            return this.update${className}Record(model)
         }
     }
 }

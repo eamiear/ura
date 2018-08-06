@@ -104,7 +104,7 @@ export default {
          this.dialog.title = '编辑属性'
          this.dialog.visible = true
          this.dialog.status = 1
-         API.get${className}Record(id).then(res = > {
+         API.get${className}Record(id).then(res => {
            if(res.code === 0) {
              this.${className}Model = res.data
            }
@@ -115,8 +115,8 @@ export default {
            confirmButtonText: '确认',
            cancelButtonText: '取消',
            type: 'warning'
-         }).then (() = > {
-           API.delete${className}Record(id).then(response = > {
+         }).then (() => {
+           API.delete${className}Record(id).then(response => {
              this.$message({
                type: response.code === 0 ? 'success' : 'error',
                message: response.code === 0 ? '删除成功' : '删除失败'
@@ -125,7 +125,7 @@ export default {
                this.refresh()
              }
            })
-         }).catch (() = > {
+         }).catch (() => {
             this.$message({
               type: 'info',
               message: '已取消'

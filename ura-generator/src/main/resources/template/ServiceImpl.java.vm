@@ -12,7 +12,8 @@ import ${package}.dao.${className}Dao;
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
 
-public class ${className}ServieImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
+@Service("${classname}Service")
+public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         Page<${className}Entity> page = this.selectPage(new Query<${className}Entity>(params).getPage(), new EntityWrapper<${className}Entity>());

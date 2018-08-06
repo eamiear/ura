@@ -2,20 +2,15 @@ package ${package}.controller;
 
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
-import ${mainPath}.common.utils.PageUtils;
-import ${mainPath}.common.utils.Query;
-import ${mainPath}.common.utils.R;
 
-import ${package}.common.utils.R;
-import ${package}.common.utils.Query;
 import ${mainPath}.common.utils.PageUtils;
-import ${mainPath}.common.utils.Query;
 import ${mainPath}.common.utils.R;
 import ${mainPath}.common.validator.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Map;
 
 /**
 * ${comments}
@@ -37,7 +32,7 @@ public class ${className}Controller {
 
     @RequestMapping("/info/${pk.attrname}")
     public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
-        ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrnaNme});
+        ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
         return R.success().put("data", ${classname});
     }
 

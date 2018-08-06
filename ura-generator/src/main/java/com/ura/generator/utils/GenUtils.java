@@ -58,6 +58,7 @@ public class GenUtils {
         templates.add("template/list.vue.vm");
         templates.add("template/list.html.vm");
         templates.add("template/list.js.vm");
+        templates.add("template/api.js.vm");
 //        templates.add("template/menu.sql.vm");
 
         return templates;
@@ -218,6 +219,10 @@ public class GenUtils {
 
         if (template.contains("list.js.vm")) {
             return resourcePath + "static" + File.separator + "js" + File.separator + className.toLowerCase() + ".js";
+        }
+
+        if (template.contains("api.js.vm")) {
+          return resourcePath + "static" + File.separator + "api" + File.separator + className.toLowerCase() + ".js";
         }
 
         if (template.contains("menu.sql.vm")) {

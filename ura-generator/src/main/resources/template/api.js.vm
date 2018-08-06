@@ -1,0 +1,30 @@
+import service from '@/common/fetch'
+
+const API = {
+    getTableList (params) {
+        return service.get('/list', {params})
+    },
+    get${className}List (params) {
+        return service.get('/${pathName}/list', {params})
+    },
+    get${className}Record (id) {
+        return service.get('/${pathName}/record', {params: {id}})
+    },
+    create${className}Record (model) {
+        return service.post('/${pathName}/save', model)
+    },
+    update${className}Record (model) {
+        return service.post('/${pathName}/update', model)
+    },
+    delete${className}Record (id) {
+        return service.delete('/${pathName}/delete', {params: {id}})
+    },
+    createOrUpdateRecord (status, model) {
+        if (status === 0) {
+            return this.create${className}Record(model)
+        } else {
+            return this.update${className}Record(props)
+        }
+    }
+}
+export default API

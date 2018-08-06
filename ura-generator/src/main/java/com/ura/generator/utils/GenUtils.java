@@ -8,6 +8,7 @@ package com.ura.generator.utils;
 import com.ura.common.utils.DateUtils;
 import com.ura.common.utils.URAException;
 import com.ura.generator.entity.ColumnEntity;
+import com.ura.generator.entity.PropsEntity;
 import com.ura.generator.entity.TableEntity;
 import com.ura.generator.redis.GeneratorRedis;
 import org.apache.commons.configuration.Configuration;
@@ -19,8 +20,12 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,9 +33,19 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@Component
 public class GenUtils {
+   static Logger logger = LoggerFactory.getLogger(GenUtils.class);
+
     @Autowired
-    private static GeneratorRedis generatorRedis;
+    private GeneratorRedis generatorRedis;
+
+    private static GeneratorRedis generatorRedisProxy;
+
+    @PostConstruct
+    public void init(){
+        generatorRedisProxy = generatorRedis;
+    }
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
@@ -52,8 +67,13 @@ public class GenUtils {
         Configuration config = getConfig();
         Iterator keys = config.getKeys();
         while (keys.hasNext()){
-            String value = generatorRedis.get(keys.next().toString()).getValue();
-            config.addProperty(keys.next().toString(), value);
+            String propKey = keys.next().toString();
+            PropsEntity propsEntity = generatorRedisProxy.get(propKey);
+            if (propsEntity != null) {
+                logger.info("[redis] => " + propsEntity.getKey() + ":  " + propsEntity.getValue());
+                config.clearProperty(propKey);
+                config.addProperty(propKey, propsEntity.getValue());
+            }
         }
 
         boolean hasBigDecimal = false;
@@ -115,6 +135,7 @@ public class GenUtils {
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("package", config.getString("package"));
+        logger.info("[config] => package : " + config.getString("package"));
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("mainPath", config.getString("mainPath"));

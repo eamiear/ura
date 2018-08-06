@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-08-03 00:03:03
+Date: 2018-08-06 11:35:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,7 +45,7 @@ CREATE TABLE `sys_config` (
   `status` int(4) DEFAULT '0' COMMENT '状态',
   `remark` varchar(200) DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统配置';
 
 -- ----------------------------
 -- Records of sys_config
@@ -62,7 +62,7 @@ CREATE TABLE `sys_dept` (
   `orders` int(11) DEFAULT NULL COMMENT '排序',
   `del_flag` tinyint(4) DEFAULT NULL COMMENT '是否删除  -1：已删除  0：正常',
   PRIMARY KEY (`dept_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='部门表';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -109,7 +109,7 @@ CREATE TABLE `sys_menu` (
   `create_time` datetime DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`menu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -126,7 +126,7 @@ CREATE TABLE `sys_role` (
   `remark` varchar(200) DEFAULT NULL COMMENT '描述/备注',
   `orders` int(10) DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`role_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
@@ -153,7 +153,7 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `udate_time` date DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user

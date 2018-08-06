@@ -37,7 +37,7 @@ public class RedisUtils {
     /** second unit*/
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
 
-    public final static long NOT_EXPIRE = 1;
+    public final static long NOT_EXPIRE = -1;
 
     public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJsonString(value));
@@ -59,7 +59,7 @@ public class RedisUtils {
     }
 
     public <T> T get(String key, Class<T> clazz) {
-        return get(key, clazz);
+        return get(key, clazz, NOT_EXPIRE);
     }
 
     public String get(String key, long expire) {

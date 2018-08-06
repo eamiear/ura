@@ -12,7 +12,7 @@
          </template>
       </table-base>
 
-      <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="40%" :close-on-click-modal="false">
+      <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="50%" :close-on-click-modal="false">
          <el-form :model="${className}Model" ref="${className}Entity">
 #foreach($column in $columns)
             <el-form-item
@@ -49,7 +49,7 @@ export default {
           title: '新增',
           visible: false,
           status: 0,
-          labelWidth: '60px'
+          labelWidth: '100px'
         },
         ${className}Model: {
 

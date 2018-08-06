@@ -11,6 +11,7 @@ import java.util.Map;
 import ${package}.dao.${className}Dao;
 import ${package}.entity.${className}Entity;
 import ${package}.service.${className}Service;
+import org.springframework.stereotype.Service;
 
 @Service("${classname}Service")
 public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {

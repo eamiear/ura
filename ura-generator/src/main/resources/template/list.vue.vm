@@ -35,7 +35,7 @@
 <script>
 import TableBase from '@/assets/package/table-base'
 import '@/assets/package/style/index.scss'
-import API from '@/api/${pathName}'
+import ${className}API from '@/api/${pathName}'
 
 export default {
    data() {
@@ -91,7 +91,7 @@ export default {
          this.query.page = pageNo
          this.query.limit = pageSize
          const response = await
-         API.get${className}List(this.query)
+         ${className}API.get${className}List(this.query)
          if (response.code === 0) {
             return {data: response.data.list, total: response.data.total}
          }
@@ -104,7 +104,7 @@ export default {
          this.dialog.title = '编辑属性'
          this.dialog.visible = true
          this.dialog.status = 1
-         API.get${className}Record(id).then(res => {
+         ${className}API.get${className}Record(id).then(res => {
            if (res.code === 0) {
              this.${className}Model = res.data
            }
@@ -116,7 +116,7 @@ export default {
            cancelButtonText: '取消',
            type: 'warning'
          }).then(() => {
-           API.delete${className}Record(id).then(response => {
+             ${className}API.delete${className}Record(id).then(response => {
              this.$message({
                type: response.code === 0 ? 'success' : 'error',
                message: response.code === 0 ? '删除成功' : '删除失败'
@@ -135,7 +135,7 @@ export default {
       submit${className}Model () {
         this.#[[$]]#refs['${className}Entity'].#[[validate]]#(valids => {
           if (valids) {
-            API.createOrUpdateRecord(this.dialog.status, this.${className}Model).then(response => {
+            ${className}API.createOrUpdateRecord(this.dialog.status, this.${className}Model).then(response => {
               if (response.code === 0) {
                 this.$message({
                   type: 'success',

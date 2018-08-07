@@ -1,6 +1,6 @@
 import service from '@/common/fetch'
 
-const API = {
+const ${className}API = {
     getTableList (params) {
         return service.get('/list', {params})
     },
@@ -27,4 +27,4 @@ const API = {
         }
     }
 }
-export default API
+export default ${className}API

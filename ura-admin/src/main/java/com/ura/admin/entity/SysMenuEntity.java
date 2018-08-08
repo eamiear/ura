@@ -6,10 +6,12 @@
 
 package com.ura.admin.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  系统菜单实体
@@ -30,6 +32,11 @@ public class SysMenuEntity implements Serializable {
   private Integer status;
   private String createTime;
   private String updateTime;
+
+  @TableField(exist = false)
+  private Boolean isShow;
+  @TableField(exist = false)
+  private List<?> list;
 
   public void setMenuId(Long menuId) {
     this.menuId = menuId;
@@ -107,5 +114,21 @@ public class SysMenuEntity implements Serializable {
 
   public String getUpdateTime () {
     return updateTime;
+  }
+
+  public Boolean getShow() {
+    return isShow;
+  }
+
+  public void setShow(Boolean show) {
+    isShow = show;
+  }
+
+  public List<?> getList() {
+    return list;
+  }
+
+  public void setList(List<?> list) {
+    this.list = list;
   }
 }

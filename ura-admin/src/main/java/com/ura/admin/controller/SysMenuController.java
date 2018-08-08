@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,18 +20,23 @@ import java.util.Map;
  * @datetime 2018-08-06 20:54:28
 */
 @RestController
-@RequestMapping("/sysmenu")
+@RequestMapping("/sys/menu")
 public class SysMenuController {
     @Autowired
     private SysMenuService sysMenuService;
 
+    @RequestMapping("/nav")
+    public R nav() {
+        List<SysMenuEntity> menuList = sysMenuService.getUserMenuList();
+        return R.success().put("list", menuList);
+    }
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = sysMenuService.queryPage(params);
         return R.success().put("data", page);
     }
 
-    @RequestMapping("/info/menuId")
+    @RequestMapping("/info/{menuId}")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity sysMenu = sysMenuService.selectById(menuId);
         return R.success().put("data", sysMenu);

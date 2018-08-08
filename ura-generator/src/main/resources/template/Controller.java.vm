@@ -30,7 +30,7 @@ public class ${className}Controller {
         return R.success().put("data", page);
     }
 
-    @RequestMapping("/info/{${pk.attrname}}")
+    @RequestMapping("/info/#[[{]]#${pk.attrname}#[[}]]#")
     public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
         ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
         return R.success().put("data", ${classname});

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-08-06 11:35:35
+Date: 2018-08-08 17:59:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -106,8 +106,8 @@ CREATE TABLE `sys_menu` (
   `icon` varchar(100) DEFAULT NULL COMMENT '菜单图标',
   `orders` int(10) DEFAULT NULL COMMENT '排序',
   `status` int(2) DEFAULT NULL COMMENT '菜单状态： 0 显示， 1隐藏',
-  `create_time` datetime DEFAULT NULL COMMENT '添加时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `create_time` timestamp NULL DEFAULT NULL COMMENT '添加时间',
+  `update_time` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
@@ -130,6 +130,34 @@ CREATE TABLE `sys_role` (
 
 -- ----------------------------
 -- Records of sys_role
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_role_dept`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept` (
+  `role_id` bigint(200) NOT NULL DEFAULT '0',
+  `dept_id` bigint(200) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`role_id`,`dept_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色部门表';
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_role_menu`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `role_id` bigint(200) NOT NULL DEFAULT '0',
+  `menu_id` bigint(200) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`role_id`,`menu_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色菜单关联表';
+
+-- ----------------------------
+-- Records of sys_role_menu
 -- ----------------------------
 
 -- ----------------------------
@@ -157,4 +185,32 @@ CREATE TABLE `sys_user` (
 
 -- ----------------------------
 -- Records of sys_user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_user_dept`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_dept`;
+CREATE TABLE `sys_user_dept` (
+  `user_id` bigint(200) NOT NULL DEFAULT '0',
+  `dept_id` bigint(200) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`,`dept_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户部门关联表';
+
+-- ----------------------------
+-- Records of sys_user_dept
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_user_role`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role` (
+  `user_id` bigint(200) NOT NULL DEFAULT '0',
+  `role_id` bigint(200) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`user_id`,`role_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user_role
 -- ----------------------------

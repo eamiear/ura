@@ -50,3 +50,9 @@ logging:
   level: debug
   level.com.ura: debug
   file: ./ura-admin/logs/admin.log
+
+ura:
+  redis:
+    open: true
+  shiro:
+    redis: true

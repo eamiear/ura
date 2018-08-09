@@ -14,4 +14,9 @@ public class HttpContextUtils {
     public static HttpServletRequest getHttpServletRequest () {
         return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
     }
+
+    public static String getOrigin(){
+        HttpServletRequest request = getHttpServletRequest();
+        return request.getHeader("Origin");
+    }
 }

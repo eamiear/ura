@@ -53,6 +53,6 @@ logging:
 
 ura:
   redis:
-    open: true
+    open: false # 需启动redis
   shiro:
-    redis: true
+    redis: false

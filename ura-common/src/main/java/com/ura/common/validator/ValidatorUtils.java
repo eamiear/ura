@@ -30,7 +30,7 @@ public class ValidatorUtils {
     public static void validateEntity(Object object, Class<?>... groups) throws URAException{
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object,groups);
         if (constraintViolations.isEmpty()) {
-            ConstraintViolation<Object> constraint = (ConstraintViolation<Object>) constraintViolations.iterator().next();
+            ConstraintViolation<Object> constraint = constraintViolations.iterator().next();
             throw new URAException(constraint.getMessage());
         }
     }

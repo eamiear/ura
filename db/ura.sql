@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-08-08 17:59:51
+Date: 2018-08-09 23:51:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,7 +31,7 @@ CREATE TABLE `gen_config` (
 -- ----------------------------
 -- Records of gen_config
 -- ----------------------------
-INSERT INTO `gen_config` VALUES ('1', 'package', 'com.ura', '0', '包名');
+INSERT INTO `gen_config` VALUES ('1', 'package', 'com.ura.admin', '0', '包名');
 INSERT INTO `gen_config` VALUES ('3', 'mainPath', 'com.ura', '0', '');
 
 -- ----------------------------
@@ -175,11 +175,12 @@ CREATE TABLE `sys_user` (
   `mobile` varchar(100) DEFAULT NULL COMMENT '手机号',
   `sex` tinyint(4) DEFAULT NULL COMMENT '性别',
   `salt` varchar(20) DEFAULT NULL COMMENT '盐',
+  `create_user_id` bigint(20) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL COMMENT '状态  0：禁用   1：正常',
   `locked` tinyint(4) DEFAULT NULL COMMENT '状态(0:正常,1:锁定)',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `udate_time` date DEFAULT NULL COMMENT '更新时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
 

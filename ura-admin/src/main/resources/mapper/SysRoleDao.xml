@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ura.admin.dao.SysRoleDao">
+  <resultMap id="sysRoleMap" type="com.ura.admin.entity.SysRoleEntity">
+    <result property="roleId" column="role_id"></result>
+    <result property="roleName" column="role_name"></result>
+    <result property="title" column="title"></result>
+    <result property="remark" column="remark"></result>
+    <result property="orders" column="orders"></result>
+  </resultMap>
+</mapper>

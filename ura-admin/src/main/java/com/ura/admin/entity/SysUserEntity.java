@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *  用户表实体
@@ -32,8 +33,9 @@ public class SysUserEntity implements Serializable {
   private Integer status;
   private Integer locked;
   private Long deptId;
-  private String createTime;
-  private String udateTime;
+  private Date createTime;
+  private Date updateTime;
+  private Long createUserId;
 
   public void setUserId(Long userId) {
     this.userId = userId;
@@ -126,18 +128,27 @@ public class SysUserEntity implements Serializable {
   public Long getDeptId () {
     return deptId;
   }
-  public void setCreateTime(String createTime) {
+  public void setCreateTime(Date createTime) {
     this.createTime = createTime;
   }
 
-  public String getCreateTime () {
+  public Date getCreateTime () {
     return createTime;
   }
-  public void setUdateTime(String udateTime) {
-    this.udateTime = udateTime;
+
+  public Date getUpdateTime() {
+    return updateTime;
   }
 
-  public String getUdateTime () {
-    return udateTime;
+  public void setUpdateTime(Date updateTime) {
+    this.updateTime = updateTime;
+  }
+
+  public Long getCreateUserId() {
+    return createUserId;
+  }
+
+  public void setCreateUserId(Long createUserId) {
+    this.createUserId = createUserId;
   }
 }

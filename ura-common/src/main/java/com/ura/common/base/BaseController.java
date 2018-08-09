@@ -6,5 +6,5 @@
 package com.ura.common.base;
 
 
-public abstract class AbstractController {
+public abstract class BaseController {
 }

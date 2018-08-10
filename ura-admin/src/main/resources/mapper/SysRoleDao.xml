@@ -9,4 +9,8 @@
     <result property="remark" column="remark"></result>
     <result property="orders" column="orders"></result>
   </resultMap>
+
+  <select id="queryRoleIdList" resultType="long">
+    select role_id from sys_role where create_user_id = #{createUserId}
+  </select>
 </mapper>

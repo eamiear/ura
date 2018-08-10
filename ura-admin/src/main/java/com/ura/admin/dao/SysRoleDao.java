@@ -3,6 +3,9 @@ package com.ura.admin.dao;
 import com.ura.admin.entity.SysRoleEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
 /**
 * 角色表
  * @author eamiear
@@ -10,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface SysRoleDao extends BaseMapper<SysRoleEntity> {
-
+  List<Long> queryRoleIdList(Long createUserId);
 }

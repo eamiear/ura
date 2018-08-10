@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *  角色表实体
@@ -24,6 +25,8 @@ public class SysRoleEntity implements Serializable {
   private String title;
   private String remark;
   private Integer orders;
+  private Long createUserId;
+  private Date createTime;
 
   public void setRoleId(Long roleId) {
     this.roleId = roleId;
@@ -57,7 +60,24 @@ public class SysRoleEntity implements Serializable {
     this.orders = orders;
   }
 
+  public Long getCreateUserId() {
+    return createUserId;
+  }
+
+  public void setCreateUserId(Long createUserId) {
+    this.createUserId = createUserId;
+  }
+
   public Integer getOrders () {
     return orders;
+  }
+
+
+  public Date getCreateTime() {
+    return createTime;
+  }
+
+  public void setCreateTime(Date createTime) {
+    this.createTime = createTime;
   }
 }

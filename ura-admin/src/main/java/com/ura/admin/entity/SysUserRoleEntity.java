@@ -18,7 +18,6 @@ import java.io.Serializable;
 
 @TableName("sys_user_role")
 public class SysUserRoleEntity implements Serializable {
-  @TableId
   private Long userId;
   private Long roleId;
 

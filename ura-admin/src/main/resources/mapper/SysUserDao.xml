@@ -10,7 +10,7 @@
 
   </select>
 
-  <select id="queryByUserName" resultType="com.ura.admin.entity.SysMenuEntity">
-    select * from sys_user where name = #{userName}
+  <select id="queryByUserName" resultType="com.ura.admin.entity.SysUserEntity">
+    select * from sys_user where username = #{userName}
   </select>
 </mapper>

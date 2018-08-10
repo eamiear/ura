@@ -48,7 +48,7 @@ public class SysLoginController extends AbstractController{
         ImageIO.write(bi, "jpg", out);
     }
 
-    @RequestMapping("/sys/login")
+    @RequestMapping("sys/login1")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password,
                    @RequestParam("captcha") String captcha) {
@@ -68,6 +68,7 @@ public class SysLoginController extends AbstractController{
         return sysUserTokenService.createToken(user.getUserId());
     }
 
+    @RequestMapping("sys/login")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password) {
         SysUserEntity user = sysUserService.queryByUserName(username);
@@ -81,7 +82,7 @@ public class SysLoginController extends AbstractController{
         return sysUserTokenService.createToken(user.getUserId());
     }
 
-    @RequestMapping("/sys/logout")
+    @RequestMapping("sys/logout")
     public R logout() {
         sysUserTokenService.updateToken(getUserId());
         return R.success();

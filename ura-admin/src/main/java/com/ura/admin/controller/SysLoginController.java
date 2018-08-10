@@ -9,6 +9,7 @@ import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.service.SysUserService;
+import com.ura.admin.service.SysUserTokenService;
 import com.ura.common.utils.R;
 import com.ura.common.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 @RestController
-public class SysLoginController {
+public class SysLoginController extends AbstractController{
 
     @Autowired
     private Producer producer;
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysUserTokenService sysUserTokenService;
 
 
     @RequestMapping("/captcha.jpg")
@@ -44,6 +48,7 @@ public class SysLoginController {
         ImageIO.write(bi, "jpg", out);
     }
 
+    @RequestMapping("/sys/login")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password,
                    @RequestParam("captcha") String captcha) {
@@ -60,7 +65,25 @@ public class SysLoginController {
         if (user.getLocked() == 0) {
             return R.error("账号已被锁定");
         }
-        return R.error();
+        return sysUserTokenService.createToken(user.getUserId());
+    }
 
+    public R login(@RequestParam("username") String username,
+                   @RequestParam("password") String password) {
+        SysUserEntity user = sysUserService.queryByUserName(username);
+        if (user == null || !user.getPassword().equals(ShiroUtils.cryptPassword(password, user.getSalt()))) {
+            return R.error("账号或密码不正确");
+        }
+        if (user.getLocked() == 0) {
+            return R.error("账号已被锁定");
+        }
+
+        return sysUserTokenService.createToken(user.getUserId());
+    }
+
+    @RequestMapping("/sys/logout")
+    public R logout() {
+        sysUserTokenService.updateToken(getUserId());
+        return R.success();
     }
 }

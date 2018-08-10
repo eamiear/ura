@@ -9,12 +9,12 @@ public class Constant {
     public static final int SUPER_ADMIN = 1;
 
     public static final int SHIRO_HASH_ITERATION = 1024;
-
     public static final String SHIRO_HASH_ALGORITHM_NAME = "MD5";
 
     public static final int JWT_EXPIRATION_TIME = 60 * 60 * 1000;
-
     public static final String JWT_SECRET = "ura_token_secret";
+
+    public static final int CUSTOME_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 12;
 
 
     public enum MenuType {

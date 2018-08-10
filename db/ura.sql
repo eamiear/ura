@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-08-09 23:51:20
+Date: 2018-08-10 23:19:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -116,6 +116,29 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `sys_permission`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_permission`;
+CREATE TABLE `sys_permission` (
+  `permission_id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `system_id` bigint(10) NOT NULL COMMENT '所属系统',
+  `parent_id` bigint(10) DEFAULT NULL COMMENT '所属上级',
+  `name` varchar(20) DEFAULT NULL COMMENT '名称',
+  `type` tinyint(4) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
+  `permission_value` varchar(50) DEFAULT NULL COMMENT '授权(多个用逗号分隔，如：user:list,user:create)',
+  `url` varchar(100) DEFAULT NULL COMMENT '菜单路径',
+  `icon` varchar(50) DEFAULT NULL COMMENT '菜单图标',
+  `status` tinyint(4) DEFAULT NULL COMMENT '菜单状态： 0 显示， 1隐藏',
+  `orders` bigint(20) DEFAULT NULL,
+  `create_time` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='权限表';
+
+-- ----------------------------
+-- Records of sys_permission
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sys_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -161,6 +184,21 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `sys_role_permission`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission` (
+  `role_permission_id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `role_id` bigint(10) NOT NULL COMMENT '角色编号',
+  `permission_id` bigint(10) NOT NULL COMMENT '权限编号',
+  PRIMARY KEY (`role_permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role_permission
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sys_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
@@ -182,11 +220,12 @@ CREATE TABLE `sys_user` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', 'admin', null, '48ab4178302e623bf6cd366e68be466f14364b5209aeaf3508cfe6ca9aa2d263', null, null, null, null, null, 'xX8dQjxhGKgmhnwk7ETd', null, null, '1', null, '2018-08-10 19:09:13', '2018-08-10 19:26:37');
 
 -- ----------------------------
 -- Table structure for `sys_user_dept`
@@ -203,6 +242,22 @@ CREATE TABLE `sys_user_dept` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `sys_user_permission`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_permission`;
+CREATE TABLE `sys_user_permission` (
+  `user_permission_id` bigint(10) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(10) NOT NULL COMMENT '用户编号',
+  `permission_id` bigint(10) NOT NULL COMMENT '权限编号',
+  `type` tinyint(4) DEFAULT NULL COMMENT '权限类型(-1:减权限,1:增权限)f',
+  PRIMARY KEY (`user_permission_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户权限关联表';
+
+-- ----------------------------
+-- Records of sys_user_permission
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sys_user_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
@@ -215,3 +270,20 @@ CREATE TABLE `sys_user_role` (
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_user_token`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_token`;
+CREATE TABLE `sys_user_token` (
+  `user_id` bigint(20) NOT NULL,
+  `token` varchar(100) NOT NULL,
+  `expire_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_user_token
+-- ----------------------------
+INSERT INTO `sys_user_token` VALUES ('1', 'c226fad9ad8c1bb6e1ac29ecc0019bdc', '2018-08-11 07:27:32', '2018-08-10 19:27:32');

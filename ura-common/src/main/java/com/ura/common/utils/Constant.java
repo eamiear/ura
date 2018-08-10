@@ -8,6 +8,14 @@ package com.ura.common.utils;
 public class Constant {
     public static final int SUPER_ADMIN = 1;
 
+    public static final int SHIRO_HASH_ITERATION = 1024;
+
+    public static final String SHIRO_HASH_ALGORITHM_NAME = "MD5";
+
+    public static final int JWT_EXPIRATION_TIME = 60 * 60 * 1000;
+
+    public static final String JWT_SECRET = "ura_token_secret";
+
 
     public enum MenuType {
         CATALOG(0),

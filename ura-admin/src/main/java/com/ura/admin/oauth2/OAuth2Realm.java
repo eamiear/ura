@@ -9,6 +9,7 @@ import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.entity.SysUserTokenEntity;
 import com.ura.admin.service.ShiroService;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -59,5 +60,13 @@ public class OAuth2Realm extends AuthorizingRealm{
 
         SimpleAuthenticationInfo authentication = new SimpleAuthenticationInfo(user, accessToken, getName());
         return authentication;
+    }
+
+    @Override
+    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+//        hashedCredentialsMatcher.setHashAlgorithmName(Constant.SHIRO_HASH_ALGORITHM_NAME);
+//        hashedCredentialsMatcher.setHashIterations(Constant.SHIRO_HASH_ITERATION);
+        super.setCredentialsMatcher(credentialsMatcher);
     }
 }

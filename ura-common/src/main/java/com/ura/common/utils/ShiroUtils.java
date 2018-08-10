@@ -5,7 +5,9 @@
 
 package com.ura.common.utils;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -26,6 +28,10 @@ public final class ShiroUtils {
         return SecurityUtils.getSubject().getPrincipal();
     }
 
+    public static <T> T getUser(){
+        return (T)getPrincipal();
+    }
+
     public static void setSessionAttribute(Object key, Object value){
         getSession().setAttribute(key, value);
     }
@@ -40,6 +46,14 @@ public final class ShiroUtils {
 
     public static void logout(){
         getSubject().logout();
+    }
+
+    public static String generateSalt(int count) {
+        return RandomStringUtils.randomAlphanumeric(count);
+    }
+
+    public static String cryptPassword (String password, String salt) {
+        return new Sha256Hash(password, salt).toHex();
     }
 
     public static String getKaptcha(String key){

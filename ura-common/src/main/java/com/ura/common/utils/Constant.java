@@ -8,6 +8,8 @@ package com.ura.common.utils;
 public class Constant {
     public static final int SUPER_ADMIN = 1;
 
+    public static final String SQL_FILTER = "sql_filter";
+
     public static final int SHIRO_HASH_ITERATION = 1024;
     public static final String SHIRO_HASH_ALGORITHM_NAME = "MD5";
 

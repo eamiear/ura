@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ura.admin.dao.SysDeptDao">
+  <resultMap id="sysDeptMap" type="com.ura.admin.entity.SysDeptEntity">
+    <result property="deptId" column="dept_id"></result>
+    <result property="parentId" column="parent_id"></result>
+    <result property="name" column="name"></result>
+    <result property="orders" column="orders"></result>
+    <result property="delFlag" column="del_flag"></result>
+  </resultMap>
+
+  <select id="queryDeptIdList" resultType="long">
+    select dept_id from sys_dept where parent_id = #{parentId}
+  </select>
+</mapper>

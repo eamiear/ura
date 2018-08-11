@@ -6,11 +6,13 @@
 
 package com.ura.admin.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  用户表实体
@@ -36,6 +38,9 @@ public class SysUserEntity implements Serializable {
   private Date createTime;
   private Date updateTime;
   private Long createUserId;
+
+  @TableField(exist = false)
+  private List<Long> roleIdList;
 
   public void setUserId(Long userId) {
     this.userId = userId;
@@ -150,5 +155,13 @@ public class SysUserEntity implements Serializable {
 
   public void setCreateUserId(Long createUserId) {
     this.createUserId = createUserId;
+  }
+
+  public List<Long> getRoleIdList() {
+    return roleIdList;
+  }
+
+  public void setRoleIdList(List<Long> roleIdList) {
+    this.roleIdList = roleIdList;
   }
 }

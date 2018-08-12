@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *  实体
@@ -26,7 +27,7 @@ public class SysLogEntity implements Serializable {
   private String params;
   private String time;
   private String ip;
-  private String createTime;
+  private Date createTime;
 
   public void setId(Long id) {
     this.id = id;
@@ -77,11 +78,11 @@ public class SysLogEntity implements Serializable {
   public String getIp () {
     return ip;
   }
-  public void setCreateTime(String createTime) {
+  public void setCreateTime(Date createTime) {
     this.createTime = createTime;
   }
 
-  public String getCreateTime () {
+  public Date getCreateTime () {
     return createTime;
   }
 }

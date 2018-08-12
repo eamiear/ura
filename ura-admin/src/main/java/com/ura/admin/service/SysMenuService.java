@@ -21,7 +21,7 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 
     List<SysMenuEntity> queryListNotButtonList();
 
-    List<SysMenuEntity> getUserMenuList();
+    List<SysMenuEntity> getUserMenuList(Long userId);
 
     void delete(Long menuId);
 }

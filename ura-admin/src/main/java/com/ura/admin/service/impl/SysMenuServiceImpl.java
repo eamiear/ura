@@ -50,10 +50,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
     }
 
     @Override
-    public List<SysMenuEntity> getUserMenuList() {
-//        if (userId == Constant.SUPER_ADMIN) {
-//            return getAllMenuList(null);
-//        }
+    public List<SysMenuEntity> getUserMenuList(Long userId) {
+        if (userId == Constant.SUPER_ADMIN) {
+            return getAllMenuList(null);
+        }
         return getAllMenuList(null);
     }
 

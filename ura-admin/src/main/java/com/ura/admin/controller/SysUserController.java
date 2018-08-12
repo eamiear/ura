@@ -1,5 +1,6 @@
 package com.ura.admin.controller;
 
+import com.ura.admin.annotation.SysLog;
 import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.service.SysUserService;
 
@@ -28,6 +29,7 @@ public class SysUserController extends AbstractController{
     @Autowired
     private SysUserService sysUserService;
 
+    @SysLog("查询用户列表")
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         if (getUserId() != Constant.SUPER_ADMIN){
@@ -37,16 +39,21 @@ public class SysUserController extends AbstractController{
         return R.success().put("data", page);
     }
 
+
+    @SysLog("查询当前用户信息")
     @RequestMapping("/info")
     public R info(){
         return R.success().put("data", getUser());
     }
+
+    @SysLog("查询用户信息")
     @RequestMapping("/info/{userId}")
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity sysUser = sysUserService.selectById(userId);
         return R.success().put("data", sysUser);
     }
 
+    @SysLog("新增用户")
     @RequestMapping("/save")
     public R save (@RequestBody SysUserEntity sysUser) {
         sysUser.setCreateUserId(getUserId());
@@ -54,6 +61,7 @@ public class SysUserController extends AbstractController{
         return R.success();
     }
 
+    @SysLog("修改用户信息")
     @RequestMapping("/update")
     public R update ( @RequestBody SysUserEntity sysUser) {
         ValidatorUtils.validateEntity(sysUser);
@@ -63,6 +71,7 @@ public class SysUserController extends AbstractController{
         return R.success();
     }
 
+    @SysLog("删除用户")
     @RequestMapping("/delete")
     public R delete (@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, Constant.SUPER_ADMIN)){
@@ -75,6 +84,8 @@ public class SysUserController extends AbstractController{
         return R.success();
     }
 
+    @SysLog("修改密码")
+    @RequestMapping("/updatePassword")
     public R password(@RequestParam("password") String password, @RequestParam("newPassword") String newPassword){
         Assert.isBlank(newPassword, "新密码不能为空");
         String passwordEncrypt = new Sha256Hash(password, getUser().getSalt()).toHex();

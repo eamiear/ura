@@ -1,5 +1,6 @@
 package com.ura.admin.controller;
 
+import com.ura.admin.annotation.SysLog;
 import com.ura.admin.entity.SysMenuEntity;
 import com.ura.admin.service.SysMenuService;
 
@@ -21,33 +22,38 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/sys/menu")
-public class SysMenuController {
+public class SysMenuController extends AbstractController{
     @Autowired
     private SysMenuService sysMenuService;
 
+    @SysLog("查询树形菜单")
     @RequestMapping("/nav")
     public R nav() {
-        List<SysMenuEntity> menuList = sysMenuService.getUserMenuList();
+        List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
         return R.success().put("list", menuList);
     }
+    @SysLog("查询菜单列表")
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = sysMenuService.queryPage(params);
         return R.success().put("data", page);
     }
 
+    @SysLog("查询菜单记录")
     @RequestMapping("/info/{menuId}")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity sysMenu = sysMenuService.selectById(menuId);
         return R.success().put("data", sysMenu);
     }
 
+    @SysLog("新增菜单")
     @RequestMapping("/save")
     public R save (@RequestBody SysMenuEntity sysMenu) {
         sysMenuService.insert(sysMenu);
         return R.success();
     }
 
+    @SysLog("修改菜单")
     @RequestMapping("/update")
     public R update ( @RequestBody SysMenuEntity sysMenu) {
         ValidatorUtils.validateEntity(sysMenu);
@@ -55,6 +61,7 @@ public class SysMenuController {
         return R.success();
     }
 
+    @SysLog("删除菜单")
     @RequestMapping("/delete")
     public R delete (@RequestBody Long[] menuIds) {
         sysMenuService.deleteBatchIds(Arrays.asList(menuIds));

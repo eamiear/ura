@@ -1,5 +1,6 @@
 package com.ura.admin.controller;
 
+import com.ura.admin.annotation.SysLog;
 import com.ura.admin.entity.SysRoleEntity;
 import com.ura.admin.service.SysRoleService;
 
@@ -25,6 +26,7 @@ public class SysRoleController extends AbstractController{
     @Autowired
     private SysRoleService sysRoleService;
 
+    @SysLog("查询角色列表")
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params) {
         if (getUserId() != Constant.SUPER_ADMIN) {
@@ -34,12 +36,14 @@ public class SysRoleController extends AbstractController{
         return R.success().put("data", page);
     }
 
+    @SysLog("查询角色记录")
     @RequestMapping("/info/{roleId}")
     public R info(@PathVariable("roleId") Long roleId) {
         SysRoleEntity sysRole = sysRoleService.selectById(roleId);
         return R.success().put("data", sysRole);
     }
 
+    @SysLog("新增角色")
     @RequestMapping("/save")
     public R save (@RequestBody SysRoleEntity sysRole) {
         sysRole.setCreateUserId(getUserId());
@@ -47,6 +51,8 @@ public class SysRoleController extends AbstractController{
         return R.success();
     }
 
+
+    @SysLog("修改角色")
     @RequestMapping("/update")
     public R update ( @RequestBody SysRoleEntity sysRole) {
         ValidatorUtils.validateEntity(sysRole);
@@ -55,6 +61,8 @@ public class SysRoleController extends AbstractController{
         return R.success();
     }
 
+
+    @SysLog("删除角色")
     @RequestMapping("/delete")
     public R delete (@RequestBody Long[] roleIds) {
         sysRoleService.deleteBatch(roleIds);

@@ -3,7 +3,9 @@ package com.ura.admin.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ura.admin.annotation.DataFilter;
 import com.ura.admin.service.SysUserRoleService;
+import com.ura.common.utils.Constant;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.Query;
 
@@ -29,6 +31,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
     SysUserRoleService sysUserRoleService;
 
     @Override
+    @DataFilter(subDept = true, user = false)
     public PageUtils queryPage(Map<String, Object> params) {
         String username = (String)params.get("username");
         Long createUserId = (Long)params.get("createUserId");
@@ -37,6 +40,18 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
                 new EntityWrapper<SysUserEntity>()
                         .like(StringUtils.isNotBlank(username), "username", username)
                         .eq(createUserId != null, "create_user_id", createUserId));
+        return new PageUtils(page);
+    }
+
+    @Override
+    @DataFilter(subDept = true, user = false)
+    public PageUtils queryDeptUserPage(Map<String, Object> params) {
+        String username = (String) params.get("username");
+        Page<SysUserEntity> page = this.selectPage(
+                new Query<SysUserEntity>(params).getPage(),
+                new EntityWrapper<SysUserEntity>()
+                        .like(StringUtils.isNotBlank(username), "username", username)
+                        .addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER)));
         return new PageUtils(page);
     }
 

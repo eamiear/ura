@@ -33,6 +33,9 @@ public class SysRoleEntity implements Serializable {
   @TableField(exist = false)
   private List<Long> menuIdList;
 
+  @TableField(exist = false)
+  private List<Long> deptIdList;
+
   public void setRoleId(Long roleId) {
     this.roleId = roleId;
   }
@@ -92,5 +95,13 @@ public class SysRoleEntity implements Serializable {
 
   public void setMenuIdList(List<Long> menuIdList) {
     this.menuIdList = menuIdList;
+  }
+
+  public List<Long> getDeptIdList() {
+    return deptIdList;
+  }
+
+  public void setDeptIdList(List<Long> deptIdList) {
+    this.deptIdList = deptIdList;
   }
 }

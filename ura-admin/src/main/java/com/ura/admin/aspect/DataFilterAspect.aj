@@ -7,6 +7,7 @@ import com.ura.admin.service.SysRoleDeptService;
 import com.ura.admin.service.SysUserRoleService;
 import com.ura.common.utils.Constant;
 import com.ura.common.utils.ShiroUtils;
+import com.ura.common.utils.URAException;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -51,6 +52,7 @@ public class DataFilterAspect {
 
       return;
     }
+    throw new URAException("数据权限接口，只能是Map类型参数，且不能为NULL");
   }
 
   private String getSQLFilter(SysUserEntity user, JoinPoint point) {

@@ -3,7 +3,9 @@ package com.ura.admin.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.ura.admin.service.SysRoleDeptService;
 import com.ura.admin.service.SysRoleMenuService;
+import com.ura.admin.service.SysUserRoleService;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.Query;
 
@@ -24,7 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
 
   @Autowired
-  SysRoleMenuService sysRoleMenuService;
+  private SysRoleMenuService sysRoleMenuService;
+
+  @Autowired
+  private SysRoleDeptService sysRoleDeptService;
+
+  @Autowired
+  private SysUserRoleService sysUserRoleService;
 
   @Override
   public PageUtils queryPage(Map<String, Object> params) {
@@ -45,6 +53,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
     this.insert(role);
 
     sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+
+    sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
   }
 
   @Override
@@ -53,6 +63,8 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
     this.updateById(role);
 
     sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
+
+    sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
   }
 
   @Override
@@ -61,6 +73,10 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
     this.deleteBatchIds(Arrays.asList(roleIds));
 
     sysRoleMenuService.deleteBatch(roleIds);
+
+    sysRoleDeptService.deleteBatch(roleIds);
+
+    sysUserRoleService.deleteBatch(roleIds);
   }
 
   @Override

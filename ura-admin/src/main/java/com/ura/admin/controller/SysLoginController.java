@@ -50,7 +50,7 @@ public class SysLoginController extends AbstractController{
     }
 
   @SysLog("用户登陆")
-    @RequestMapping("sys/login1")
+    @RequestMapping("sys/login")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password,
                    @RequestParam("captcha") String captcha) {
@@ -71,7 +71,7 @@ public class SysLoginController extends AbstractController{
     }
 
   @SysLog("用户登陆")
-    @RequestMapping("sys/login")
+    @RequestMapping("sys/loginNotCaptcha")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password) {
         SysUserEntity user = sysUserService.queryByUserName(username);

@@ -57,9 +57,12 @@ public final class ShiroUtils {
     }
 
     public static String getKaptcha(String key){
-        String kaptcha;
+        String kaptcha = "";
         try{
-            kaptcha = getSessionAttribute(key).toString();
+            Object kaptcha1 = getSessionAttribute(key);
+            if (kaptcha1 != null) {
+                kaptcha = kaptcha1.toString();
+            }
             getSession().removeAttribute(key);
         }catch (Exception e){
             return null;

@@ -62,11 +62,11 @@ public class OAuth2Realm extends AuthorizingRealm{
         return authentication;
     }
 
-    @Override
-    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
-//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-//        hashedCredentialsMatcher.setHashAlgorithmName(Constant.SHIRO_HASH_ALGORITHM_NAME);
-//        hashedCredentialsMatcher.setHashIterations(Constant.SHIRO_HASH_ITERATION);
-        super.setCredentialsMatcher(credentialsMatcher);
-    }
+//    @Override
+//    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+////        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+////        hashedCredentialsMatcher.setHashAlgorithmName(Constant.SHIRO_HASH_ALGORITHM_NAME);
+////        hashedCredentialsMatcher.setHashIterations(Constant.SHIRO_HASH_ITERATION);
+//        super.setCredentialsMatcher(credentialsMatcher);
+//    }
 }

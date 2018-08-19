@@ -65,7 +65,7 @@ public class SysLogAspect {
     HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
     sysLog.setIp(IPUtils.getIp(request));
 
-    String username = ((SysUserEntity)ShiroUtils.getUser()).getUsername();
+    String username = ((SysUserEntity)ShiroUtils.getPrincipal()).getUsername();
     sysLog.setUsername(username);
 
     sysLog.setTime(String.valueOf(time));

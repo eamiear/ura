@@ -2,6 +2,8 @@ package com.ura.admin;
 
 import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.service.SysUserService;
+import com.ura.common.utils.ShiroUtils;
+import org.apache.shiro.SecurityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +30,14 @@ public class AdminApplicationTests {
 		user.setPassword("123456");
 
 		sysUserService.save(user);
+	}
+
+	@Test
+	public void getPrincipal() {
+//		Object obj = ShiroUtils.getPrincipal();
+    Object obj = SecurityUtils.getSubject().getPrincipal();
+		SysUserEntity user = (SysUserEntity)obj;
+		String userName = user.getUsername();
+		System.out.print("========= " + userName);
 	}
 }

@@ -84,6 +84,6 @@ logging:
 
 ura:
   redis:
-    open: false # 需启动redis
+    open: true # 需启动redis
   shiro:
-    redis: false
+    redis: true

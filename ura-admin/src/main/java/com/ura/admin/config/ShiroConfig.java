@@ -10,6 +10,7 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,9 +28,10 @@ public class ShiroConfig {
                                        @Value("${ura.redis.open}") boolean redisOpen,
                                        @Value("${ura.shiro.redis}") boolean shiroRedis){
     DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-    sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
+//    sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
     sessionManager.setSessionValidationSchedulerEnabled(true);
     sessionManager.setSessionIdUrlRewritingEnabled(false);
+    sessionManager.setSessionIdCookieEnabled(true);
 
     if (redisOpen && shiroRedis){
       sessionManager.setSessionDAO(redisShiroSessionDao);
@@ -76,6 +78,24 @@ public class ShiroConfig {
     return new LifecycleBeanPostProcessor();
   }
 
+  /**
+   * 自动代理所有的advisor
+   * 由Advisor决定对那些类的方法进行AOP代理
+   * @return
+   */
+  @Bean
+  public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+    DefaultAdvisorAutoProxyCreator proxyCreator = new DefaultAdvisorAutoProxyCreator();
+    proxyCreator.setProxyTargetClass(true);
+    return proxyCreator;
+  }
+
+  /**
+   * 开启shiro aop注解支持
+   * 使用代理方式所以需要开启代码支持
+   * @param securityManager
+   * @return
+   */
   @Bean("authorizationAttributeSourceAdvisor")
   public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager){
     AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();

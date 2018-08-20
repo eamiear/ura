@@ -49,7 +49,6 @@ public class SysLoginController extends AbstractController{
         ImageIO.write(bi, "jpg", out);
     }
 
-  @SysLog("用户登陆")
     @RequestMapping("sys/login")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password,
@@ -70,7 +69,6 @@ public class SysLoginController extends AbstractController{
         return sysUserTokenService.createToken(user.getUserId());
     }
 
-  @SysLog("用户登陆")
     @RequestMapping("sys/loginNotCaptcha")
     public R login(@RequestParam("username") String username,
                    @RequestParam("password") String password) {
@@ -85,7 +83,7 @@ public class SysLoginController extends AbstractController{
         return sysUserTokenService.createToken(user.getUserId());
     }
 
-  @SysLog("登出系统")
+    @SysLog("登出系统")
     @RequestMapping("sys/logout")
     public R logout() {
         sysUserTokenService.updateToken(getUserId());

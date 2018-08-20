@@ -28,11 +28,11 @@ public class SysLogAspect {
   private SysLogService sysLogService;
 
   @Pointcut("@annotation(com.ura.admin.annotation.SysLog)")
-  public void logPoinCut() {
+  public void logPointCut() {
 
   }
 
-  @Around("logPoinCut()")
+  @Around("logPointCut()")
   public Object around(ProceedingJoinPoint point) throws Throwable {
     long beginTime = System.currentTimeMillis();
     Object result = point.proceed();
@@ -58,7 +58,7 @@ public class SysLogAspect {
 
     Object[] args = point.getArgs();
     try{
-      String params = JSON.toJSONString(args);
+      String params = JSON.toJSONString(args[0]);
       sysLog.setParams(params);
     } catch (Exception e){}
 

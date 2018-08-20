@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-08-10 23:19:17
+Date: 2018-08-20 23:06:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -93,6 +93,26 @@ INSERT INTO `sys_dict` VALUES ('2', '性别', 'sex', '1', '男', '1', null, '0')
 INSERT INTO `sys_dict` VALUES ('3', '性别', 'sex', '2', '未知', '3', null, '0');
 
 -- ----------------------------
+-- Table structure for `sys_log`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户名',
+  `username` varchar(50) DEFAULT NULL,
+  `operation` varchar(50) DEFAULT NULL COMMENT '用户操作',
+  `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
+  `params` varchar(500) DEFAULT NULL COMMENT '请求参数',
+  `time` varchar(100) DEFAULT NULL COMMENT '执行时间',
+  `ip` varchar(70) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `sys_menu`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
@@ -148,6 +168,8 @@ CREATE TABLE `sys_role` (
   `title` varchar(50) DEFAULT NULL COMMENT '角色标题',
   `remark` varchar(200) DEFAULT NULL COMMENT '描述/备注',
   `orders` int(10) DEFAULT NULL COMMENT '排序',
+  `create_user_id` bigint(20) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色表';
 
@@ -286,4 +308,4 @@ CREATE TABLE `sys_user_token` (
 -- ----------------------------
 -- Records of sys_user_token
 -- ----------------------------
-INSERT INTO `sys_user_token` VALUES ('1', 'c226fad9ad8c1bb6e1ac29ecc0019bdc', '2018-08-11 07:27:32', '2018-08-10 19:27:32');
+INSERT INTO `sys_user_token` VALUES ('1', '6a64ba82ae795cbe43ace19e16896374', '2018-08-20 10:17:06', '2018-08-19 22:17:06');

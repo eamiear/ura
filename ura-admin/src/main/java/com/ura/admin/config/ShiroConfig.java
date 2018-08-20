@@ -28,7 +28,7 @@ public class ShiroConfig {
                                        @Value("${ura.redis.open}") boolean redisOpen,
                                        @Value("${ura.shiro.redis}") boolean shiroRedis){
     DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//    sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
+    sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
     sessionManager.setSessionValidationSchedulerEnabled(true);
     sessionManager.setSessionIdUrlRewritingEnabled(false);
     sessionManager.setSessionIdCookieEnabled(true);

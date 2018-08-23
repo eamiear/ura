@@ -7,6 +7,7 @@ import com.ura.admin.service.SysDictService;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.R;
 import com.ura.common.validator.ValidatorUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,7 @@ public class SysDictController {
 
     @SysLog("查询字典列表")
     @RequestMapping("/list")
+    @RequiresPermissions("sys:dict:list")
     public R list(@RequestParam Map<String, Object> params) {
         PageUtils page = sysDictService.queryPage(params);
         return R.success().put("data", page);
@@ -34,6 +36,7 @@ public class SysDictController {
 
     @SysLog("查询字典记录")
     @RequestMapping("/info/{id}")
+    @RequiresPermissions("sys:dict:info")
     public R info(@PathVariable("id") Long id) {
         SysDictEntity sysDict = sysDictService.selectById(id);
         return R.success().put("data", sysDict);
@@ -41,13 +44,16 @@ public class SysDictController {
 
     @SysLog("新增字典")
     @RequestMapping("/save")
+    @RequiresPermissions("sys:dict:save")
     public R save (@RequestBody SysDictEntity sysDict) {
+        ValidatorUtils.validateEntity(sysDict);
         sysDictService.insert(sysDict);
         return R.success();
     }
 
     @SysLog("修改字典")
     @RequestMapping("/update")
+    @RequiresPermissions("sys:dict:update")
     public R update ( @RequestBody SysDictEntity sysDict) {
         ValidatorUtils.validateEntity(sysDict);
         sysDictService.updateAllColumnById(sysDict);
@@ -56,6 +62,7 @@ public class SysDictController {
 
     @SysLog("删除字典记录")
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:dict:delete")
     public R delete (@RequestBody Long[] ids) {
         sysDictService.deleteBatchIds(Arrays.asList(ids));
         return R.success();

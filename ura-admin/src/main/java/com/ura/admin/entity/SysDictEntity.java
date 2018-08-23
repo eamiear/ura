@@ -7,7 +7,9 @@
 package com.ura.admin.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 
@@ -20,12 +22,17 @@ import java.io.Serializable;
 public class SysDictEntity implements Serializable {
   @TableId
   private Long id;
+  @NotBlank(message = "字典名称不能为空")
   private String name;
+  @NotBlank(message = "字典类型不能为空")
   private String type;
+  @NotBlank(message = "字典码不能为空")
   private String code;
+  @NotBlank(message = "字典值不能为空")
   private String value;
   private Integer order;
   private String remark;
+  @TableLogic
   private Integer del;
 
   public void setId(Long id) {

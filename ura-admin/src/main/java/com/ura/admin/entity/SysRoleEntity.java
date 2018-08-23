@@ -9,6 +9,7 @@ package com.ura.admin.entity;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,6 +24,7 @@ import java.util.List;
 public class SysRoleEntity implements Serializable {
   @TableId
   private Long roleId;
+  @NotBlank(message = "角色名称不能为空")
   private String roleName;
   private String title;
   private String remark;

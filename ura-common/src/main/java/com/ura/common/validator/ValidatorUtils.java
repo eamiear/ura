@@ -7,7 +7,6 @@ package com.ura.common.validator;
 
 
 import com.ura.common.utils.URAException;
-import javafx.beans.value.ObservableValueBase;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

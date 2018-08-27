@@ -13,6 +13,7 @@ import com.ura.admin.service.SysUserService;
 import com.ura.admin.service.SysUserTokenService;
 import com.ura.common.utils.R;
 import com.ura.common.utils.ShiroUtils;
+import com.ura.common.utils.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,16 +56,16 @@ public class SysLoginController extends AbstractController{
                    @RequestParam("captcha") String captcha) {
         String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
         if (!captcha.equalsIgnoreCase(kaptcha)) {
-            return R.error("验证码错误");
+            return R.error(StatusCode.PARAM_CAPTCHA_ERROR,"验证码错误");
         }
 
         SysUserEntity user = sysUserService.queryByUserName(username);
         if (user == null || !user.getPassword().equals(ShiroUtils.cryptPassword(password, user.getSalt()))){
-            return R.error("账号或密码不正确");
+            return R.error(StatusCode.USER_ACCOUNT_ERROR,"账号或密码不正确");
         }
 
         if (user.getLocked() == 0) {
-            return R.error("账号已被锁定");
+            return R.error(StatusCode.USER_ACCOUNT_FORBIDDEN, "账号已被锁定");
         }
         return sysUserTokenService.createToken(user.getUserId());
     }
@@ -74,10 +75,10 @@ public class SysLoginController extends AbstractController{
                    @RequestParam("password") String password) {
         SysUserEntity user = sysUserService.queryByUserName(username);
         if (user == null || !user.getPassword().equals(ShiroUtils.cryptPassword(password, user.getSalt()))) {
-            return R.error("账号或密码不正确");
+            return R.error(StatusCode.USER_ACCOUNT_ERROR,"账号或密码不正确");
         }
         if (user.getLocked() == 0) {
-            return R.error("账号已被锁定");
+            return R.error(StatusCode.USER_ACCOUNT_FORBIDDEN,"账号已被锁定");
         }
 
         return sysUserTokenService.createToken(user.getUserId());

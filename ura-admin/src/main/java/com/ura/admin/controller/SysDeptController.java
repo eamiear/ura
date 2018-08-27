@@ -38,7 +38,7 @@ public class SysDeptController extends AbstractController{
     }
 
     @SysLog("查询部门列表")
-    @RequestMapping("/list")
+    @RequestMapping("/getList")
     @RequiresPermissions("sys:dept:list")
     public R list() {
         List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<>());

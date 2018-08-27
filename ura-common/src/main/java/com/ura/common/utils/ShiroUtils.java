@@ -61,7 +61,9 @@ public final class ShiroUtils {
       try {
         kaptcha = getSessionAttribute(key).toString();
         getSession().removeAttribute(key);
-      } catch (Exception e) {}
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       return kaptcha;
     }
 }

@@ -20,7 +20,6 @@ public class Constant {
 
     public static final int CUSTOME_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 12;
 
-
     public enum MenuType {
         CATALOG(0),
 

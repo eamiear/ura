@@ -8,9 +8,11 @@ package com.ura.admin.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *  部门表实体
@@ -27,7 +29,14 @@ public class SysDeptEntity implements Serializable {
   @TableField(exist=false)
   private String parentName;
   private Integer orders;
+  @TableLogic
   private Integer delFlag;
+
+  @TableField(exist = false)
+  private Boolean open;
+
+  @TableField(exist = false)
+  private List<?> list;
 
   public void setDeptId(Long deptId) {
     this.deptId = deptId;
@@ -71,5 +80,21 @@ public class SysDeptEntity implements Serializable {
 
   public Integer getDelFlag () {
     return delFlag;
+  }
+
+  public Boolean getOpen() {
+    return open;
+  }
+
+  public void setOpen(Boolean open) {
+    this.open = open;
+  }
+
+  public List<?> getList() {
+    return list;
+  }
+
+  public void setList(List<?> list) {
+    this.list = list;
   }
 }

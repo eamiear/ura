@@ -10,6 +10,7 @@ import com.ura.common.utils.R;
 import com.ura.common.validator.Assert;
 import com.ura.common.validator.ValidatorUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class SysUserController extends AbstractController{
 
     @SysLog("查询用户列表")
     @RequestMapping("/list")
+    @RequiresPermissions("sys:user:list")
     public R list(@RequestParam Map<String, Object> params) {
         if (getUserId() != Constant.SUPER_ADMIN){
             params.put("createUserId", getUserId());
@@ -42,12 +44,14 @@ public class SysUserController extends AbstractController{
 
     @SysLog("查询当前用户信息")
     @RequestMapping("/info")
+    @RequiresPermissions("sys:user:info")
     public R info(){
         return R.success().put("data", getUser());
     }
 
     @SysLog("查询用户信息")
     @RequestMapping("/info/{userId}")
+    @RequiresPermissions("sys:user:info")
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity sysUser = sysUserService.selectById(userId);
         return R.success().put("data", sysUser);
@@ -55,6 +59,7 @@ public class SysUserController extends AbstractController{
 
     @SysLog("新增用户")
     @RequestMapping("/save")
+    @RequiresPermissions("sys:user:save")
     public R save (@RequestBody SysUserEntity sysUser) {
         sysUser.setCreateUserId(getUserId());
         sysUserService.save(sysUser);
@@ -63,6 +68,7 @@ public class SysUserController extends AbstractController{
 
     @SysLog("修改用户信息")
     @RequestMapping("/update")
+    @RequiresPermissions("sys:user:update")
     public R update ( @RequestBody SysUserEntity sysUser) {
         ValidatorUtils.validateEntity(sysUser);
 
@@ -73,6 +79,7 @@ public class SysUserController extends AbstractController{
 
     @SysLog("删除用户")
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:user:delete")
     public R delete (@RequestBody Long[] userIds) {
         if (ArrayUtils.contains(userIds, Constant.SUPER_ADMIN)){
             return R.error("系统管理员不能删除");

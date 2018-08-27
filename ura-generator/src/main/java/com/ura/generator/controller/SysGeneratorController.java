@@ -6,6 +6,7 @@
 package com.ura.generator.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.ura.common.utils.DateUtils;
 import com.ura.generator.service.SysGeneratorService;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.Query;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,9 +55,11 @@ public class SysGeneratorController {
         logger.info("[参数] 表名：" + tables);
         tableNames = JSON.parseArray(tables).toArray(tableNames);
         byte[] data = sysGeneratorService.generateCode(tableNames);
+        String datetime = DateUtils.format(new Date());
+        String downloadZipName = "uracode" + datetime + ".zip";
 
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"uracode.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadZipName + "\"");
         response.addHeader("Content-Length", "" + data.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
 

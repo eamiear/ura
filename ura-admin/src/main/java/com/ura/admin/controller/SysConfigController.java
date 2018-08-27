@@ -56,6 +56,7 @@ public class SysConfigController {
     }
 
     @RequestMapping("/delete")
+    @RequiresPermissions("sys:config:delete")
     public R delete (@RequestBody Integer[] ids) {
         sysConfigService.deleteBatchIds(Arrays.asList(ids));
         return R.success();

@@ -12,7 +12,7 @@ public class RedisKeys {
     }
 
     public static String getShiroSessionKey(String key) {
-        return "sessionid:" + key;
+        return "session:id:" + key;
     }
 
     public static String getGeneratorKey(String key) {

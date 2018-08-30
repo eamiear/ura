@@ -1,7 +1,5 @@
 package com.ura.admin.shiro;
 
-import com.google.code.kaptcha.Constants;
-import com.ura.common.utils.Constant;
 import com.ura.common.utils.RedisKeys;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;

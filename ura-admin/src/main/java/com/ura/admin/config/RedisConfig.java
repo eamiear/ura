@@ -3,7 +3,7 @@
  * @date 2018/8/3 14:25
  */
 
-package com.ura.common.config;
+package com.ura.admin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

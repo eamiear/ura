@@ -1,6 +1,6 @@
-package com.ura.common.aspect;
+package com.ura.admin.aspect;
 
-import com.ura.common.utils.URAException;
+import com.ura.common.exception.URAException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

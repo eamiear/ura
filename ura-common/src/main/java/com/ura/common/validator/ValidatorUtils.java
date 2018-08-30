@@ -6,7 +6,7 @@
 package com.ura.common.validator;
 
 
-import com.ura.common.utils.URAException;
+import com.ura.common.exception.URAException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

@@ -5,9 +5,9 @@ import com.ura.admin.annotation.SysLog;
 import com.ura.admin.entity.SysLogEntity;
 import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.service.SysLogService;
+import com.ura.admin.shiro.ShiroUtils;
 import com.ura.common.utils.HttpContextUtils;
 import com.ura.common.utils.IPUtils;
-import com.ura.common.utils.ShiroUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -65,7 +65,7 @@ public class SysLogAspect {
     HttpServletRequest request = HttpContextUtils.getHttpServletRequest();
     sysLog.setIp(IPUtils.getIp(request));
 
-    String username = ((SysUserEntity)ShiroUtils.getPrincipal()).getUsername();
+    String username = ((SysUserEntity) ShiroUtils.getPrincipal()).getUsername();
     sysLog.setUsername(username);
 
     sysLog.setTime(String.valueOf(time));

@@ -5,6 +5,8 @@
 
 package com.ura.common.utils;
 
+import com.ura.common.exception.URAException;
+
 import java.security.MessageDigest;
 import java.util.UUID;
 

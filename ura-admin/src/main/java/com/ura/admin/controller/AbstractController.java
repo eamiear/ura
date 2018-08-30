@@ -1,7 +1,7 @@
 package com.ura.admin.controller;
 
 import com.ura.admin.entity.SysUserEntity;
-import com.ura.common.utils.ShiroUtils;
+import com.ura.admin.shiro.ShiroUtils;
 
 public abstract class AbstractController {
 

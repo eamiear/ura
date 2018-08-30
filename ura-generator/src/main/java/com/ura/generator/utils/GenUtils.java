@@ -6,7 +6,7 @@
 package com.ura.generator.utils;
 
 import com.ura.common.utils.DateUtils;
-import com.ura.common.utils.URAException;
+import com.ura.common.exception.URAException;
 import com.ura.generator.entity.ColumnEntity;
 import com.ura.generator.entity.PropsEntity;
 import com.ura.generator.entity.TableEntity;

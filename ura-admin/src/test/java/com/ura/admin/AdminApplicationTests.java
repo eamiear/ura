@@ -2,7 +2,6 @@ package com.ura.admin;
 
 import com.ura.admin.entity.SysUserEntity;
 import com.ura.admin.service.SysUserService;
-import com.ura.common.utils.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;

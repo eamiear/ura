@@ -1,6 +1,6 @@
 package com.ura.common.utils;
 
-public class StatusCode {
+public class StatusCodeConstant {
   // permission
   public static final int NO_AUTH = 1001;         // 无权限
   public static final int TOKEN_EXPIRE = 1002;    // token 失效

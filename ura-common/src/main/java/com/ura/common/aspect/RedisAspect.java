@@ -1,4 +1,4 @@
-package com.ura.admin.aspect;
+package com.ura.common.aspect;
 
 import com.ura.common.utils.URAException;
 import org.aspectj.lang.ProceedingJoinPoint;

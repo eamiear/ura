@@ -17,7 +17,7 @@ public final class ShiroUtils {
     private static Logger logger = LoggerFactory.getLogger(ShiroUtils.class);
 
     public static Session getSession(){
-        return getSubject().getSession();
+        return SecurityUtils.getSubject().getSession();
     }
 
     public static Subject getSubject(){
@@ -56,14 +56,17 @@ public final class ShiroUtils {
         return new Sha256Hash(password, salt).toHex();
     }
 
+    public static void setKaptcha(Object key, Object value) {
+        setSessionAttribute(key, value);
+    }
     public static String getKaptcha(String key){
-      String kaptcha = "";
-      try {
-        kaptcha = getSessionAttribute(key).toString();
-        getSession().removeAttribute(key);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      return kaptcha;
+        String kaptcha = "";
+        try {
+            kaptcha = getSessionAttribute(key).toString();
+            getSession().removeAttribute(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return kaptcha;
     }
 }

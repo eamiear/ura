@@ -31,7 +31,7 @@ public class ShiroConfig {
     sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
     sessionManager.setSessionValidationSchedulerEnabled(true);
     sessionManager.setSessionIdUrlRewritingEnabled(false);
-    sessionManager.setSessionIdCookieEnabled(true);
+//    sessionManager.setSessionIdCookieEnabled(true);
 
     if (redisOpen && shiroRedis){
       sessionManager.setSessionDAO(redisShiroSessionDao);
@@ -39,6 +39,14 @@ public class ShiroConfig {
 
     return sessionManager;
   }
+
+//  @Bean
+//  public SessionManager sessionManager() {
+//    DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+//    sessionManager.setSessionValidationSchedulerEnabled(true);
+//    sessionManager.setSessionIdCookieEnabled(true);
+//    return sessionManager;
+//  }
 
   @Bean("securityManager")
   public SecurityManager securityManager(OAuth2Realm oAuth2Realm, SessionManager sessionManager){
@@ -57,11 +65,12 @@ public class ShiroConfig {
     Map<String, Filter> filters = new HashMap<>();
     filters.put("oauth2", new OAuth2Filter());
     shiroFilter.setFilters(filters);
+    shiroFilter.setUnauthorizedUrl("/");
 
     Map<String, String> filterMap = new LinkedHashMap<>();
     filterMap.put("/webjars/**", "anon");
     filterMap.put("/druid/**", "anon");
-    filterMap.put("/sys/login**", "anon");
+    filterMap.put("/sys/login", "anon");
     filterMap.put("/swagger/**", "anon");
     filterMap.put("/v2/api-docs", "anon");
     filterMap.put("/swagger-ui.html", "anon");

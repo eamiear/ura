@@ -1,5 +1,6 @@
 package com.ura.admin.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -44,7 +45,11 @@ public class SysUserTokenServiceImpl extends ServiceImpl<SysUserTokenDao, SysUse
             tokenEntity.setExpireTime(expireTime);
             this.updateById(tokenEntity);
         }
-        return R.success().put("token", token).put("expire", Constant.CUSTOME_TOKEN_EXPIRATION_TIME);
+        JSONObject tokenObj = new JSONObject();
+        tokenObj.put("token", token);
+        tokenObj.put("expire", Constant.CUSTOME_TOKEN_EXPIRATION_TIME);
+        tokenObj.put("uid", userId);
+        return R.success().put("data", tokenObj);
     }
 
     @Override

@@ -21,6 +21,7 @@ public class StatusCodeConstant {
 
   // data about
   public static final int DATA_NOT_FOUND = 5001;  // 数据未找到
+  public static final int DATA_DUPLICATE_KEY_IN_DATABASE = 5002; // 数据库记录重复
 
   // interface about
   public static final int INTERFACE_INNER_INVOKE_ERROR = 6001;    // 系统内部接口调用错误

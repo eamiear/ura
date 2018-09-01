@@ -30,8 +30,11 @@ public class ShiroConfig {
     DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
     sessionManager.setGlobalSessionTimeout(60 * 60 * 1000);
     sessionManager.setSessionValidationSchedulerEnabled(true);
+    // url中是否显示session Id
     sessionManager.setSessionIdUrlRewritingEnabled(false);
-//    sessionManager.setSessionIdCookieEnabled(true);
+    sessionManager.setSessionIdCookieEnabled(true);
+    // 设置客户端cookie的名称，默认： JSESSIONID
+//    sessionManager.getSessionIdCookie().setName("JZ-SESSION-ID");
 
     if (redisOpen && shiroRedis){
       sessionManager.setSessionDAO(redisShiroSessionDao);
@@ -65,12 +68,12 @@ public class ShiroConfig {
     Map<String, Filter> filters = new HashMap<>();
     filters.put("oauth2", new OAuth2Filter());
     shiroFilter.setFilters(filters);
-    shiroFilter.setUnauthorizedUrl("/");
+//    shiroFilter.setUnauthorizedUrl("/sys/login");
 
     Map<String, String> filterMap = new LinkedHashMap<>();
     filterMap.put("/webjars/**", "anon");
     filterMap.put("/druid/**", "anon");
-    filterMap.put("/sys/login", "anon");
+    filterMap.put("/sys/login**", "anon");
     filterMap.put("/swagger/**", "anon");
     filterMap.put("/v2/api-docs", "anon");
     filterMap.put("/swagger-ui.html", "anon");

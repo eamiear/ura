@@ -5,7 +5,6 @@
 
 package com.ura.admin.shiro;
 
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -18,12 +17,10 @@ public final class ShiroUtils {
     private static Logger logger = LoggerFactory.getLogger(ShiroUtils.class);
 
     public static Session getSession(){
-        logger.info("getSession ==== " + JSON.toJSONString(SecurityUtils.getSubject().getSession()));
         return SecurityUtils.getSubject().getSession();
     }
 
     public static Subject getSubject(){
-        logger.info("getSubject === " + JSON.toJSONString(SecurityUtils.getSubject()));
         return SecurityUtils.getSubject();
     }
 
@@ -38,7 +35,6 @@ public final class ShiroUtils {
     public static void setSessionAttribute(Object key, Object value){
         logger.info("【setSessionAttribute】 key=" + key + " value=" + value);
         getSession().setAttribute(key, value);
-        logger.info("【getSessionAttribute】 value=" + getSession().getAttribute(key));
     }
 
     public static Object getSessionAttribute(Object key){

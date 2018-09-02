@@ -23,6 +23,8 @@ public class SysMenuEntity implements Serializable {
   @TableId
   private Long menuId;
   private Long parentId;
+  @TableField(exist = false)
+  private String parentName;
   private String name;
   private String url;
   private String perms;
@@ -54,6 +56,14 @@ public class SysMenuEntity implements Serializable {
   }
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getParentName() {
+    return parentName;
+  }
+
+  public void setParentName(String parentName) {
+    this.parentName = parentName;
   }
 
   public String getName () {

@@ -8,11 +8,11 @@ package com.ura.admin.oauth2;
 import com.alibaba.fastjson.JSON;
 import com.ura.common.utils.HttpContextUtils;
 import com.ura.common.utils.R;
+import com.ura.common.utils.StatusCodeConstant;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletRequest;
@@ -53,7 +53,14 @@ public class OAuth2Filter extends AuthenticatingFilter{
 
         try {
             Throwable throwable = e.getCause() == null ? e: e.getCause();
-            R r = R.error(HttpStatus.UNAUTHORIZED.value(), throwable.getMessage());
+            String className = throwable.getClass().getSimpleName();
+            int code = 0;
+            if ("IncorrectCredentialsException".equalsIgnoreCase(className)) {
+              code = StatusCodeConstant.TOKEN_EXPIRE;
+            } else if ("LockedAccountException".equalsIgnoreCase(className)) {
+              code = StatusCodeConstant.USER_ACCOUNT_FORBIDDEN;
+            }
+            R r = R.error(code, throwable.getMessage());
 
             String json = JSON.toJSONString(r);
             httpResponse.getWriter().print(json);
@@ -71,7 +78,7 @@ public class OAuth2Filter extends AuthenticatingFilter{
             httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
             httpResponse.setHeader("Access-Control-Allow-Origin", HttpContextUtils.getOrigin());
 
-            String json = JSON.toJSONString(R.error(HttpStatus.UNAUTHORIZED.value(), "invalid token"));
+            String json = JSON.toJSONString(R.error(StatusCodeConstant.TOKEN_INVALID, "invalid token"));
             httpResponse.getWriter().print(json);
 
             return false;

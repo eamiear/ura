@@ -44,14 +44,14 @@ public class SysUserController extends AbstractController{
 
     @SysLog("查询当前用户信息")
     @RequestMapping("/info")
-    @RequiresPermissions("sys:user:info")
+//    @RequiresPermissions("sys:user:info")
     public R info(){
         return R.success().put("data", getUser());
     }
 
     @SysLog("查询用户信息")
     @RequestMapping("/info/{userId}")
-    @RequiresPermissions("sys:user:info")
+//    @RequiresPermissions("sys:user:info")
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity sysUser = sysUserService.selectById(userId);
         return R.success().put("data", sysUser);

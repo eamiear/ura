@@ -1,10 +1,13 @@
 package com.ura.admin.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ura.admin.annotation.SysLog;
 import com.ura.admin.entity.SysMenuEntity;
+import com.ura.admin.service.ShiroService;
 import com.ura.admin.service.SysMenuService;
 
 import com.ura.common.utils.Constant;
+import com.ura.common.utils.JSONResult;
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.R;
 import com.ura.common.exception.URAException;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
 * 系统菜单
@@ -29,18 +33,29 @@ public class SysMenuController extends AbstractController{
     @Autowired
     private SysMenuService sysMenuService;
 
+    @Autowired
+    private ShiroService shiroService;
+
     @SysLog("查询树形菜单")
     @RequestMapping("/nav")
     public R nav() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
-        return R.success().put("list", menuList);
+        Set<String> permissions = shiroService.getUserPermissions(getUserId());
+        return R.success().put("data", JSONResult.build().put("menus", menuList).put("permissions", permissions));
     }
     @SysLog("查询菜单列表")
     @RequestMapping("/list")
-    @RequiresPermissions("sys:menu:list")
+//    @RequiresPermissions("sys:menu:list")
     public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = sysMenuService.queryPage(params);
-        return R.success().put("data", page);
+        List<SysMenuEntity> menuList = sysMenuService.selectList(null);
+        for (SysMenuEntity menu : menuList) {
+            SysMenuEntity parentEntity = sysMenuService.selectById(menu.getParentId());
+            if (parentEntity != null) {
+                menu.setParentName(parentEntity.getName());
+            }
+        }
+      Set<String> permissions = shiroService.getUserPermissions(getUserId());
+        return R.success().put("data", JSONResult.build().put("menus", menuList).put("permissions", permissions));
     }
 
     @RequestMapping("/select")

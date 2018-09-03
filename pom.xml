@@ -20,6 +20,7 @@
 	<modules>
 		<module>ura-common</module>
 		<module>ura-admin</module>
+		<module>ura-art</module>
 		<module>ura-api</module>
 		<module>ura-schedule</module>
 		<module>ura-shop</module>

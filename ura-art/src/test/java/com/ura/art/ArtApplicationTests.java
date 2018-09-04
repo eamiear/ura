@@ -20,8 +20,8 @@ public class ArtApplicationTests {
 
 	@Test
 	public void getWord() {
-		Font font = FontUtils.getFont("qq1");
-		File file = new File("E:\\qq1.png");
+		Font font = FontUtils.getFont("signature");
+		File file = new File("E:\\signature.png");
 		try {
 			DrawerUtils.createImage("姜育恒", font, file, 100, 100);
 		} catch (Exception e) {

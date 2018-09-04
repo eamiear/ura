@@ -16,9 +16,9 @@ public class WordArtController {
   @RequestMapping("/word")
   public void word() {
     Font font = FontUtils.getFont("2");
-    File file = new File("C:\\Users\\k\\Desktop\\fonts\\");
+    File file = new File("E:\\fonts\\");
     try {
-      DrawerUtils.createImage("苏科仔", font, file, 100, 100);
+      DrawerUtils.createImage("姜育恒", font, file, 100, 100);
     } catch (Exception e) {
       e.printStackTrace();
     }

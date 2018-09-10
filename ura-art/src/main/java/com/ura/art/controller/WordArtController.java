@@ -49,4 +49,24 @@ public class WordArtController {
       e.printStackTrace();
     }
   }
+
+  @RequestMapping("/create")
+  public void create(
+          @RequestParam("id") String id,
+          @RequestParam(value = "size", required = false) Float size,
+          @RequestParam("text") String text,
+          @RequestParam(value = "width", required = false) Integer width,
+          @RequestParam(value = "height", required = false) Integer height,
+          HttpServletResponse response) {
+    try {
+      Font font = FontUtils.getFont(id);
+      if (size != null) {
+        font = font.deriveFont(size);
+      }
+      BufferedImage image = DrawerUtils.createAtRatio(text, font, width, height);
+      ImageIO.write(image, "png", response.getOutputStream());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

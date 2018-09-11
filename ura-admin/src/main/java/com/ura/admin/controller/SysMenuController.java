@@ -70,7 +70,7 @@ public class SysMenuController extends AbstractController{
         root.setShow(true);
         menuList.add(root);
 
-        return R.success().put("data", menuList);
+        return R.success().put("data", JSONResult.build().put("menus", menuList));
     }
 
     @SysLog("查询菜单记录")

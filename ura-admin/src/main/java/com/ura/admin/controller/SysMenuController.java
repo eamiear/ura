@@ -59,7 +59,7 @@ public class SysMenuController extends AbstractController{
     }
 
     @RequestMapping("/select")
-    @RequiresPermissions("sys:menu:select")
+//    @RequiresPermissions("sys:menu:select")
     public R select () {
         List<SysMenuEntity> menuList = sysMenuService.queryListNotButtonList();
 
@@ -75,7 +75,7 @@ public class SysMenuController extends AbstractController{
 
     @SysLog("查询菜单记录")
     @RequestMapping("/info/{menuId}")
-    @RequiresPermissions("sys:menu:info")
+//    @RequiresPermissions("sys:menu:info")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity sysMenu = sysMenuService.selectById(menuId);
         return R.success().put("data", sysMenu);
@@ -83,7 +83,7 @@ public class SysMenuController extends AbstractController{
 
     @SysLog("新增菜单")
     @RequestMapping("/save")
-    @RequiresPermissions("sys:menu:save")
+//    @RequiresPermissions("sys:menu:save")
     public R save (@RequestBody SysMenuEntity sysMenu) {
         validateMenuModel(sysMenu);
         sysMenuService.insert(sysMenu);
@@ -92,7 +92,7 @@ public class SysMenuController extends AbstractController{
 
     @SysLog("修改菜单")
     @RequestMapping("/update")
-    @RequiresPermissions("sys:menu:update")
+//    @RequiresPermissions("sys:menu:update")
     public R update ( @RequestBody SysMenuEntity sysMenu) {
         validateMenuModel(sysMenu);
         sysMenuService.updateAllColumnById(sysMenu);
@@ -101,7 +101,7 @@ public class SysMenuController extends AbstractController{
 
     @SysLog("删除菜单")
     @RequestMapping("/delete")
-    @RequiresPermissions("sys:menu:delete")
+//    @RequiresPermissions("sys:menu:delete")
     public R delete (@RequestBody Long[] menuIds) {
         for (Long menuId :
                 menuIds) {
@@ -120,7 +120,7 @@ public class SysMenuController extends AbstractController{
 
     @SysLog("删除菜单")
     @RequestMapping("/delete/{menuId}")
-    @RequiresPermissions("sys:menu:delete")
+//    @RequiresPermissions("sys:menu:delete")
     public R delete (@PathVariable("menuId") long menuId) {
         if (menuId <= Constant.SYS_MENU) {
             return R.error("系统菜单，不能删除");

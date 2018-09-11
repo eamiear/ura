@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 public class DrawerUtils {
   public static float getRatio(int target, int ref){
-    return (target - ref) / 2;
+    return target / 2 - ref / 2;
   }
   public static int getWordWidth(Font font, String content) {
     FontDesignMetrics metrics = FontDesignMetrics.getMetrics(font);
@@ -107,8 +107,8 @@ public class DrawerUtils {
     graphics.setFont(font);
     graphics.setColor(Color.BLACK);
     int x = Float.valueOf(getRatio(image.getWidth(), getWordWidth(font, text))).intValue();
-//    int y = Float.valueOf(getRatio(image.getHeight(), font.getStyle())).intValue();
-    graphics.drawString(text, x, metrics.getAscent());
+    int y = Float.valueOf(getRatio(image.getHeight(), font.getSize())).intValue();
+    graphics.drawString(text, x / 2, metrics.getAscent());
     graphics.dispose();
     return image;
   }

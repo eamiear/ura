@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ura.api.dao.TbUserDao">
+  <resultMap id="tbUserMap" type="com.ura.api.entity.TbUserEntity">
+    <result property="userId" column="user_id"></result>
+    <result property="username" column="username"></result>
+    <result property="password" column="password"></result>
+    <result property="gender" column="gender"></result>
+    <result property="birthday" column="birthday"></result>
+    <result property="registerTime" column="register_time"></result>
+    <result property="lastLoginTime" column="last_login_time"></result>
+    <result property="registerIp" column="register_ip"></result>
+    <result property="lastLgoinIp" column="last_lgoin_ip"></result>
+    <result property="nickname" column="nickname"></result>
+    <result property="mobile" column="mobile"></result>
+    <result property="avatar" column="avatar"></result>
+    <result property="weixinOpenid" column="weixin_openid"></result>
+    <result property="groupId" column="group_id"></result>
+    <result property="locked" column="locked"></result>
+    <result property="loginTimes" column="login_times"></result>
+  </resultMap>
+</mapper>

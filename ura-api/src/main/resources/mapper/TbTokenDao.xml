@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ura.api.dao.TbTokenDao">
+  <resultMap id="tbTokenMap" type="com.ura.api.entity.TbTokenEntity">
+    <result property="userId" column="user_id"></result>
+    <result property="token" column="token"></result>
+    <result property="expireTime" column="expire_time"></result>
+    <result property="updateTime" column="update_time"></result>
+  </resultMap>
+</mapper>

@@ -62,6 +62,53 @@ public class HttpUtil {
         client = new HttpClient(connectionManager);
     }
 
+  /**
+   *
+   * @param url
+   * @param params
+   * @param userAgent 是否模拟浏览器
+   * @return
+   */
+  public static String URLPost(String url, Map<String, Object> params, boolean userAgent) {
+
+    String response = EMPTY;
+    PostMethod postMethod = null;
+    try {
+      postMethod = new PostMethod(url);
+      postMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+      if (userAgent) {
+        postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+      }
+
+      //将表单的值放入postMethod中
+      Set<String> keySet = params.keySet();
+      for (String key : keySet) {
+        Object value = params.get(key);
+        postMethod.addParameter(key, String.valueOf(value));
+      }
+      //执行postMethod
+      int statusCode = client.executeMethod(postMethod);
+      if (statusCode == HttpStatus.SC_OK) {
+        response = postMethod.getResponseBodyAsString();
+      } else {
+        logger.error("响应状态码 = " + postMethod.getStatusCode());
+      }
+    } catch (HttpException e) {
+      logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);
+      e.printStackTrace();
+    } catch (IOException e) {
+      logger.error("发生网络异常", e);
+      e.printStackTrace();
+    } finally {
+      if (postMethod != null) {
+        postMethod.releaseConnection();
+        postMethod = null;
+      }
+    }
+
+    return response;
+  }
+
     /**
      * POST方式提交数据
      *
@@ -78,6 +125,7 @@ public class HttpUtil {
         try {
             postMethod = new PostMethod(url);
             postMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=" + enc);
+            postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
             //将表单的值放入postMethod中
             Set<String> keySet = params.keySet();
             for (String key : keySet) {
@@ -90,6 +138,8 @@ public class HttpUtil {
                 response = postMethod.getResponseBodyAsString();
             } else {
                 logger.error("响应状态码 = " + postMethod.getStatusCode());
+                logger.error("错误 " + postMethod.getURI() + postMethod.getParams());
+                logger.error("错误 " + postMethod.getResponseBodyAsString());
             }
         } catch (HttpException e) {
             logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);

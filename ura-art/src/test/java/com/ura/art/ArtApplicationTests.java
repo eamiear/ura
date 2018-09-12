@@ -34,14 +34,16 @@ public class ArtApplicationTests {
 
 	@Test
 	public void getContentFormUrl() {
+	  String base = "http://www.jiqie.com/a/re14.php";
 		String url = "http://www.yishuzi.com/b/re13.php";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", "周杰伦");
 		params.put("idi", "jiqie");
 		params.put("id1", "901");
 		params.put("id2", "#FFFFFF");
-		params.put("id4", "#000000");
-		String content = HttpUtil.URLPost(url, params, "utf-8");
+		params.put("id4", "#FFFFFF");
+    params.put("id6", "#000000");
+		String content = HttpUtil.URLPost(url, params, true);
 		System.out.println("content   =====  " + content);
 	}
 }

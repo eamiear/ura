@@ -19,7 +19,7 @@ import java.util.Map;
  * @datetime 2018-09-12 17:46:35
 */
 @RestController
-@RequestMapping("tbtoken")
+@RequestMapping("/api")
 public class TbTokenController {
     @Autowired
     private TbTokenService tbTokenService;

@@ -6,7 +6,7 @@ server:
         min-spare-threads: 30
     port: 6064
     servlet:
-        context-path: /ura/api
+        context-path: /ura
 
 # mysql
 spring:

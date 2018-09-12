@@ -2,6 +2,7 @@ package com.ura.art.controller;
 
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
+import com.ura.common.utils.HttpUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/art")

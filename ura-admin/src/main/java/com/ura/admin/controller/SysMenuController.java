@@ -53,6 +53,7 @@ public class SysMenuController extends AbstractController{
             if (parentEntity != null) {
                 menu.setParentName(parentEntity.getName());
             }
+            menu.setIsShow(menu.getStatus() == 1);
         }
       Set<String> permissions = shiroService.getUserPermissions(getUserId());
         return R.success().put("data", JSONResult.build().put("menus", menuList).put("permissions", permissions));
@@ -67,7 +68,7 @@ public class SysMenuController extends AbstractController{
         root.setMenuId(0L);
         root.setName("一级菜单");
         root.setParentId(-1L);
-        root.setShow(true);
+        root.setIsShow(true);
         menuList.add(root);
 
         return R.success().put("data", JSONResult.build().put("menus", menuList));

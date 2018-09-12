@@ -126,12 +126,12 @@ public class SysMenuEntity implements Serializable {
     return updateTime;
   }
 
-  public Boolean getShow() {
+  public Boolean getIsShow() {
     return isShow;
   }
 
-  public void setShow(Boolean show) {
-    isShow = show;
+  public void setIsShow(Boolean show) {
+    this.isShow = show;
   }
 
   public List<?> getList() {

@@ -2,10 +2,12 @@ package com.ura.art;
 
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
+import com.ura.art.service.ArtService;
 import com.ura.common.utils.HttpUtil;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StreamUtils;
@@ -25,6 +27,10 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ArtApplicationTests {
+
+  @Autowired
+  private ArtService artService;
+
 
 	@Test
 	public void contextLoads() {
@@ -55,6 +61,11 @@ public class ArtApplicationTests {
 		String content = HttpUtil.URLPost(url, params, true);
 		System.out.println("content   =====  " + content);
 	}
+
+	@Test
+	public void createSignature() {
+//    artService.createSignatureImageViaThirdServer();
+  }
 
 	@Test
 	// 下载网络图片
@@ -107,4 +118,14 @@ public class ArtApplicationTests {
 		}
 
 	}
+
+	@Test
+	public void alphaImage(){
+//	  try {
+//	    BufferedImage bi = artService.removeWatermark("江育恒", "901", "#ffffff", "#ffffff", "#000000");
+//	    DrawerUtils.alphaImage(bi, "F:\\alpha.png");
+//    } catch (Exception e){
+//      e.printStackTrace();
+//    }
+  }
 }

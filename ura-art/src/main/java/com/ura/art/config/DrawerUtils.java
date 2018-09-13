@@ -251,12 +251,12 @@ public class DrawerUtils {
     return bi;
   }
 
-  public static void alphaImage(String url, String targetFile) throws Exception{
-    BufferedImage image = ImageIO.read(new URL(url));
-    int width = image.getWidth();
-    int height = image.getHeight();
+  public static void alphaImage(BufferedImage bi, String targetFile) throws Exception{
+    int width = bi.getWidth();
+    int height = bi.getHeight();
 
-    ImageIcon imageIcon = new ImageIcon((image));
+    ImageIcon imageIcon = new ImageIcon(bi);
+
     BufferedImage bufferedImage= new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
     g.drawImage(imageIcon.getImage(), 0, 0, null);
@@ -277,6 +277,35 @@ public class DrawerUtils {
         bufferedImage.setRGB(x, y, rgb);
       }
     }
+    g.drawImage(bufferedImage, 0, 0, null);
+    ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
+  }
+  public static void alphaImage(String url, String targetFile) throws Exception{
+    BufferedImage image = ImageIO.read(new URL(url));
+    int width = image.getWidth();
+    int height = image.getHeight();
+
+    ImageIcon imageIcon = new ImageIcon((image));
+    BufferedImage bufferedImage= new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+    g.drawImage(imageIcon.getImage(), 0, 0, null);
+
+    int alpha = 0;
+    // 外层遍历是Y轴的像素
+//    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
+//      // 内层遍历是X轴的像素
+//      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
+//        int rgb = bufferedImage.getRGB(x, y);
+//        if (colorInRange(rgb)) {// 对当前颜色判断是否在指定区间内
+//          alpha = 0;
+//        } else {// 设置为不透明
+//          alpha = 255;
+//        }
+//        // #AARRGGBB 最前两位为透明度
+//        rgb = (alpha << 24) | (rgb & 0x00ffffff);
+//        bufferedImage.setRGB(x, y, rgb);
+//      }
+//    }
     g.drawImage(bufferedImage, 0, 0, null);
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
   }

@@ -2,8 +2,10 @@ package com.ura.art.controller;
 
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
+import com.ura.art.service.ArtService;
 import com.ura.common.utils.HttpUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/art")
 public class WordArtController {
+
+//  @Autowired
+//  private ArtService artService;
 
   @RequestMapping("/word")
   public void word() {
@@ -72,4 +77,14 @@ public class WordArtController {
       e.printStackTrace();
     }
   }
+
+  /*@RequestMapping("/alpha")
+  public void alpha() {
+    try {
+      BufferedImage bi = artService.removeWatermark("江育恒", "901", "#ffffff", "#ffffff", "#000000");
+      DrawerUtils.alphaImage(bi, "F:\\alpha.png");
+    } catch (Exception e){
+      e.printStackTrace();
+    }
+  }*/
 }

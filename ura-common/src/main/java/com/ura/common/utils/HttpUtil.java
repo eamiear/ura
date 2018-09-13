@@ -7,10 +7,14 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
@@ -182,6 +186,7 @@ public class HttpUtil {
         try {
             getMethod = new GetMethod(strtTotalURL.toString());
             getMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=" + enc);
+            getMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
             //执行getMethod
             int statusCode = client.executeMethod(getMethod);
             if (statusCode == HttpStatus.SC_OK) {
@@ -203,6 +208,52 @@ public class HttpUtil {
         }
 
         return response;
+    }
+
+    /**
+     *
+     * @param url
+     * @param params
+     * @return
+     */
+    public static GetMethod URLGet(String url, Map<String, String> params) {
+        InputStream response = null;
+        GetMethod getMethod = null;
+        String enc = "utf-8";
+        StringBuffer strtTotalURL = new StringBuffer(EMPTY);
+
+        if (strtTotalURL.indexOf("?") == -1) {
+            strtTotalURL.append(url).append("?").append(getUrl(params, enc));
+        } else {
+            strtTotalURL.append(url).append("&").append(getUrl(params, enc));
+        }
+        logger.debug("GET请求URL = \n" + strtTotalURL.toString());
+
+        try {
+            getMethod = new GetMethod(strtTotalURL.toString());
+            getMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=" + enc);
+            getMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+            //执行getMethod
+            int statusCode = client.executeMethod(getMethod);
+            if (statusCode == HttpStatus.SC_OK) {
+                return getMethod;
+//                response = getMethod.getResponseBodyAsStream();
+            } else {
+                logger.debug("响应状态码 = " + getMethod.getStatusCode());
+            }
+        } catch (HttpException e) {
+            logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("发生网络异常", e);
+            e.printStackTrace();
+        } finally {
+            if (getMethod != null) {
+//                getMethod.releaseConnection();
+//                getMethod = null;
+            }
+        }
+        return getMethod;
     }
 
     /**
@@ -364,6 +415,19 @@ public class HttpUtil {
 
     public static void setLoginURL(String loginURL) {
         HttpUtil.loginURL = loginURL;
+    }
+
+    public static byte[] getNetworkPicture(String url) throws Exception{
+        InputStream inputStream = getInputStream(url);
+        return StreamUtils.copyToByteArray(inputStream);
+    }
+
+    public static InputStream getInputStream(String url) throws Exception{
+        URL u = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+        conn.setRequestMethod("GET");
+//        conn.setConnectTimeout(16 * 1000);
+        return conn.getInputStream();
     }
 
     public static void main(String[] args) throws MalformedURLException {

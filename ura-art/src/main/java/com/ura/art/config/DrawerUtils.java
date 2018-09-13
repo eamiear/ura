@@ -1,19 +1,29 @@
 package com.ura.art.config;
 
+import com.ura.common.utils.HttpUtil;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.font.FontDesignMetrics;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class DrawerUtils {
+  private static Logger logger = LoggerFactory.getLogger(DrawerUtils.class);
+
   private static int color_range = 210;//色差范围0~255
   public static float getRatio(int target, int ref){
     return target / 2 - ref / 2;
@@ -127,9 +137,10 @@ public class DrawerUtils {
    * @param height      截图高度
    * @throws Exception
    */
-  public static void cutImage(String srcFile, String targetFile, int x, int y, int width, int height) throws Exception{
+  public static void cutLocalImage(String srcFile, String targetFile, int x, int y, int width, int height) throws Exception{
+    String suffix = targetFile.split("\\.")[1];
     // 取得图片读入器
-    Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpg");
+    Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(suffix);
     ImageReader reader = readers.next();
 
     // 取得图片读入流
@@ -141,21 +152,103 @@ public class DrawerUtils {
     Rectangle rect = new Rectangle(x, y, width, height);
     param.setSourceRegion(rect);
     BufferedImage bi = reader.read(0, param);
-    ImageIO.write(bi, targetFile.split("\\.")[1], new File(targetFile));
+    ImageIO.write(bi, suffix, new File(targetFile));
   }
 
-  public static void cutImage(InputStream is, String targetFile, int x, int y, int width, int height) throws Exception{
-    Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName("jpg");
+  /**
+   * @param imageUrl    远程图片url
+   * @param targetFile  裁剪图片存放地址
+   * @param x           裁剪起点 x坐标
+   * @param y           裁剪起点 y坐标
+   * @param width       裁剪宽度
+   * @param height      裁剪高度
+   * @throws Exception
+   */
+  public static void cutRemoteImage(String imageUrl, String targetFile, int x, int y, int width, int height) throws Exception{
+    GetMethod getMethod = null;
+    InputStream is = null;
+    ImageInputStream iis = null;
+    String suffix = targetFile.split("\\.")[1];
+
+    // 取得图片读入器
+    Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(suffix);
     ImageReader reader = readers.next();
 
-    ImageInputStream iis = ImageIO.createImageInputStream(is);
+    Map<String, String> param = new HashMap<String, String>();
+    param.put("t", String.valueOf(new Date().getTime()));
+    getMethod = HttpUtil.URLGet(imageUrl, param);
+    is = getMethod.getResponseBodyAsStream();
+    iis = ImageIO.createImageInputStream(is);
     reader.setInput(iis, true);
 
-    ImageReadParam param = reader.getDefaultReadParam();
+    ImageReadParam _param = reader.getDefaultReadParam();
     Rectangle rect = new Rectangle(x, y, width, height);
-    param.setSourceRegion(rect);
-    BufferedImage bi = reader.read(0, param);
-    ImageIO.write(bi, targetFile.split("\\.")[1], new File(targetFile));
+    _param.setSourceRegion(rect);
+    BufferedImage bi = reader.read(0, _param);
+    ImageIO.write(bi, suffix, new File(targetFile));
+//    ImageIO.write(bi, "png", new File("E:\\a.png"));
+    if (getMethod != null) {
+      getMethod.releaseConnection();
+      getMethod = null;
+    }
+    if (is != null) {
+      is.close();
+      is = null;
+    }
+    if (iis != null) {
+      iis.close();
+      iis = null;
+    }
+  }
+
+  /**
+   *
+   * @param imageUrl
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @return
+   * @throws Exception
+   */
+  public static BufferedImage cutRemoteImage(String imageUrl, int x, int y, int width, int height) throws Exception{
+    GetMethod getMethod = null;
+    InputStream is = null;
+    ImageInputStream iis = null;
+    String suffix = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
+    if (suffix.contains("?")) {
+      suffix = suffix.substring(0, suffix.indexOf("?"));
+    }
+    suffix = suffix.split("\\.")[1];
+    logger.info("suffix  ==== " + suffix);
+    // 取得图片读入器
+    Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(suffix);
+    ImageReader reader = readers.next();
+
+    Map<String, String> param = new HashMap<String, String>();
+    param.put("t", String.valueOf(new Date().getTime()));
+    getMethod = HttpUtil.URLGet(imageUrl, param);
+    is = getMethod.getResponseBodyAsStream();
+    iis = ImageIO.createImageInputStream(is);
+    reader.setInput(iis, true);
+
+    ImageReadParam _param = reader.getDefaultReadParam();
+    Rectangle rect = new Rectangle(x, y, width, height);
+    _param.setSourceRegion(rect);
+    BufferedImage bi = reader.read(0, _param);
+    if (getMethod != null) {
+      getMethod.releaseConnection();
+      getMethod = null;
+    }
+    if (is != null) {
+      is.close();
+      is = null;
+    }
+    if (iis != null) {
+      iis.close();
+      iis = null;
+    }
+    return bi;
   }
 
   public static void alphaImage(String url, String targetFile) throws Exception{

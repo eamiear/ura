@@ -101,3 +101,8 @@ ura:
       id2: FFFFFF   #  签名背景
       id4: FFFFFF   #  签名配色
       id6: 000000   #   签名颜色
+      rect:
+        x: 0
+        y: 0
+        width: 500
+        height: 211

@@ -65,7 +65,7 @@ public class ArtService {
    */
   public String getVisitedImageUrl(String partial){
     if (null == partial) return "";
-    return jiqieBean.getDomain() + File.separator + partial;
+    return jiqieBean.getDomain() + partial;
   }
 
   /**
@@ -82,14 +82,14 @@ public class ArtService {
     String imageContent = createSignatureImageViaThirdServer(name, fontFamily, background, decorator, color);
     String partialUrl = getUrlFromSignatureImageTag(imageContent);
     String remoteUrl = getVisitedImageUrl(partialUrl);
-    BufferedImage bufferedImage = DrawerUtils.cutRemoteImage(
+    BufferedImage bi = DrawerUtils.cutRemoteImage(
             remoteUrl,
             Integer.valueOf(jiqieBean.getRectX()),
             Integer.valueOf(jiqieBean.getRectY()),
             Integer.valueOf(jiqieBean.getRectWidth()),
             Integer.valueOf(jiqieBean.getRectHeight()));
 
-    return bufferedImage;
+    return bi;
   }
 
 }

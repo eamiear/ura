@@ -2,24 +2,19 @@ package com.ura.art;
 
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
-import com.ura.art.service.ArtService;
 import com.ura.common.utils.HttpUtil;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.StreamUtils;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,8 +23,8 @@ import java.util.Map;
 @SpringBootTest
 public class ArtApplicationTests {
 
-  @Autowired
-  private ArtService artService;
+//  @Autowired
+//  private ArtService artService;
 
 
 	@Test

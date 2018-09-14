@@ -4,6 +4,7 @@ import com.ura.common.utils.HttpUtil;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.awt.image.ToolkitImage;
 import sun.font.FontDesignMetrics;
 
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.awt.image.*;
 import java.io.*;
 import java.net.URL;
 import java.util.Date;
@@ -24,7 +25,7 @@ import java.util.Map;
 public class DrawerUtils {
   private static Logger logger = LoggerFactory.getLogger(DrawerUtils.class);
 
-  private static int color_range = 210;//色差范围0~255
+  private static int color_range = 158;//色差范围0~255
   public static float getRatio(int target, int ref){
     return target / 2 - ref / 2;
   }
@@ -220,7 +221,7 @@ public class DrawerUtils {
       suffix = suffix.substring(0, suffix.indexOf("?"));
     }
     suffix = suffix.split("\\.")[1];
-    logger.info("suffix  ==== " + suffix);
+//    logger.info("suffix  ==== " + suffix);
     // 取得图片读入器
     Iterator<ImageReader> readers = ImageIO.getImageReadersByFormatName(suffix);
     ImageReader reader = readers.next();
@@ -251,15 +252,55 @@ public class DrawerUtils {
     return bi;
   }
 
+  public static void transparent(BufferedImage bi, String targetFile) throws Exception{
+    int width = bi.getWidth();
+    int height = bi.getHeight();
+
+    ImageIcon imageIcon = new ImageIcon(bi);
+
+//    BufferedImage bufferedImage= new BufferedImage(widh, height, BufferedImage.TYPE_4BYTE_ABGR);
+    BufferedImage bufferedImage= new BufferedImage(imageIcon.getIconWidth(), imageIcon.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+    g.drawImage(imageIcon.getImage(), 0, 0, imageIcon.getImageObserver());
+
+    int alpha = 100;
+    // 外层遍历是Y轴的像素
+    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
+      // 内层遍历是X轴的像素
+      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
+        int rgb = bufferedImage.getRGB(x, y);
+        // #AARRGGBB 最前两位为透明度
+        rgb = ((alpha + 1) << 24) | (rgb & 0x00ffffff);
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
+//    g.drawImage(bufferedImage, 0, 0, null);
+    g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
+    ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
+  }
+  public static void alpha(BufferedImage bi, String targetFile) throws Exception{
+    BufferedImage bufferedImage= new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+    ImageFilter imageFilter = new MyFilter(255);
+    FilteredImageSource fis = new FilteredImageSource(bi.getSource(),imageFilter);
+    Image image = Toolkit.getDefaultToolkit().createImage(fis);
+    g.drawImage(image, 0, 0, null);
+    g.dispose();
+//    BufferedImage img = ((ToolkitImage)Toolkit.getDefaultToolkit().createImage(fis)).getBufferedImage();
+    ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
+  }
+
   public static void alphaImage(BufferedImage bi, String targetFile) throws Exception{
     int width = bi.getWidth();
     int height = bi.getHeight();
 
     ImageIcon imageIcon = new ImageIcon(bi);
 
-    BufferedImage bufferedImage= new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+//    BufferedImage bufferedImage= new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+    BufferedImage bufferedImage= new BufferedImage(imageIcon.getIconWidth(), imageIcon.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
-    g.drawImage(imageIcon.getImage(), 0, 0, null);
+//    g.drawImage(imageIcon.getImage(), 0, 0, null);
+    g.drawImage(imageIcon.getImage(), 0, 0, imageIcon.getImageObserver());
 
     int alpha = 0;
     // 外层遍历是Y轴的像素
@@ -277,7 +318,8 @@ public class DrawerUtils {
         bufferedImage.setRGB(x, y, rgb);
       }
     }
-    g.drawImage(bufferedImage, 0, 0, null);
+//    g.drawImage(bufferedImage, 0, 0, null);
+    g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
   }
   public static void alphaImage(String url, String targetFile) throws Exception{
@@ -321,4 +363,53 @@ public class DrawerUtils {
     return false;
 
   }
+  public int filterRGB(int x, int y, int rgb) {
+    DirectColorModel dcm = (DirectColorModel) ColorModel.getRGBdefault();
+    int red = dcm.getRed(rgb);
+    int green = dcm.getGreen(rgb);
+    int blue = dcm.getBlue(rgb);
+    int alp = dcm.getAlpha(rgb);
+    int alpha = 255;
+    if (red == 255 && green == 255 && blue == 255) {
+      alpha = 0;
+    } else {
+      alpha = 255;
+    }
+    return alpha << 24 | red << 16 | green << 8 | blue;
+  }
 }
+
+class MyFilter extends RGBImageFilter {// 抽象类RGBImageFilter是ImageFilter的子类，
+  // 继承它实现图象ARGB的处理
+  int alpha = 0;
+
+  public MyFilter(int alpha) {// 构造器，用来接收需要过滤图象的尺寸，以及透明度
+    this.canFilterIndexColorModel = true;
+    // TransparentImageFilter类继承自RGBImageFilter，它的构造函数要求传入原始图象的宽度和高度。
+    // 该类实现了filterRGB抽象函数
+    // ，缺省的方式下，该函数将x，y所标识的象素的ARGB值传入，程序员按照一定的程序逻辑处理后返回该象素新的ARGB值
+    this.alpha = alpha;
+  }
+
+  public int filterRGB(int x, int y, int rgb) {
+    DirectColorModel dcm = (DirectColorModel) ColorModel.getRGBdefault();
+    // DirectColorModel类用来将ARGB值独立分解出来
+    int red = dcm.getRed(rgb);
+    int green = dcm.getGreen(rgb);
+    int blue = dcm.getBlue(rgb);
+    int alp = dcm.getAlpha(rgb);
+
+    if (red == 255 && blue == 255 && green == 255) {// 如果像素为白色，则让它透明
+      alpha = 0;
+    } else {
+      alpha = 255;
+    }
+//    if (alp == 0) {{//png和gif格式图片透明部分仍然透明
+//      alpha = 0;
+//    } else {
+//      alpha = 255;
+//    }
+    return alpha << 24 | red << 16 | green << 8 | blue;// 进行标准ARGB输出以实现图象过滤
+  }
+}
+

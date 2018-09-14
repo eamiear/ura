@@ -84,7 +84,7 @@ ura:
   redis:
     open: false # –Ë∆Ù∂Øredis
   shiro:
-    redis: v
+    redis: false
   art-third-url:
     jiqie:
       url: http://www.jiqie.com/a/re14.php

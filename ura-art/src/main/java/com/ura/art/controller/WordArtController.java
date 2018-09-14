@@ -91,22 +91,32 @@ public class WordArtController {
 
   /**
    *
-   * @param signReq
+   * @param text
+   * @param style
+   * @param background
+   * @param decorator
+   * @param color
    * @param response
    * @return
    */
   @RequestMapping("/signature/create")
   @ResponseBody
-  public R create(@RequestBody SignatureReq signReq, HttpServletResponse response){
-    if (StringUtils.isBlank(signReq.getText())) {
+  public R create(
+          @RequestParam(value = "text", defaultValue = "周杰伦") String text,
+          @RequestParam(value = "style", defaultValue = "901") String style,
+          @RequestParam(value = "background", defaultValue = "#ffffff") String background,
+          @RequestParam(value = "decorator", defaultValue = "#ffffff") String decorator,
+          @RequestParam(value = "color", defaultValue = "#00000") String color,
+          HttpServletResponse response){
+    if (StringUtils.isBlank(text)) {
       return R.error(StatusCodeConstant.PARAM_NOT_EMPTY, "请输入姓名");
     }
-    if (signReq.getText().length() < 2) {
+    if (text.length() < 2) {
       return R.error(StatusCodeConstant.PARAM_SIZE_INVALID, "请输入至少两个字");
     }
     try {
-      BufferedImage bi = artService.removeWatermark(signReq.getText(), signReq.getStyle(), signReq.getBackground(), signReq.getDecorator(), signReq.getColor());
-      bi = DrawerUtils.transparentImage(bi, 255);
+      BufferedImage bi = artService.removeWatermark(text, style, background, decorator, color);
+      bi = DrawerUtils.transparentImage(bi, 160, 0);
       artService.write(bi, response);
       return R.success();
     } catch (Exception e) {

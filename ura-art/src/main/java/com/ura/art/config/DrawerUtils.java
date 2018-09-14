@@ -292,6 +292,36 @@ public class DrawerUtils {
     g.dispose();
     return bufferedImage;
   }
+
+  /**
+   *
+   * @param bi
+   * @param colorRange
+   * @param alpha
+   * @return
+   */
+  public static BufferedImage transparentImage(BufferedImage bi, int colorRange, int alpha) {
+    ImageIcon imageIcon = new ImageIcon(bi);
+    BufferedImage bufferedImage= new BufferedImage(imageIcon.getIconWidth(), imageIcon.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+    g.drawImage(imageIcon.getImage(), 0, 0, imageIcon.getImageObserver());
+
+    int _alpha = 0;
+    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
+      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
+        int rgb = bufferedImage.getRGB(x, y);
+        if (colorInRange(rgb, colorRange)) {
+          _alpha = 0;
+        } else {
+          _alpha = 255;
+        }
+        rgb = (_alpha << 24) | (rgb & 0x00ffffff);
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
+    g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
+    return bufferedImage;
+  }
   public static void alpha(BufferedImage bi, String targetFile) throws Exception{
     BufferedImage bufferedImage= new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
@@ -377,6 +407,20 @@ public class DrawerUtils {
     return false;
 
   }
+
+  /**
+   *
+   * @param color
+   * @param colorRange
+   * @return
+   */
+  public static boolean colorInRange(int color, int colorRange){
+    int red = (color & 0xff0000) >> 16;
+    int green = (color & 0x00ff00) >> 8;
+    int blue = (color & 0x0000ff);
+    return (red >= colorRange && green >= colorRange && blue >= colorRange);
+  }
+
   public int filterRGB(int x, int y, int rgb) {
     DirectColorModel dcm = (DirectColorModel) ColorModel.getRGBdefault();
     int red = dcm.getRed(rgb);

@@ -33,6 +33,8 @@ public class JiqieBean {
   @Value(value = "${ura.art-third-url.yishuzi.rect.height}")
   private String rectHeight;
 
+  private String suffix;
+
   public String getUrl() {
     return url;
   }
@@ -119,5 +121,13 @@ public class JiqieBean {
 
   public void setRectHeight(String rectHeight) {
     this.rectHeight = rectHeight;
+  }
+
+  public String getSuffix() {
+    return suffix;
+  }
+
+  public void setSuffix(String suffix) {
+    this.suffix = suffix;
   }
 }

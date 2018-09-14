@@ -5,12 +5,14 @@ import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
 import com.ura.art.service.ArtService;
 import com.ura.common.utils.R;
+import com.ura.common.utils.StatusCodeConstant;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -86,11 +88,29 @@ public class WordArtController {
       e.printStackTrace();
     }
   }
-  public R create(@RequestBody SignatureReq signReq){
+
+  /**
+   *
+   * @param signReq
+   * @param response
+   * @return
+   */
+  @RequestMapping("/signature/create")
+  @ResponseBody
+  public R create(@RequestBody SignatureReq signReq, HttpServletResponse response){
+    if (StringUtils.isBlank(signReq.getText())) {
+      return R.error(StatusCodeConstant.PARAM_NOT_EMPTY, "请输入姓名");
+    }
+    if (signReq.getText().length() < 2) {
+      return R.error(StatusCodeConstant.PARAM_SIZE_INVALID, "请输入至少两个字");
+    }
     try {
       BufferedImage bi = artService.removeWatermark(signReq.getText(), signReq.getStyle(), signReq.getBackground(), signReq.getDecorator(), signReq.getColor());
-
+      bi = DrawerUtils.transparentImage(bi, 255);
+      artService.write(bi, response);
+      return R.success();
+    } catch (Exception e) {
+      return R.error().put("msg", e);
     }
-    return R.success();
   }
 }

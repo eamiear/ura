@@ -32,4 +32,6 @@ public class StatusCodeConstant {
 
   // params about
   public static final int PARAM_CAPTCHA_ERROR = 7001;
+  public static final int PARAM_NOT_EMPTY = 7002; // 参数不能为空
+  public static final int PARAM_SIZE_INVALID = 7003; //参数长度不对
 }

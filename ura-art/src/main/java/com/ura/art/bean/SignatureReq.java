@@ -8,6 +8,7 @@ package com.ura.art.bean;
 import org.springframework.beans.factory.annotation.Value;
 
 public class SignatureReq {
+    @Value(value = "周杰伦")
     private String text;
     @Value(value = "901")
     private String style;

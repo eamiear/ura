@@ -1,9 +1,12 @@
 package com.ura.art.config;
 
+import com.ura.art.filter.ImageAlphaFilter;
 import com.ura.common.utils.HttpUtil;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.NumberUtils;
 import sun.awt.image.ToolkitImage;
 import sun.font.FontDesignMetrics;
 
@@ -278,10 +281,21 @@ public class DrawerUtils {
     g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
   }
+
+  public static BufferedImage transparentImage(BufferedImage bi, int alpha) throws Exception{
+    BufferedImage bufferedImage= new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
+    ImageFilter imageFilter = new ImageAlphaFilter(alpha);
+    FilteredImageSource fis = new FilteredImageSource(bi.getSource(),imageFilter);
+    Image image = Toolkit.getDefaultToolkit().createImage(fis);
+    g.drawImage(image, 0, 0, null);
+    g.dispose();
+    return bufferedImage;
+  }
   public static void alpha(BufferedImage bi, String targetFile) throws Exception{
     BufferedImage bufferedImage= new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
-    ImageFilter imageFilter = new MyFilter(255);
+    ImageFilter imageFilter = new ImageAlphaFilter(255);
     FilteredImageSource fis = new FilteredImageSource(bi.getSource(),imageFilter);
     Image image = Toolkit.getDefaultToolkit().createImage(fis);
     g.drawImage(image, 0, 0, null);
@@ -378,6 +392,7 @@ public class DrawerUtils {
     return alpha << 24 | red << 16 | green << 8 | blue;
   }
 }
+/*
 
 class MyFilter extends RGBImageFilter {// 抽象类RGBImageFilter是ImageFilter的子类，
   // 继承它实现图象ARGB的处理
@@ -412,4 +427,5 @@ class MyFilter extends RGBImageFilter {// 抽象类RGBImageFilter是ImageFilter�
     return alpha << 24 | red << 16 | green << 8 | blue;// 进行标准ARGB输出以实现图象过滤
   }
 }
+*/
 

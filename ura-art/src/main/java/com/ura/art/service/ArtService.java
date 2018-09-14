@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
@@ -65,6 +67,7 @@ public class ArtService {
    */
   public String getVisitedImageUrl(String partial){
     if (null == partial) return "";
+    jiqieBean.setSuffix(partial.substring(partial.lastIndexOf(".") + 1));
     return jiqieBean.getDomain() + partial;
   }
 
@@ -90,6 +93,14 @@ public class ArtService {
             Integer.valueOf(jiqieBean.getRectHeight()));
 
     return bi;
+  }
+
+  public void write(BufferedImage bi, HttpServletResponse response) throws Exception{
+    String suffix = "gif";
+    if (jiqieBean.getSuffix() != null) {
+      suffix = jiqieBean.getSuffix();
+    }
+    ImageIO.write(bi, suffix, response.getOutputStream());
   }
 
 }

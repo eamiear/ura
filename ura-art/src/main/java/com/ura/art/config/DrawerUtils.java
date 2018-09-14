@@ -25,7 +25,7 @@ import java.util.Map;
 public class DrawerUtils {
   private static Logger logger = LoggerFactory.getLogger(DrawerUtils.class);
 
-  private static int color_range = 158;//色差范围0~255
+  private static int color_range = 220;//色差范围0~255
   public static float getRatio(int target, int ref){
     return target / 2 - ref / 2;
   }

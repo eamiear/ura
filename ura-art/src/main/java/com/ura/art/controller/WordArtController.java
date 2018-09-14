@@ -1,5 +1,6 @@
 package com.ura.art.controller;
 
+import com.ura.art.bean.SignatureReq;
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
 import com.ura.art.service.ArtService;
@@ -7,6 +8,7 @@ import com.ura.common.utils.R;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -77,12 +79,18 @@ public class WordArtController {
   @RequestMapping("/alpha")
   public void alpha() {
     try {
-      BufferedImage bi = artService.removeWatermark("江育恒", "901", "#ffffff", "#ffffff", "#ff0000");
+      BufferedImage bi = artService.removeWatermark("江育恒", "901", "#ffffff", "#ffffff", "#000000");
 //      DrawerUtils.alpha(bi, "F:\\alpha.png");
-      DrawerUtils.alphaImage(bi, "F:\\test\\alpha.png");
+      DrawerUtils.transparent(bi, "F:\\test\\alpha.png");
     } catch (Exception e){
       e.printStackTrace();
     }
   }
-//  public R
+  public R create(@RequestBody SignatureReq signReq){
+    try {
+      BufferedImage bi = artService.removeWatermark(signReq.getText(), signReq.getStyle(), signReq.getBackground(), signReq.getDecorator(), signReq.getColor());
+
+    }
+    return R.success();
+  }
 }

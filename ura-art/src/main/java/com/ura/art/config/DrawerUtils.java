@@ -1,6 +1,7 @@
 package com.ura.art.config;
 
 import com.ura.art.filter.ImageAlphaFilter;
+import com.ura.common.exception.URAException;
 import com.ura.common.utils.HttpUtil;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
@@ -28,11 +29,11 @@ import java.util.Map;
 public class DrawerUtils {
   private static Logger logger = LoggerFactory.getLogger(DrawerUtils.class);
 
-  private static int color_range = 220;//色差范围0~255
-  public static float getRatio(int target, int ref){
+  private final static int color_range = 220;//色差范围0~255
+  private static float getRatio(int target, int ref){
     return target / 2 - ref / 2;
   }
-  public static int getWordWidth(Font font, String content) {
+  private static int getWordWidth(Font font, String content) {
     FontDesignMetrics metrics = FontDesignMetrics.getMetrics(font);
     int width = 0;
     for (int i = 0; i < content.length(); i++) {
@@ -348,7 +349,8 @@ public class DrawerUtils {
 //    g.drawImage(imageIcon.getImage(), 0, 0, null);
     g.drawImage(imageIcon.getImage(), 0, 0, imageIcon.getImageObserver());
 
-    int alpha = 0;
+    bufferedImage = setImageBackgroundTransparent(bufferedImage);
+    /*int alpha = 0;
     // 外层遍历是Y轴的像素
     for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
       // 内层遍历是X轴的像素
@@ -363,7 +365,7 @@ public class DrawerUtils {
         rgb = (alpha << 24) | (rgb & 0x00ffffff);
         bufferedImage.setRGB(x, y, rgb);
       }
-    }
+    }*/
 //    g.drawImage(bufferedImage, 0, 0, null);
     g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
@@ -378,7 +380,8 @@ public class DrawerUtils {
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
     g.drawImage(imageIcon.getImage(), 0, 0, null);
 
-    int alpha = 0;
+    bufferedImage = setImageBackgroundTransparent(bufferedImage);
+    /*int alpha = 0;
     // 外层遍历是Y轴的像素
     for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
       // 内层遍历是X轴的像素
@@ -393,21 +396,37 @@ public class DrawerUtils {
         rgb = (alpha << 24) | (rgb & 0x00ffffff);
         bufferedImage.setRGB(x, y, rgb);
       }
-    }
+    }*/
     g.drawImage(bufferedImage, 0, 0, null);
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
   }
+
+  private static BufferedImage setImageBackgroundTransparent(BufferedImage bufferedImage){
+    int alpha = 0;
+    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
+      // 内层遍历是X轴的像素
+      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
+        int rgb = bufferedImage.getRGB(x, y);
+        if (colorInRange(rgb)) {// 对当前颜色判断是否在指定区间内
+          alpha = 0;
+        } else {// 设置为不透明
+          alpha = 255;
+        }
+        // #AARRGGBB 最前两位为透明度
+        rgb = (alpha << 24) | (rgb & 0x00ffffff);
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
+    return bufferedImage;
+  }
+
   // 判断是背景还是内容
-  public static boolean colorInRange(int color) {
+  private static boolean colorInRange(int color) {
     int red = (color & 0xff0000) >> 16;// 获取color(RGB)中R位
     int green = (color & 0x00ff00) >> 8;// 获取color(RGB)中G位
     int blue = (color & 0x0000ff);// 获取color(RGB)中B位
 // 通过RGB三分量来判断当前颜色是否在指定的颜色区间内
-    if (red >= color_range && green >= color_range && blue >= color_range) {
-      return true;
-    }
-    return false;
-
+    return red >= color_range && green >= color_range && blue >= color_range;
   }
 
   /**
@@ -416,7 +435,7 @@ public class DrawerUtils {
    * @param colorRange
    * @return
    */
-  public static boolean colorInRange(int color, int colorRange){
+  private static boolean colorInRange(int color, int colorRange){
     int red = (color & 0xff0000) >> 16;
     int green = (color & 0x00ff00) >> 8;
     int blue = (color & 0x0000ff);
@@ -446,7 +465,7 @@ public class DrawerUtils {
 
   }
 
-  public static BufferedImage imageToBufferedImage(Image image){
+  private static BufferedImage imageToBufferedImage(Image image){
     BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
     Graphics2D g = bufferedImage.createGraphics();
     g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -462,7 +481,7 @@ public class DrawerUtils {
    * @param color Color in provided image which will be made transparent.
    * @return Image with transparency applied.
    */
-  public static Image makeColorTransparent(BufferedImage bi, Color color){
+  private static Image makeColorTransparent(BufferedImage bi, Color color){
     ImageFilter filter = new RGBImageFilter() {
       // the color we are looking for (white)... Alpha bits are set to opaque
 //      int markerRGB = color.getRGB() | 0xFFFFFFFF;
@@ -511,6 +530,69 @@ public class DrawerUtils {
     g.drawImage(bi, 0, 0, thumbWidth, thumbHeight, null);
     return thumb;
   }
+
+  /**
+   *
+   * @param url
+   * @param width
+   * @param height
+   * @return
+   * @throws Exception
+   */
+  public static BufferedImage scaleImage(String url, int width, int height) throws Exception{
+    BufferedImage bi = ImageIO.read(new File(url));
+    boolean hasAlpha = bi.getColorModel().hasAlpha();
+    int thumbWidth = width;
+    int thumbHeight = height;
+    double thumbRatio = (double) width / (double)height;
+    double imageRatio = (double)bi.getWidth() / (double) bi.getHeight();
+    if (thumbRatio < imageRatio) {
+      thumbHeight = (int)(thumbWidth / imageRatio);
+    } else {
+      thumbWidth = (int)(thumbHeight * imageRatio);
+    }
+
+    BufferedImage thumb;
+    if (hasAlpha) {
+      thumb = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_INT_ARGB);
+    } else {
+      thumb = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_INT_RGB);
+    }
+    Graphics2D g = thumb.createGraphics();
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g.drawImage(bi, 0, 0, thumbWidth, thumbHeight, null);
+    return thumb;
+  }
+
+
+  /**
+   * 图片合成
+   * 将图片source合并到target图片上
+   * @param source  资源图片
+   * @param target  目标图片
+   * @return
+   */
+  public static BufferedImage merge(BufferedImage source, BufferedImage target) {
+    if (target.getWidth() < source.getWidth() || target.getHeight() < source.getHeight()) {
+      throw new URAException("资源文件不能大于目标文件", 7004);
+    }
+    Graphics2D g = target.createGraphics();
+    int x = (target.getWidth() - source.getWidth()) / 2;
+    int y = (target.getHeight() - source.getHeight()) / 2;
+    g.drawImage(source, x, y, source.getWidth(), source.getHeight(), null);
+    g.dispose();
+    return target;
+  }
+
+  /**
+   * 图片拼接
+   * @param source
+   * @param target
+   * @return
+   */
+//  public static BufferedImage concat(BufferedImage source, BufferedImage target) {
+//
+//  }
 }
 
 

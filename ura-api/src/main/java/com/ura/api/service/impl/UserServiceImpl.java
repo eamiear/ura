@@ -8,18 +8,18 @@ import com.ura.common.utils.Query;
 
 import java.util.Map;
 
-import com.ura.api.dao.TbTokenDao;
-import com.ura.api.entity.TbTokenEntity;
-import com.ura.api.service.TbTokenService;
+import com.ura.api.dao.UserDao;
+import com.ura.api.entity.UserEntity;
+import com.ura.api.service.UserService;
 import org.springframework.stereotype.Service;
 
-@Service("tbTokenService")
-public class TbTokenServiceImpl extends ServiceImpl<TbTokenDao, TbTokenEntity> implements TbTokenService {
+@Service("tbUserService")
+public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        Page<TbTokenEntity> page = this.selectPage(
-                new Query<TbTokenEntity>(params).getPage(),
-                new EntityWrapper<TbTokenEntity>());
+        Page<UserEntity> page = this.selectPage(
+                new Query<UserEntity>(params).getPage(),
+                new EntityWrapper<UserEntity>());
         return new PageUtils(page);
     }
 }

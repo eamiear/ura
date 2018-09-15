@@ -17,7 +17,7 @@ import java.io.Serializable;
 */
 
 @TableName("tb_token")
-public class TbTokenEntity implements Serializable {
+public class TokenEntity implements Serializable {
   @TableId
   private Long userId;
   private String token;

@@ -1,7 +1,7 @@
 package com.ura.api.controller;
 
-import com.ura.api.entity.TbTokenEntity;
-import com.ura.api.service.TbTokenService;
+import com.ura.api.entity.TokenEntity;
+import com.ura.api.service.TokenService;
 
 import com.ura.common.utils.PageUtils;
 import com.ura.common.utils.R;
@@ -20,38 +20,33 @@ import java.util.Map;
 */
 @RestController
 @RequestMapping("/api")
-public class TbTokenController {
+public class TokenController {
     @Autowired
-    private TbTokenService tbTokenService;
+    private TokenService tokenService;
 
-    @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params) {
-        PageUtils page = tbTokenService.queryPage(params);
-        return R.success().put("data", page);
-    }
 
     @RequestMapping("/info/{userId}")
     public R info(@PathVariable("userId") Long userId) {
-        TbTokenEntity tbToken = tbTokenService.selectById(userId);
+        TokenEntity tbToken = tokenService.selectById(userId);
         return R.success().put("data", tbToken);
     }
 
     @RequestMapping("/save")
-    public R save (@RequestBody TbTokenEntity tbToken) {
-        tbTokenService.insert(tbToken);
+    public R save (@RequestBody TokenEntity tbToken) {
+        tokenService.insert(tbToken);
         return R.success();
     }
 
     @RequestMapping("/update")
-    public R update ( @RequestBody TbTokenEntity tbToken) {
+    public R update ( @RequestBody TokenEntity tbToken) {
         ValidatorUtils.validateEntity(tbToken);
-        tbTokenService.updateAllColumnById(tbToken);
+        tokenService.updateAllColumnById(tbToken);
         return R.success();
     }
 
     @RequestMapping("/delete")
     public R delete (@RequestBody Long[] userIds) {
-        tbTokenService.deleteBatchIds(Arrays.asList(userIds));
+        tokenService.deleteBatchIds(Arrays.asList(userIds));
         return R.success();
     }
 }

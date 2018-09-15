@@ -302,7 +302,7 @@ public class DrawerUtils {
    */
   public static BufferedImage transparentImage(BufferedImage bi, int colorRange, int alpha) {
     ImageIcon imageIcon = new ImageIcon(bi);
-    BufferedImage bufferedImage= new BufferedImage(imageIcon.getIconWidth(), imageIcon.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    BufferedImage bufferedImage= new BufferedImage(bi.getWidth(), bi.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
     Graphics2D g = (Graphics2D) bufferedImage.getGraphics();
     g.drawImage(imageIcon.getImage(), 0, 0, imageIcon.getImageObserver());
 
@@ -319,7 +319,9 @@ public class DrawerUtils {
         bufferedImage.setRGB(x, y, rgb);
       }
     }
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
     g.drawImage(bufferedImage, 0, 0, imageIcon.getImageObserver());
+    g.dispose();
     return bufferedImage;
   }
   public static void alpha(BufferedImage bi, String targetFile) throws Exception{
@@ -378,20 +380,20 @@ public class DrawerUtils {
 
     int alpha = 0;
     // 外层遍历是Y轴的像素
-//    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
-//      // 内层遍历是X轴的像素
-//      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
-//        int rgb = bufferedImage.getRGB(x, y);
-//        if (colorInRange(rgb)) {// 对当前颜色判断是否在指定区间内
-//          alpha = 0;
-//        } else {// 设置为不透明
-//          alpha = 255;
-//        }
-//        // #AARRGGBB 最前两位为透明度
-//        rgb = (alpha << 24) | (rgb & 0x00ffffff);
-//        bufferedImage.setRGB(x, y, rgb);
-//      }
-//    }
+    for (int y = bufferedImage.getMinY(); y < bufferedImage.getHeight(); y++) {
+      // 内层遍历是X轴的像素
+      for (int x = bufferedImage.getMinX(); x < bufferedImage.getWidth(); x++) {
+        int rgb = bufferedImage.getRGB(x, y);
+        if (colorInRange(rgb)) {// 对当前颜色判断是否在指定区间内
+          alpha = 0;
+        } else {// 设置为不透明
+          alpha = 255;
+        }
+        // #AARRGGBB 最前两位为透明度
+        rgb = (alpha << 24) | (rgb & 0x00ffffff);
+        bufferedImage.setRGB(x, y, rgb);
+      }
+    }
     g.drawImage(bufferedImage, 0, 0, null);
     ImageIO.write(bufferedImage, targetFile.split("\\.")[1], new File(targetFile));
   }
@@ -435,41 +437,80 @@ public class DrawerUtils {
     }
     return alpha << 24 | red << 16 | green << 8 | blue;
   }
-}
-/*
 
-class MyFilter extends RGBImageFilter {// 抽象类RGBImageFilter是ImageFilter的子类，
-  // 继承它实现图象ARGB的处理
-  int alpha = 0;
+  public static BufferedImage alpha1(BufferedImage bi){
+//    int color = bi.getRGB(0, 0);
+    int color = Color.WHITE.getRGB();
+    Image image = makeColorTransparent(bi, new Color(color));
+    return imageToBufferedImage(image);
 
-  public MyFilter(int alpha) {// 构造器，用来接收需要过滤图象的尺寸，以及透明度
-    this.canFilterIndexColorModel = true;
-    // TransparentImageFilter类继承自RGBImageFilter，它的构造函数要求传入原始图象的宽度和高度。
-    // 该类实现了filterRGB抽象函数
-    // ，缺省的方式下，该函数将x，y所标识的象素的ARGB值传入，程序员按照一定的程序逻辑处理后返回该象素新的ARGB值
-    this.alpha = alpha;
   }
 
-  public int filterRGB(int x, int y, int rgb) {
-    DirectColorModel dcm = (DirectColorModel) ColorModel.getRGBdefault();
-    // DirectColorModel类用来将ARGB值独立分解出来
-    int red = dcm.getRed(rgb);
-    int green = dcm.getGreen(rgb);
-    int blue = dcm.getBlue(rgb);
-    int alp = dcm.getAlpha(rgb);
+  public static BufferedImage imageToBufferedImage(Image image){
+    BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g = bufferedImage.createGraphics();
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g.drawImage(image, 0, 0, null);
+    g.dispose();
+    return bufferedImage;
+  }
 
-    if (red == 255 && blue == 255 && green == 255) {// 如果像素为白色，则让它透明
-      alpha = 0;
+  /**
+   * Make provided image transparent wherever color matches the provided color.
+   *
+   * @param bi BufferedImage whose color will be made transparent.
+   * @param color Color in provided image which will be made transparent.
+   * @return Image with transparency applied.
+   */
+  public static Image makeColorTransparent(BufferedImage bi, Color color){
+    ImageFilter filter = new RGBImageFilter() {
+      // the color we are looking for (white)... Alpha bits are set to opaque
+//      int markerRGB = color.getRGB() | 0xFFFFFFFF;
+      int markerRGB = color.getRGB() | 0xFF000000;
+      @Override
+      public int filterRGB(int x, int y, int rgb) {
+        if ((rgb | 0xFF000000) == markerRGB){
+          // Mark the alpha bits as zero - transparent
+          return 0x00FFFFFF & rgb;
+        } else {
+          return rgb;
+        }
+      }
+    };
+    ImageProducer ip = new FilteredImageSource(bi.getSource(), filter);
+    return Toolkit.getDefaultToolkit().createImage(ip);
+  }
+
+  /**
+   * 图片缩放或放大
+   * @param bi
+   * @param width
+   * @param height
+   * @return
+   */
+  public static BufferedImage scaleImage(BufferedImage bi, int width, int height) {
+    boolean hasAlpha = bi.getColorModel().hasAlpha();
+    int thumbWidth = width;
+    int thumbHeight = height;
+    double thumbRatio = (double) width / (double)height;
+    double imageRatio = (double)bi.getWidth() / (double) bi.getHeight();
+    if (thumbRatio < imageRatio) {
+      thumbHeight = (int)(thumbWidth / imageRatio);
     } else {
-      alpha = 255;
+      thumbWidth = (int)(thumbHeight * imageRatio);
     }
-//    if (alp == 0) {{//png和gif格式图片透明部分仍然透明
-//      alpha = 0;
-//    } else {
-//      alpha = 255;
-//    }
-    return alpha << 24 | red << 16 | green << 8 | blue;// 进行标准ARGB输出以实现图象过滤
+
+    BufferedImage thumb;
+    if (hasAlpha) {
+      thumb = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_INT_ARGB);
+    } else {
+      thumb = new BufferedImage(thumbWidth, thumbHeight, BufferedImage.TYPE_INT_RGB);
+    }
+    Graphics2D g = thumb.createGraphics();
+    g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    g.drawImage(bi, 0, 0, thumbWidth, thumbHeight, null);
+    return thumb;
   }
 }
-*/
+
 

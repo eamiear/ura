@@ -6,6 +6,7 @@ import com.ura.art.bean.JiqieBean;
 import com.ura.art.config.DrawerUtils;
 import com.ura.common.utils.HttpUtil;
 import com.ura.common.utils.JSONResult;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,12 +96,18 @@ public class ArtService {
     return bi;
   }
 
-  public void write(BufferedImage bi, HttpServletResponse response) throws Exception{
-    String suffix = "gif";
+  public void write(BufferedImage bi, String suffix, HttpServletResponse response) throws Exception{
+    if (StringUtils.isBlank(suffix)) {
+      suffix = "png";
+    }
     if (jiqieBean.getSuffix() != null) {
       suffix = jiqieBean.getSuffix();
     }
     ImageIO.write(bi, suffix, response.getOutputStream());
+  }
+
+  public void write(BufferedImage bi, HttpServletResponse response) throws Exception{
+    write(bi, "png", response);
   }
 
 }

@@ -11,5 +11,4 @@ import java.util.Map;
  * @datetime 2018-09-12 17:46:35
  */
 public interface UserService extends IService<UserEntity> {
-    PageUtils queryPage(Map<String, Object> params);
 }

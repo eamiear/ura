@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *  实体
@@ -21,8 +22,8 @@ public class TokenEntity implements Serializable {
   @TableId
   private Long userId;
   private String token;
-  private String expireTime;
-  private String updateTime;
+  private Date expireTime;
+  private Date updateTime;
 
   public void setUserId(Long userId) {
     this.userId = userId;
@@ -38,18 +39,18 @@ public class TokenEntity implements Serializable {
   public String getToken () {
     return token;
   }
-  public void setExpireTime(String expireTime) {
+  public void setExpireTime(Date expireTime) {
     this.expireTime = expireTime;
   }
 
-  public String getExpireTime () {
+  public Date getExpireTime () {
     return expireTime;
   }
-  public void setUpdateTime(String updateTime) {
+  public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
 
-  public String getUpdateTime () {
+  public Date getUpdateTime () {
     return updateTime;
   }
 }

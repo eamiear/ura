@@ -2,7 +2,7 @@ package com.ura.art.config;
 
 import com.ura.art.filter.ImageAlphaFilter;
 import com.ura.common.exception.URAException;
-import com.ura.common.utils.HttpUtil;
+import com.ura.common.utils.HttpUtils;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,7 +181,7 @@ public class DrawerUtils {
 
     Map<String, String> param = new HashMap<String, String>();
     param.put("t", String.valueOf(new Date().getTime()));
-    getMethod = HttpUtil.URLGet(imageUrl, param);
+    getMethod = HttpUtils.URLGet(imageUrl, param);
     is = getMethod.getResponseBodyAsStream();
     iis = ImageIO.createImageInputStream(is);
     reader.setInput(iis, true);
@@ -232,7 +232,7 @@ public class DrawerUtils {
 
     Map<String, String> param = new HashMap<String, String>();
     param.put("t", String.valueOf(new Date().getTime()));
-    getMethod = HttpUtil.URLGet(imageUrl, param);
+    getMethod = HttpUtils.URLGet(imageUrl, param);
     is = getMethod.getResponseBodyAsStream();
     iis = ImageIO.createImageInputStream(is);
     reader.setInput(iis, true);

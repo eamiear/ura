@@ -20,10 +20,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class HttpUtil {
+public class HttpUtils {
 
     // 日志
-    private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
     /**
      * 定义编码格式 UTF-8
      */
@@ -406,15 +406,15 @@ public class HttpUtil {
     }
 
     public static void setLoginPassword(String loginPassword) {
-        HttpUtil.loginPassword = loginPassword;
+        HttpUtils.loginPassword = loginPassword;
     }
 
     public static void setLoginUserName(String loginUserName) {
-        HttpUtil.loginUserName = loginUserName;
+        HttpUtils.loginUserName = loginUserName;
     }
 
     public static void setLoginURL(String loginURL) {
-        HttpUtil.loginURL = loginURL;
+        HttpUtils.loginURL = loginURL;
     }
 
     public static byte[] getNetworkPicture(String url) throws Exception{

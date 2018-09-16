@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ura.art.bean.JiqieBean;
 import com.ura.art.config.DrawerUtils;
-import com.ura.common.utils.HttpUtil;
+import com.ura.common.utils.HttpUtils;
 import com.ura.common.utils.JSONResult;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -48,7 +48,7 @@ public class ArtService {
             .put("id2", background)
             .put("id4", decorator)
             .put("id6", color);
-    return HttpUtil.URLPost(jiqieBean.getUrl(), params, true);
+    return HttpUtils.URLPost(jiqieBean.getUrl(), params, true);
   }
 
   /**

@@ -34,7 +34,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter{
       return true;
     }
     // 如果有@IgnoreAuth注解，则不校验token
-    if (annotation == null) {
+    if (annotation != null) {
       return true;
     }
     String token = request.getHeader("token");

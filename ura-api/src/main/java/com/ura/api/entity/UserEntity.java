@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *  实体
@@ -24,8 +25,8 @@ public class UserEntity implements Serializable {
   private String password;
   private Integer gender;
   private String birthday;
-  private String registerTime;
-  private String lastLoginTime;
+  private Date registerTime;
+  private Date lastLoginTime;
   private String registerIp;
   private String lastLgoinIp;
   private String nickname;
@@ -71,18 +72,18 @@ public class UserEntity implements Serializable {
   public String getBirthday () {
     return birthday;
   }
-  public void setRegisterTime(String registerTime) {
+  public void setRegisterTime(Date registerTime) {
     this.registerTime = registerTime;
   }
 
-  public String getRegisterTime () {
+  public Date getRegisterTime () {
     return registerTime;
   }
-  public void setLastLoginTime(String lastLoginTime) {
+  public void setLastLoginTime(Date lastLoginTime) {
     this.lastLoginTime = lastLoginTime;
   }
 
-  public String getLastLoginTime () {
+  public Date getLastLoginTime () {
     return lastLoginTime;
   }
   public void setRegisterIp(String registerIp) {

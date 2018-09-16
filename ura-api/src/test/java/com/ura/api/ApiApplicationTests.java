@@ -17,4 +17,13 @@ public class ApiApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void HttpClientTest() {
+		try {
+			String str = HttpClientUtils.get("http://baike.baidu.com/api/openapi/BaikeLemmaCardApi?scope=103&format=json&appid=379020&bk_key=%E9%93%B6%E9%AD%82&bk_length=600");
+			System.out.println("weather  === " + str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

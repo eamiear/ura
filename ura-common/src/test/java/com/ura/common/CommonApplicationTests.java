@@ -30,5 +30,4 @@ public class CommonApplicationTests {
 		String token = CustomTokenUtils.generateToken();
 		System.out.print("\n\t token ============ " + token + "\n\t");
 	}
-
 }

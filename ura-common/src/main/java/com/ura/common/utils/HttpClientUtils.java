@@ -199,6 +199,9 @@ public class HttpClientUtils {
       if (url.startsWith("https")) {
         client = createSSLInsecureClient();
         res = client.execute(post);
+      } else {
+        client = HttpClientUtils.client;
+        res = client.execute(post);
       }
       return IOUtils.toString(res.getEntity().getContent(), "UTF-8");
     } finally {
@@ -253,7 +256,7 @@ public class HttpClientUtils {
         res = client.execute(get);
       } else {
         client = HttpClientUtils.client;
-        client.execute(get);
+        res = client.execute(get);
       }
       result = IOUtils.toString(res.getEntity().getContent(), charset);
     } finally {

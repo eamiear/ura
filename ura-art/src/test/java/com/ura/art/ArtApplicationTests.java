@@ -2,8 +2,10 @@ package com.ura.art;
 
 import com.ura.art.config.DrawerUtils;
 import com.ura.art.config.FontUtils;
-import com.ura.common.utils.HttpUtil;
+import com.ura.common.utils.HttpClientUtils;
+import com.ura.common.utils.HttpUtils;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.SocketTimeoutException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +56,7 @@ public class ArtApplicationTests {
 		params.put("id2", "#FFFFFF");
 		params.put("id4", "#FFFFFF");
     params.put("id6", "#000000");
-		String content = HttpUtil.URLPost(url, params, true);
+		String content = HttpUtils.URLPost(url, params, true);
 		System.out.println("content   =====  " + content);
 	}
 
@@ -71,9 +74,9 @@ public class ArtApplicationTests {
 			Map<String, String> param = new HashMap<String, String>();
 			param.put("t", String.valueOf(new Date().getTime()));
 //			System.out.println("===========   " + HttpUtil.URLGet(imageUrl, param, "utf-8"));
-			System.out.println("===========   " + HttpUtil.URLGet(imageUrl, param));
+			System.out.println("===========   " + HttpUtils.URLGet(imageUrl, param));
 //			InputStream stream = HttpUtil.URLGet(imageUrl, param);
-			getMethod = HttpUtil.URLGet(imageUrl, param);
+			getMethod = HttpUtils.URLGet(imageUrl, param);
 			if (getMethod == null) return;
 			InputStream stream = getMethod.getResponseBodyAsStream();
 //			ImageIO.write(stream, "png", new File("F:\\cut.png"));
@@ -123,4 +126,14 @@ public class ArtApplicationTests {
 //      e.printStackTrace();
 //    }
   }
+
+	@Test
+	public void HttpClientTest() {
+		try{
+			String str = HttpClientUtils.post("http://api.map.baidu.com/telematics/v3/weather", "location=广州&output=json&ak=5slgyqGDENN7Sy7pw29IUvrZ", "UTF-8", 10000, 10000);
+			System.out.println(str);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

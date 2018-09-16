@@ -18,7 +18,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("tbUserService")
+@Service("userService")
 public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements UserService {
   @Autowired
   private TokenService tokenService;
@@ -36,11 +36,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
   }
 
   @Override
-  public Map<String, Object> login(LoginBean login) {
-    UserEntity user = queryByMobile(login.getMobile());
+  public Map<String, Object> login(String mobile, String password) {
+    UserEntity user = queryByMobile(mobile);
     Assert.isNull(user, "手机号或密码错误");
 
-    if (!user.getPassword().equals(DigestUtils.sha256Hex(login.getPassword()))){
+    if (!user.getPassword().equals(DigestUtils.sha256Hex(password))){
       throw new URAException("手机号或密码错误");
     }
     TokenEntity token = tokenService.createToken(user.getUserId());

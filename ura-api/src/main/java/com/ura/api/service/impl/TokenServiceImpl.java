@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Service("tbTokenService")
+@Service("tokenService")
 public class TokenServiceImpl extends ServiceImpl<TokenDao, TokenEntity> implements TokenService {
 
     // 12小时后过期

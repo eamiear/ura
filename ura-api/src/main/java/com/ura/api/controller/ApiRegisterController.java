@@ -37,6 +37,6 @@ public class ApiRegisterController {
     userEntity.setPassword(DigestUtils.sha256Hex(password));
     userEntity.setRegisterTime(new Date());
     userService.insert(userEntity);
-    return R.success();
+    return R.success("注册成功");
   }
 }

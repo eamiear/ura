@@ -16,5 +16,5 @@ public interface UserService extends IService<UserEntity> {
 
     UserEntity queryByOpenId(String openId);
 
-    Map<String, Object> login(LoginBean login);
+    Map<String, Object> login(String mobile, String password);
 }

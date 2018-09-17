@@ -85,3 +85,24 @@ ura:
     open: true # 需启动redis
   shiro:
     redis: true
+  art-third-url:
+      jiqie:
+        url: http://www.jiqie.com/a/re14.php
+        domain: http://www.jiqie.com
+        idi: jiqie
+        id1: 901      #  字体类型（901-一笔签名 905-一笔商务签 7-草书体  21-连笔草书）
+        id2: 15       #  签名背景图（14~16）
+        id3: 000000   #   签名颜色
+      yishuzi:
+        url: http://www.yishuzi.com/b/re13.php
+        domain: http://www.yishuzi.com
+        idi: jiqie
+        id1: 901      #  字体类型（901-一笔签名 905-一笔商务签 7-草书体  21-连笔草书）
+        id2: FFFFFF   #  签名背景
+        id4: FFFFFF   #  签名配色
+        id6: 000000   #   签名颜色
+        rect:
+          x: 0
+          y: 40
+          width: 500
+          height: 211

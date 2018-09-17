@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = "Api登录授权接口")
+@Api(tags = "登录授权接口")
 public class ApiLoginController {
   @Autowired
   private UserService userService;

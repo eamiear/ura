@@ -9,10 +9,7 @@ import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 
 public class ImageUtils {
     public static byte[] image2Bytes(String imagePath) throws Exception{
@@ -35,5 +32,19 @@ public class ImageUtils {
         String base64 = encoder.encodeBuffer(bytes).trim();
         base64.replaceAll("\n", "").replaceAll("\r", "");
         return base64;
+    }
+
+    /**
+     *
+     * @param bi        BufferedImage
+     * @param format    图片类型 png...
+     * @return {InputStream}
+     * @throws Exception
+     */
+    public static InputStream bufferedImageToInputStream(BufferedImage bi, String format) throws Exception{
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(bi, format, os);
+        InputStream is = new ByteArrayInputStream(os.toByteArray());
+        return is;
     }
 }

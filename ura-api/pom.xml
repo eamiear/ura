@@ -62,7 +62,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.14</version>
 				<configuration>
-					<imageName>ura/api</imageName>
+					<imageName>ura-api</imageName>
 					<dockerDirectory>${project.basedir}</dockerDirectory>
 					<resources>
 						<resource>

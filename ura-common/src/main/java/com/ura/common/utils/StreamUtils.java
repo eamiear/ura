@@ -20,4 +20,17 @@ public class StreamUtils {
         is.close();
         return outputStream.toByteArray();
     }
+    public static String byteArrayToString(byte[] byteArray) {
+        if (byteArray == null) {
+            return null;
+        }
+        return new String(byteArray);
+    }
+
+    public static byte[] StringToByteArray(String string) {
+        if (string == null) {
+            return null;
+        }
+        return string.getBytes();
+    }
 }

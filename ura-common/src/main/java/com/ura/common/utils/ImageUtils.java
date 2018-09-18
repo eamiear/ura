@@ -5,6 +5,11 @@
 
 package com.ura.common.utils;
 
+import sun.misc.BASE64Encoder;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,5 +26,14 @@ public class ImageUtils {
         FileOutputStream fos = new FileOutputStream(targetPath);
         fos.write(buffer);
         fos.close();
+    }
+    public static String bufferedImageToBase64Str(BufferedImage bi) throws Exception {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(bi, "png", os);
+        byte[] bytes = os.toByteArray();
+        BASE64Encoder encoder = new BASE64Encoder();
+        String base64 = encoder.encodeBuffer(bytes).trim();
+        base64.replaceAll("\n", "").replaceAll("\r", "");
+        return base64;
     }
 }

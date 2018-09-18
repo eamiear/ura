@@ -8,14 +8,19 @@ package com.ura.api.utils;
 import com.ura.api.bean.JiqieBean;
 import com.ura.common.utils.DrawerUtils;
 import com.ura.common.utils.HttpUtils;
+import com.ura.common.utils.ImageUtils;
 import com.ura.common.utils.JSONResult;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 @Component
@@ -102,4 +107,13 @@ public class ArtUtils {
     public void write(BufferedImage bi, HttpServletResponse response) throws Exception{
         write(bi, "png", response);
     }
+
+    public String write(BufferedImage bi) throws Exception{
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(bi, "png", os);
+//        return StreamUtils.copyToString(new ByteArrayInputStream(os.toByteArray()), Charset.forName("UTF-8"));
+//        return os.size() > 0 ? os.toByteArray().toString() : "";
+        return ImageUtils.bufferedImageToBase64Str(bi);
+    }
+
 }

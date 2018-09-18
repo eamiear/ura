@@ -1,7 +1,6 @@
 package com.ura.api.controller;
 
 import com.ura.api.annotation.IgnoreAuth;
-import com.ura.api.bean.LoginBean;
 import com.ura.api.service.TokenService;
 import com.ura.api.service.UserService;
 import com.ura.common.utils.R;
@@ -17,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Api(tags = "登录授权接口")
+@Api(tags = "登录接口")
 public class ApiLoginController {
   @Autowired
   private UserService userService;

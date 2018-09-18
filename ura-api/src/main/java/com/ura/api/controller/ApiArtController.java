@@ -8,6 +8,7 @@ package com.ura.api.controller;
 import com.ura.api.annotation.IgnoreAuth;
 import com.ura.api.utils.ArtUtils;
 import com.ura.common.utils.DrawerUtils;
+import com.ura.common.utils.JSONResult;
 import com.ura.common.utils.R;
 import com.ura.common.utils.StatusCodeConstant;
 import io.swagger.annotations.Api;
@@ -17,12 +18,13 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 
 @RestController
 @RequestMapping("/api/art")
-@Api(tags = "签名接口")
+@Api(tags = "艺术签名接口")
 public class ApiArtController {
 
     @Autowired
@@ -48,8 +50,8 @@ public class ApiArtController {
         }
         try {
             BufferedImage bi = artService.removeWatermark(text, style, handleColor(SIGN_BG), handleColor(decorator), handleColor(color));
-            artService.write(bi, response);
-            return R.success("签名生成成功");
+//            artService.write(bi, response);
+            return R.success("签名生成成功").put("data", JSONResult.build().put("sign",  artService.write(bi)));
         } catch (Exception e) {
             return R.error().put("msg", e);
         }

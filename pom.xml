@@ -222,18 +222,18 @@
         </pluginRepository>
     </pluginRepositories>
 
-	<build>
+	<!--<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                <!--fork:设置True，否则可能devtools不会起作用-->
+                &lt;!&ndash;fork:设置True，否则可能devtools不会起作用&ndash;&gt;
                     <fork>true</fork>
                 </configuration>
             </plugin>
 		</plugins>
-	</build>
+	</build>-->
 
 
 </project>

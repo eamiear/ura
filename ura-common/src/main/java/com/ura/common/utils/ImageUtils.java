@@ -10,6 +10,7 @@ import sun.misc.BASE64Encoder;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Base64;
 
 public class ImageUtils {
     public static byte[] image2Bytes(String imagePath) throws Exception{
@@ -26,11 +27,12 @@ public class ImageUtils {
     }
     public static String bufferedImageToBase64Str(BufferedImage bi) throws Exception {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(bi, "png", os);
-        byte[] bytes = os.toByteArray();
-        BASE64Encoder encoder = new BASE64Encoder();
-        String base64 = encoder.encodeBuffer(bytes).trim();
-        base64.replaceAll("\n", "").replaceAll("\r", "");
+        ImageIO.write(bi, "gif", os);
+//        byte[] bytes = os.toByteArray();
+//        BASE64Encoder encoder = new BASE64Encoder();
+//        String base64 = encoder.encodeBuffer(bytes).trim();
+//        base64.replaceAll("\n", "").replaceAll("\r", "");
+        String base64 = Base64.getEncoder().encodeToString(os.toByteArray());
         return base64;
     }
 

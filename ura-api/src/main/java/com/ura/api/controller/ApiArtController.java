@@ -75,8 +75,9 @@ public class ApiArtController {
         try {
             BufferedImage bi = artService.removeWatermark(text, style, handleColor(SIGN_BG), handleColor(decorator), handleColor(color));
             bi = DrawerUtils.transparentImage(bi, COLOR_RANGE, 0);
-            artService.write(bi, response);
-            return R.success("签名生成成功");
+//            artService.write(bi, response);
+//            return R.success("签名生成成功");
+            return R.success("签名生成成功").put("data", JSONResult.build().put("sign",  artService.write(bi)));
         } catch (Exception e) {
             return R.error().put("msg", e);
         }
@@ -104,8 +105,9 @@ public class ApiArtController {
             bi = DrawerUtils.transparentImage(bi, COLOR_RANGE, 0);
             bi = DrawerUtils.alpha1(bi);
             BufferedImage scaleImage = DrawerUtils.scaleImage(bi, width, height);
-            artService.write(scaleImage, response);
-            return R.success("签名生成成功");
+//            artService.write(scaleImage, response);
+//            return R.success("签名生成成功");
+            return R.success("签名生成成功").put("data", JSONResult.build().put("sign",  artService.write(scaleImage)));
         } catch (Exception e) {
             return R.error().put("msg", e);
         }

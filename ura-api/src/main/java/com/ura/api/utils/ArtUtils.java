@@ -26,6 +26,8 @@ import java.util.Map;
 @Component
 public class ArtUtils {
 
+    private static String IMAGE_SUFFIX = "";
+
     @Autowired
     private JiqieBean jiqieBean;
 
@@ -67,6 +69,7 @@ public class ArtUtils {
     private String getVisitedImageUrl(String partial){
         if (null == partial) return "";
         jiqieBean.setSuffix(partial.substring(partial.lastIndexOf(".") + 1));
+        IMAGE_SUFFIX = jiqieBean.getSuffix();
         return jiqieBean.getDomain() + partial;
     }
 
@@ -105,12 +108,20 @@ public class ArtUtils {
     }
 
     public void write(BufferedImage bi, HttpServletResponse response) throws Exception{
-        write(bi, "png", response);
+        String suffix = "gif";
+        if (StringUtils.isNotBlank(IMAGE_SUFFIX)){
+            suffix = IMAGE_SUFFIX;
+        }
+        write(bi, suffix, response);
     }
 
     public String write(BufferedImage bi) throws Exception{
+        String suffix = "gif";
+        if (StringUtils.isNotBlank(IMAGE_SUFFIX)){
+            suffix = IMAGE_SUFFIX;
+        }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(bi, "png", os);
+        ImageIO.write(bi, suffix, os);
 //        return StreamUtils.copyToString(new ByteArrayInputStream(os.toByteArray()), Charset.forName("UTF-8"));
 //        return os.size() > 0 ? os.toByteArray().toString() : "";
         return ImageUtils.bufferedImageToBase64Str(bi);

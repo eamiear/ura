@@ -106,3 +106,9 @@ ura:
           y: 40
           width: 500
           height: 211
+
+  third-login:
+    wechat:
+      wechatAppId: xxx,
+      wechatAppSecret: xxx,
+      wechatRedirectUrl: xxx

@@ -188,6 +188,7 @@ public class HttpReqUtils {
      * @param path 请求path 路径
      * @param map 请求参数集合
      * @param data 输入的数据 允许为空
+     * @param encoding 编码
      * @return
      */
     public static String HttpDefaultExecute(String method, String path, Map<String, String> map, String data, String encoding) {

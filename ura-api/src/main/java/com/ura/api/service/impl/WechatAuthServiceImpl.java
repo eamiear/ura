@@ -6,10 +6,7 @@ import com.ura.common.config.WechatConfig;
 import com.ura.common.constant.SystemConstant;
 import com.ura.common.utils.JSONUtils;
 import com.ura.wechat.model.base.AbstractParams;
-import com.ura.wechat.model.resp.AccessToken;
-import com.ura.wechat.model.resp.AuthAccessToken;
-import com.ura.wechat.model.resp.AuthUserInfo;
-import com.ura.wechat.model.resp.ResultState;
+import com.ura.wechat.model.resp.*;
 import com.ura.wechat.utils.HttpReqUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -120,7 +117,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
   }
 
   /**
-   *
+   * 校验授权凭证（access_token）是否有效
    * @param accessToken   网页授权接口调用凭证
    * @param openid        用户唯一标识
    * @return {"errcode": 0, "errmsg": "ok"} 成功   {"errcode": 40003, "errmsg": "invalid openid"}失败
@@ -136,9 +133,22 @@ public class WechatAuthServiceImpl implements WechatAuthService {
     return state;
   }
 
+  /**
+   * 获取jsapi_ticket调用微信JS接口的临时票据
+   * @param accessToken
+   * @return
+   */
   @Override
   public String getTicket(String accessToken) {
-
+    JsapiTicket ticket = null;
+    Map<String, String> params = new TreeMap<>();
+    params.put("access_token", accessToken);
+    params.put("type", "jsapi");
+    String result = HttpReqUtils.HttpDefaultExecute(SystemConstant.GET_METHOD, WechatConfig.GET_TICKET_URL, params, "", null);
+    ticket = JSONUtils.fromJsonString(result, JsapiTicket.class);
+    if (ticket.getErrcode() == 0) {
+      return ticket.getTicket();
+    }
     return null;
   }
 }

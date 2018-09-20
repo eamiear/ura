@@ -28,6 +28,10 @@ public class IPUtils {
       if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
         ip = request.getRemoteAddr();
       }
+      // 多级反向代理
+      if (StringUtils.isNotEmpty(ip) && ip.indexOf(",") > 0 && ip.split(",").length > 1) {
+        ip = ip.split(",")[0];
+      }
     } catch (Exception e) {
       logger.error("IPUtils Error ", e);
     }

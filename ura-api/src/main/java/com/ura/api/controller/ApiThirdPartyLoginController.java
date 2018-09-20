@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api")
 @Api(tags = "第三方登录接口")
-public class ThirdPartyLoginController {
+public class ApiThirdPartyLoginController {
 
     @GetMapping("/callback/wx")
     @ApiOperation(value = "微信登录回调")

@@ -226,10 +226,10 @@ public class HttpClientUtils {
 
   /**
    * 发送一个 GET 请求
-   * @param url
-   * @param charset
-   * @param connTimeout
-   * @param readTimeout
+   * @param url           请求url
+   * @param charset       字符编码
+   * @param connTimeout   连接过期时间
+   * @param readTimeout   socket连接时间
    * @return
    * @throws ConnectTimeoutException
    * @throws SocketTimeoutException

@@ -5,11 +5,16 @@
 
 package com.ura.api.controller;
 
+import com.ura.api.service.WechatAuthService;
+import com.ura.common.config.WechatConfig;
 import com.ura.common.support.context.Resources;
+import com.ura.common.utils.MD5Utils;
 import com.ura.common.utils.R;
+import com.ura.wechat.model.req.AuthCodeParams;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "第三方登录接口")
 public class ApiThirdPartyLoginController {
 
+  @Autowired
+  private WechatAuthService wechatAuthService;
+
     @GetMapping("/callback/wx")
     @ApiOperation(value = "微信登录回调")
     public R wxCallback(String code, String state, HttpServletRequest request){
@@ -28,6 +36,17 @@ public class ApiThirdPartyLoginController {
 
       }
       return R.success();
+    }
+
+    @GetMapping("auth")
+    public String oauthUrl(String redirect_uri) throws Exception{
+      AuthCodeParams authCodeParams = new AuthCodeParams();
+      authCodeParams.setRedirect_uri(redirect_uri);
+      authCodeParams.setAppid(WechatConfig.APP_ID);
+      authCodeParams.setScope(AuthCodeParams.SCOPE_SNSAPIBASE);
+      authCodeParams.setState(MD5Utils.MD5Encode("ura", ""));
+      String url = wechatAuthService.getAuthPath(authCodeParams, WechatConfig.AUTHORIZE_OAUTH_URL);
+      return url;
     }
 
     public String getRedirectUrl(HttpServletRequest request, String type){

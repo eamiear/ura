@@ -26,7 +26,7 @@ public class WechatAuthServiceImpl implements WechatAuthService {
    * @param secret  应用密钥
    * @return
    */
-  public static String getAccessToken(String appid, String secret){
+  public String getAccessToken(String appid, String secret){
     TreeMap<String, String> map = new TreeMap<>();
     map.put("grant_type", "client_credential");
     map.put("appid", appid);

@@ -33,7 +33,7 @@ public class SwaggerConfig {
   }
   private ApiInfo apiInfo(){
     return new ApiInfoBuilder()
-            .title("YouLa")
+            .title("YouLa Tech")
             .description("ura-api文档")
             .termsOfServiceUrl("http://www.ura.com")
             .version("1.0.0")

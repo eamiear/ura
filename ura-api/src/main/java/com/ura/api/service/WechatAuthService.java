@@ -6,6 +6,8 @@ import com.ura.wechat.model.resp.AuthUserInfo;
 import com.ura.wechat.model.resp.ResultState;
 
 public interface WechatAuthService {
+
+  public String getAccessToken(String appid, String secret);
   /**
    * 获取授权请求url
    * @param params

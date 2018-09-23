@@ -5,6 +5,7 @@ public class StatusCodeConstant {
   public static final int NO_AUTH = 1004;         // 无权限
   public static final int TOKEN_EXPIRE = 1002;    // token 失效
   public static final int TOKEN_INVALID = 1003;   // 无效token
+  public static final int TOKEN_OAUTH_ERROR = 1004; // 微信授权失败
 
   // user about
   public static final int USER_NOT_LOGIN = 2001;  // 用户未登录
@@ -22,6 +23,7 @@ public class StatusCodeConstant {
   // data about
   public static final int DATA_NOT_FOUND = 5001;  // 数据未找到
   public static final int DATA_DUPLICATE_KEY_IN_DATABASE = 5002; // 数据库记录重复
+  public static final int DATA_CREATE_ERROR = 5003; // 数据创建失败
 
   // interface about
   public static final int INTERFACE_INNER_INVOKE_ERROR = 6001;    // 系统内部接口调用错误

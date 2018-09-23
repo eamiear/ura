@@ -9,6 +9,7 @@ public class WechatConfig {
     public static final String APP_ID = "wxda99b416de7fa9d5";
     public static final String APP_SECRET = "af8585ba35ed1907c5188bc9310b56cc";
     public static final String WECHAT_TOKEN = "ura";
+    public static final String WECHAT_STATE = "ura";
 
     // 异步通知URL
     public static final String NOTIFY_URL = "自己的异步通知URL";

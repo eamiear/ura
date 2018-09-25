@@ -69,7 +69,7 @@ spring:
 # Mybatis≈‰÷√
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
-  typeAliasesPackage: com.ura.admin.entity
+  typeAliasesPackage: com.ura.api.entity
   configuration:
     map-underscore-to-camel-case: true
   global-config:
@@ -78,7 +78,7 @@ mybatis-plus:
 logging:
   level: debug
   level.com.ura: debug
-  file: ./ura-admin/logs/admin.log
+  file: ./ura-api/logs/api.log
 
 ura:
   redis:

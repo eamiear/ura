@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-09-16 23:50:36
+Date: 2018-09-25 21:08:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -440,6 +440,7 @@ CREATE TABLE `tb_token` (
 -- Records of tb_token
 -- ----------------------------
 INSERT INTO `tb_token` VALUES ('1', 'd0e9a8bf436ddbd736fdb74183522f78', '2018-09-17 04:21:46', '2018-09-16 16:21:46');
+INSERT INTO `tb_token` VALUES ('3', 'c99c01443e4d96f028008fbfbdce7a18', '2018-09-24 08:53:50', '2018-09-23 20:53:50');
 
 -- ----------------------------
 -- Table structure for `tb_user`
@@ -453,8 +454,8 @@ CREATE TABLE `tb_user` (
   `birthday` datetime DEFAULT NULL,
   `register_time` datetime DEFAULT NULL,
   `last_login_time` datetime DEFAULT NULL,
-  `register_ip` varchar(20) DEFAULT NULL,
-  `last_lgoin_ip` varchar(20) DEFAULT NULL,
+  `register_ip` varchar(100) DEFAULT NULL,
+  `last_lgoin_ip` varchar(100) DEFAULT NULL,
   `nickname` varchar(60) DEFAULT NULL,
   `mobile` varchar(20) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
@@ -462,10 +463,14 @@ CREATE TABLE `tb_user` (
   `group_id` int(10) DEFAULT NULL,
   `locked` tinyint(1) DEFAULT NULL,
   `login_times` int(20) DEFAULT NULL,
+  `country` varchar(50) DEFAULT NULL,
+  `province` varchar(50) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES ('1', '12345678901', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', null, null, '2018-09-16 15:25:42', null, null, null, null, '12345678901', null, null, null, null, null);
+INSERT INTO `tb_user` VALUES ('1', '12345678901', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', null, null, '2018-09-16 15:25:42', null, null, null, null, '12345678901', null, null, null, null, null, null, null, null);
+INSERT INTO `tb_user` VALUES ('3', 'skz', null, '1', null, '2018-09-23 14:09:14', '2018-09-23 20:53:50', '2408:84f3:8e01:e497:a8fe:102f:e6:b1fb', '112.96.176.12', 'skz', null, null, 'o67jR0ggMG6mKHGfrecnLBmjtR1c', null, null, '3', 'CN', 'Guangdong', 'Guangzhou');

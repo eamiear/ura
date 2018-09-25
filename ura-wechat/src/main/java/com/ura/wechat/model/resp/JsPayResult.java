@@ -1,11 +1,11 @@
 package com.ura.wechat.model.resp;
 
-import com.ura.wechat.model.req.JsPayParams;
+import com.ura.wechat.model.req.PayJsParams;
 
 /**
  * 微信内H5返回结果
  */
-public class JsPayResult extends JsPayParams {
+public class JsPayResult extends PayJsParams {
   private String errMsg;
   private String resultCode;
 

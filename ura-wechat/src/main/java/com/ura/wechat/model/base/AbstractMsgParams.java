@@ -14,6 +14,10 @@ public abstract class AbstractMsgParams implements Serializable{
   private long MsgId;         // 消息id，64位
 
 
+  /**
+   *
+   * @return
+   */
   public abstract String SetMsgType();
 
   public String getToUserName() {

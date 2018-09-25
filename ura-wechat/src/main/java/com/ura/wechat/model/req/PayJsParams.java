@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 微信内H5调起支付参数
  */
-public class JsPayParams implements Serializable {
+public class PayJsParams implements Serializable {
 
   private String appId; // 公众号id
   private String timeStamp; // 时间戳

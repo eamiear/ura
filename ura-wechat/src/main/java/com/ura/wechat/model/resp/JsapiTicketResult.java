@@ -1,6 +1,6 @@
 package com.ura.wechat.model.resp;
 
-public class JsapiTicket extends ResultState{
+public class JsapiTicketResult extends ResultState{
   private String ticket; // jsapi_ticket
   private String expires_in;
 

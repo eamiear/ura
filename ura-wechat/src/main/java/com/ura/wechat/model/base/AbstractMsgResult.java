@@ -8,7 +8,8 @@ public abstract class AbstractMsgResult {
   private String ToUserName;    // 接收方账号（OpenID）
   private String FromUserName;  // 开发者微信号
   private long CreateTime;      // 消息创建时间
-  private String MsgType = "";  // 消息类型(text|music|news)
+  private String MsgType = setMsgType();  // 消息类型(text|music|news)
+
   public abstract String setMsgType();
 
   public String getToUserName() {

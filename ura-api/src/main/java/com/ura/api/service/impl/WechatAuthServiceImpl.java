@@ -140,12 +140,12 @@ public class WechatAuthServiceImpl implements WechatAuthService {
    */
   @Override
   public String getTicket(String accessToken) {
-    JsapiTicket ticket = null;
+    JsapiTicketResult ticket = null;
     Map<String, String> params = new TreeMap<>();
     params.put("access_token", accessToken);
     params.put("type", "jsapi");
     String result = HttpReqUtils.HttpDefaultExecute(SystemConstant.GET_METHOD, WechatConfig.GET_TICKET_URL, params, "", null);
-    ticket = JSONUtils.fromJsonString(result, JsapiTicket.class);
+    ticket = JSONUtils.fromJsonString(result, JsapiTicketResult.class);
     if (ticket.getErrcode() == 0) {
       return ticket.getTicket();
     }

@@ -5,7 +5,7 @@ import com.ura.wechat.model.base.AbstractResult;
 /**
  * JS-SDK 页面配置信息
  */
-public class JsSDKConfig extends AbstractResult {
+public class JsSDKConfigResult extends AbstractResult {
   private String appId;
   private long timestamp;
   private String noncestr;

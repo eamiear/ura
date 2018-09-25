@@ -1,6 +1,8 @@
-package com.ura.common.utils;
+package com.ura.wechat.utils;
 
 import com.ura.common.constant.SystemConstant;
+import com.ura.common.utils.DateUtils;
+import com.ura.common.utils.MD5Utils;
 
 import java.util.Date;
 import java.util.Map;

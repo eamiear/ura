@@ -15,7 +15,11 @@ public class StatusCodeConstant {
   public static final int USER_EXISTED = 2005;    // 用户已存在
 
   // business about
-  public static final int BUSINNESS_ERROR = 3001; // 系统业务出现问题
+  public static final int BUSINESS_ERROR = 3001; // 系统业务出现问题
+  public static final int BUSINESS_PAY_SUCCESS = 3010;  // 支付成功
+  public static final int BUSINESS_PAY_ERROR = 3011;    // 支付失败
+  public static final int BUSINESS_PAY_EXCEPTION = 3012;    // 支付异常
+
 
   // system about
   public static final int SYSTEM_INNER_ERROR = 4001;  // 系统内部错误

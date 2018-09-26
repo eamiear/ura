@@ -6,10 +6,13 @@
 package com.ura.api.controller;
 
 import com.ura.api.annotation.IgnoreAuth;
+import com.ura.api.entity.AppVersionEntity;
+import com.ura.api.service.AppVersionService;
 import com.ura.common.utils.JSONResult;
 import com.ura.common.utils.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +22,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "公共接口")
 public class ApiCommonController {
 
+    @Autowired
+    private AppVersionService appVersionService;
+
     @IgnoreAuth
     @GetMapping("c/version")
     @ApiOperation("获取APP版本号")
     public R version(){
-        return R.success().put("data", JSONResult.build().put("v", "0.0.1"));
+        AppVersionEntity version = appVersionService.queryLatestVersion();
+        JSONResult result = JSONResult.build();
+        R r = new R();
+
+        if (version != null){
+            r.put("data", result.put("v", version.getVersionNo())
+                    .put("version", version.getVersionNo())
+                    .put("name", version.getVersionName())
+                    .put("description", version.getUpdateMsg()));
+        } else {
+            r.put("data", "").put("msg", "没有记录");
+        }
+        return r;
     }
 }

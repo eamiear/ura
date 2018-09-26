@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ura.api.dao.AppVersionDao">
+  <select id="queryLatestVersion" resultType="com.ura.api.entity.AppVersionEntity">
+    SELECT id AS id,appname,version_no AS versionNo,version_name AS versionName,update_msg AS updateMsg,`status`,publish_time AS publishTime FROM app_version
+    WHERE (status = 1)
+    ORDER BY publish_time DESC LIMIT 1
+  </select>
+</mapper>

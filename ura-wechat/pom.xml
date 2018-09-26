@@ -45,7 +45,6 @@
 			<groupId>net.sf.sociaal</groupId>
 			<artifactId>xmlpull-xpp3</artifactId>
 			<version>${xmlpull-xpp3.version}</version>
-			<type>pom</type>
 		</dependency>
 
 	</dependencies>

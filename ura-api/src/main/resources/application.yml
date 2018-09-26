@@ -4,7 +4,7 @@ server:
         uri-encoding: UTF-8
         max-threads: 1000
         min-spare-threads: 30
-    port: 6064
+    port: 1010
     servlet:
         context-path: /ura
 
@@ -16,7 +16,7 @@ spring:
         druid:
           url: jdbc:mysql://localhost:3306/ura?useUnicode=true&characterEncoding=UTF-8
           username: root
-          password:
+          password: Gtland123
           initial-size: 10
           max-active: 100
           min-idle: 10

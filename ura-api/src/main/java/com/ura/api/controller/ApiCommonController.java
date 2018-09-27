@@ -36,8 +36,7 @@ public class ApiCommonController {
         if (version != null){
             String versionName = version.getVersionName();
             String versionMsg = version.getUpdateMsg();
-            r.put("data", result.put("v", version.getVersionNo())
-                    .put("version", version.getVersionNo())
+            r.put("data", result.put("version", version.getVersionNo())
                     .put("name", versionName != null ? versionName : "")
                     .put("description", versionMsg != null ? versionMsg : ""));
         } else {

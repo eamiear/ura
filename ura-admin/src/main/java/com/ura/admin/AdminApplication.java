@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@SpringBootApplication
+//@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.ura"})
 public class AdminApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {

@@ -34,10 +34,11 @@ public class ApiCommonController {
         R r = new R();
 
         if (version != null){
-            r.put("data", result.put("v", version.getVersionNo())
-                    .put("version", version.getVersionNo())
-                    .put("name", version.getVersionName())
-                    .put("description", version.getUpdateMsg()));
+            String versionName = version.getVersionName();
+            String versionMsg = version.getUpdateMsg();
+            r.put("data", result.put("version", version.getVersionNo())
+                    .put("name", versionName != null ? versionName : "")
+                    .put("description", versionMsg != null ? versionMsg : ""));
         } else {
             r.put("data", "").put("msg", "没有记录");
         }

@@ -1,4 +1,4 @@
-package com.ura.uracore;
+package com.ura.core;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

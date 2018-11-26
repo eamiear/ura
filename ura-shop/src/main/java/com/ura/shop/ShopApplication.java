@@ -3,7 +3,7 @@ package com.ura.shop;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.ura.core", "com.ura.shop"})
 public class ShopApplication {
 
 	public static void main(String[] args) {

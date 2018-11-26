@@ -1,0 +1,61 @@
+# mysql
+spring:
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      druid:
+        url: jdbc:mysql://localhost:3306/ura?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password:
+        initial-size: 10
+        max-active: 100
+        min-idle: 10
+        max-wait: 60000
+        pool-prepared-statements: true
+        max-pool-prepared-statement-per-connection-size: 20
+        time-between-connect-error-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 1 FROM DUAL
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        stat-view-servlet:
+          enabled: true
+          url-pattern: /druid/*
+        filter:
+          stat:
+            log-slow-sql: true
+            slow-sql-millis: 1000
+            merge-sql: false
+          wall:
+            config:
+              multi-statement-allow: true
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+    redis:
+      database: 0
+      host: localhost
+      port: 6379
+      password:
+      timeout: 6000ms
+      jedis:
+        pool:
+          max-active: 1000
+          max-wait: -1ms
+          max-idle: 30
+          min-idle: 5
+    servlet:
+      multipart:
+        enabled: true
+        max-file-size: 100MB
+        max-request-size: 100MB
+
+# Mybatis配置
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  typeAliasesPackage: com.ura.shop.entity
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    id-type: 0

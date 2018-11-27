@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>core</artifactId>
+	<artifactId>ai</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>demo</name>
+	<name>ai</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -26,8 +26,14 @@
 		<dependency>
 			<groupId>com.ura</groupId>
 			<artifactId>common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ura</groupId>
+			<artifactId>core</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -35,13 +41,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

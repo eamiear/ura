@@ -1,4 +1,4 @@
-//package com.ura.shop.config;
+//package com.ura.common.config;
 //
 //import io.swagger.annotations.ApiOperation;
 //import org.springframework.context.annotation.Bean;

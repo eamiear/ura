@@ -11,9 +11,11 @@ server:
 spring:
   profiles:
     active: common, core, ai
-
 logging:
-  level:
-    root: ERROR
-    org.springframework: ERROR
-    com.ura.ai: DEBUG
+  config: ura-ai/src/main/resources/log4j.properties
+
+#logging:
+#  level:
+#    root: ERROR
+#    org.springframework: ERROR
+#    com.ura.ai: DEBUG

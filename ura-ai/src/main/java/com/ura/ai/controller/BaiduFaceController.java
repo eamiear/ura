@@ -12,7 +12,9 @@ import com.ura.common.utils.JSONResult;
 import com.ura.common.utils.R;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 
@@ -21,7 +23,8 @@ import java.util.HashMap;
 public class BaiduFaceController {
 
     @RequestMapping("/detect")
-    public R detect() {
+    public R detect(@RequestParam(value = "file")MultipartFile file, String openId, String nickName) {
+
         String url = "https://gss0.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/8694a4c27d1ed21b2b25b386ab6eddc450da3fe0.jpg";
         AipFace client = new AipFace(AIConstant.BD_FACE_APPID, AIConstant.BD_FACE_APPKEY, AIConstant.BD_FACE_APPSECRET);
 

@@ -10,10 +10,48 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-09-25 21:08:54
+Date: 2018-12-02 22:11:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `ai_bd_face`
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_bd_face`;
+CREATE TABLE `ai_bd_face` (
+  `face_id` int(11) NOT NULL AUTO_INCREMENT,
+  `error_code` varchar(255) DEFAULT NULL,
+  `error_msg` varchar(255) DEFAULT NULL,
+  `log_id` varchar(255) DEFAULT NULL,
+  `timestamp` varchar(255) DEFAULT NULL,
+  `cached` int(255) DEFAULT NULL,
+  `face_num` int(11) DEFAULT NULL,
+  `face_token` varchar(255) DEFAULT NULL,
+  `face_probability` varchar(255) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `beauty` varchar(255) DEFAULT NULL COMMENT '美丑打分，范围0-100，越大表示越美。',
+  `expression_type` varchar(255) DEFAULT NULL COMMENT 'none:不笑；smile:微笑；laugh:大笑',
+  `face_shape_type` varchar(255) DEFAULT NULL COMMENT '脸型 square: 正方形 triangle:三角形 oval: 椭圆 heart: 心形 round: 圆形',
+  `gender` varchar(255) DEFAULT NULL COMMENT 'male:男性 female:女性',
+  `glasses_type` varchar(255) DEFAULT NULL COMMENT 'none:无眼镜，common:普通眼镜，sun:墨镜',
+  `race_type` varchar(255) DEFAULT NULL COMMENT 'yellow: 黄种人 white: 白种人 black:黑种人 arabs: 阿拉伯人',
+  `open_id` varchar(255) DEFAULT NULL COMMENT '微信openid',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '微信昵称',
+  `image_path` varchar(1000) DEFAULT NULL COMMENT '可以是本地路径 远程路径 具体根据实际业务来',
+  PRIMARY KEY (`face_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ai_bd_face
+-- ----------------------------
+INSERT INTO `ai_bd_face` VALUES ('28', '0', 'SUCCESS', '2267528118', '1528816284', '0', '1', 'c739e29fc9b2bf58a18b63ae3868b237', '0', '18', '65.46601868', 'none', 'heart', 'female', 'none', 'yellow', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', '/face/faceV3BD1528816282.jpeg');
+INSERT INTO `ai_bd_face` VALUES ('29', '0', 'SUCCESS', '4137833425', '1529414807', '0', '1', '2a5781540fb973bc2af81fd2f4e8915f', '1', '14', '27.21316338', 'none', 'square', 'male', 'none', 'yellow', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', '/face/faceV3BD1529414807.jpeg');
+INSERT INTO `ai_bd_face` VALUES ('30', '0', 'SUCCESS', '565353545997', '1530023626', '0', '1', '4db3bf7b672fddb0dc647040d60ab567', '1', '35', '48.57863998', 'none', 'square', 'female', 'none', 'white', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', '/face/faceV3BD1530023626.jpg');
+INSERT INTO `ai_bd_face` VALUES ('31', '0', 'SUCCESS', '744193237574287881', '1543757428', '0', '1', '457b3d769fcd8d052aede31bf66fec6c', '0', '12', '35.73', 'none', 'round', 'male', 'common', 'yellow', null, null, '');
+INSERT INTO `ai_bd_face` VALUES ('32', '0', 'SUCCESS', '747956937578138951', '1543757813', '0', '1', '824603e34276df3845a775fc40c31f5e', '1', '1', '41.34', 'none', 'round', 'male', 'none', 'yellow', null, null, '');
+INSERT INTO `ai_bd_face` VALUES ('33', '0', 'SUCCESS', '744193237584741411', '1543758474', '0', '1', '16261753dbbf72d83c63d96ee9bdbf4b', '1', '6', '43.55', 'smile', 'round', 'female', 'none', 'yellow', null, null, '');
+INSERT INTO `ai_bd_face` VALUES ('34', '0', 'SUCCESS', '747956937591433171', '1543759143', '0', '1', 'c39d3b8786d799cd0d641fada5dc4052', '1', '24', '74.96', 'smile', 'heart', 'female', 'none', 'white', null, null, '');
 
 -- ----------------------------
 -- Table structure for `gen_config`

@@ -62,7 +62,7 @@ public class FileUtils {
   }
 
   public static byte[] readStreamByBytes(InputStream is) throws IOException{
-    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    ByteArrayOutputStream bos = new ByteArrayOutputStream(is.available());
     BufferedInputStream bis = null;
     try {
       bis = new BufferedInputStream(is);

@@ -14,6 +14,7 @@ import com.ura.ai.common.UraAipImageClassify;
 import com.ura.ai.entity.DishDetectEntity;
 import com.ura.ai.entity.GeneralDetectEntity;
 import com.ura.common.utils.*;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,8 +53,8 @@ public class BaiduImageClassifyController {
             return R.error().put("msg", "图片地址不能为空");
         }
         try {
-            InputStream is =  HttpUtils.URLPost(url);
-            byte[] image = FileUtils.readStreamByBytes(is);
+            GetMethod is =  HttpUtils.URLGet(url, new HashMap<String, String>());
+            byte[] image = FileUtils.readStreamByBytes(is.getResponseBodyAsStream());
             JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, "");
             if (jsonResult != null) {
                 r.put("msg", "检测成功").put("data", jsonResult);
@@ -80,10 +81,10 @@ public class BaiduImageClassifyController {
 
         if (detectType.equals("dish")) {
             DishDetectResp dishDetectResp = getDishResponseData(detectBean, openId, nickName, "");
-            jsonResult.put("detect", dishDetectResp);
+            jsonResult.put("detect", dishDetectResp).put("raw", detectBean);
         } else {
             detectResp = getBiologyData(detectBean, openId, nickName, detectType);
-            jsonResult.put("detect", detectResp);
+            jsonResult.put("detect", detectResp).put("raw", detectBean);
         }
         return jsonResult;
     }
@@ -149,43 +150,57 @@ public class BaiduImageClassifyController {
     }
 
     private ClassifyGeneralDetectResp getBiologyData(ClassifyGeneralDetectBean cgb, String openId, String nickname, String detectType) {
-        ClassifyGeneralDetectResp detectResp = new ClassifyGeneralDetectResp();
-        detectResp.setName(cgb.getResult().get(0).getName());
-        detectResp.setScore(getPercent(Double.parseDouble(cgb.getResult().get(0).getScore()) * 100));
-        detectResp.setProbability(getPercent(Double.parseDouble(cgb.getResult().get(0).getProbability()) * 100));
-        detectResp.setColorResult(cgb.getColor_result());
-        detectResp.setYear(cgb.getResult().get(0).getYear());
+      ClassifyGeneralDetectResp detectResp = new ClassifyGeneralDetectResp();
+      detectResp.setName(cgb.getResult().get(0).getName());
+      if (cgb.getResult().get(0).getScore() != null) {
+          detectResp.setScore(getPercent(Double.parseDouble(cgb.getResult().get(0).getScore()) * 100));
+      } else {
+          detectResp.setProbability(getPercent(Double.parseDouble(cgb.getResult().get(0).getProbability()) * 100));
+      }
+      detectResp.setColorResult(cgb.getColor_result());
+      detectResp.setYear(cgb.getResult().get(0).getYear());
+
+      if (!detectType.equals("logo")) {
         detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
         detectResp.setImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
         detectResp.setDescription(cgb.getResult().get(0).getBaike_info().getDescription());
+      }
 
-        // TODO save to db
-        GeneralDetectEntity detectEntity = new GeneralDetectEntity();
-        detectEntity.setOpenId(openId);
-        detectEntity.setNickname(nickname);
-        detectEntity.setDetectType(detectType);
-        detectEntity.setLogId(String.valueOf(cgb.getLog_id()));
-        detectEntity.setResultNum(cgb.getResult_num());
-        detectEntity.setName(cgb.getResult().get(0).getName());
+      // TODO save to db
+      GeneralDetectEntity detectEntity = new GeneralDetectEntity();
+      detectEntity.setOpenId(openId);
+      detectEntity.setNickname(nickname);
+      detectEntity.setDetectType(detectType);
+      detectEntity.setLogId(String.valueOf(cgb.getLog_id()));
+      detectEntity.setResultNum(cgb.getResult_num());
+      detectEntity.setName(cgb.getResult().get(0).getName());
 
-        detectEntity.setYear(cgb.getResult().get(0).getYear());
-        detectEntity.setColorResult(cgb.getColor_result());
-        detectEntity.setScore(cgb.getResult().get(0).getScore());
-        detectEntity.setProbability(cgb.getResult().get(0).getProbability());
+      detectEntity.setYear(cgb.getResult().get(0).getYear());
+      detectEntity.setColorResult(cgb.getColor_result());
+      detectEntity.setScore(cgb.getResult().get(0).getScore());
+      detectEntity.setProbability(cgb.getResult().get(0).getProbability());
 
+      if (detectType.equals("car")) {
+        detectEntity.setLocalWidth(cgb.getLocation_result().getWidth());
+        detectEntity.setLocalHeight(cgb.getLocation_result().getHeight());
+        detectEntity.setLocalLeft(cgb.getLocation_result().getLeft());
+        detectEntity.setLocalTop(cgb.getLocation_result().getTop());
+      } else if (detectType.equals("logo")){
         detectEntity.setLocalWidth(cgb.getResult().get(0).getLocation().getWidth());
         detectEntity.setLocalHeight(cgb.getResult().get(0).getLocation().getHeight());
         detectEntity.setLocalLeft(cgb.getResult().get(0).getLocation().getLeft());
         detectEntity.setLocalTop(cgb.getResult().get(0).getLocation().getTop());
+      }
 
-        detectEntity.setLogoType(String.valueOf(cgb.getResult().get(0).getLogoType()));
-        detectEntity.setImagePath("");
-
+      if (!detectType.equals("logo")) {
         detectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
         detectEntity.setBaikeImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
         detectEntity.setBaikeDescription(cgb.getResult().get(0).getBaike_info().getDescription());
+      }
 
-        return detectResp;
+      detectEntity.setLogoType(String.valueOf(cgb.getResult().get(0).getLogoType()));
+      detectEntity.setImagePath("");
+      return detectResp;
     }
 
     private String getPercent(double num) {

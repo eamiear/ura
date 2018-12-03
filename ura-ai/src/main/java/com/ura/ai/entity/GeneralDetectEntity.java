@@ -13,15 +13,15 @@ public class GeneralDetectEntity {
     @TableId
     private Long id;
     private String logId;
-    private int resultNum;
+    private Integer resultNum;
     private String name;
     private String score;
     private String year;
     private String colorResult;
-    private int localWidth;
-    private int localHeight;
-    private int localTop;
-    private int localLeft;
+    private Integer localWidth;
+    private Integer localHeight;
+    private Integer localTop;
+    private Integer localLeft;
     private String logoType;
     private String probability;
     private String imagePath;
@@ -49,11 +49,11 @@ public class GeneralDetectEntity {
         this.logId = logId;
     }
 
-    public int getResultNum() {
+    public Integer getResultNum() {
         return resultNum;
     }
 
-    public void setResultNum(int resultNum) {
+    public void setResultNum(Integer resultNum) {
         this.resultNum = resultNum;
     }
 
@@ -89,35 +89,35 @@ public class GeneralDetectEntity {
         this.colorResult = colorResult;
     }
 
-    public int getLocalWidth() {
+    public Integer getLocalWidth() {
         return localWidth;
     }
 
-    public void setLocalWidth(int localWidth) {
+    public void setLocalWidth(Integer localWidth) {
         this.localWidth = localWidth;
     }
 
-    public int getLocalHeight() {
+    public Integer getLocalHeight() {
         return localHeight;
     }
 
-    public void setLocalHeight(int localHeight) {
+    public void setLocalHeight(Integer localHeight) {
         this.localHeight = localHeight;
     }
 
-    public int getLocalTop() {
+    public Integer getLocalTop() {
         return localTop;
     }
 
-    public void setLocalTop(int localTop) {
+    public void setLocalTop(Integer localTop) {
         this.localTop = localTop;
     }
 
-    public int getLocalLeft() {
+    public Integer getLocalLeft() {
         return localLeft;
     }
 
-    public void setLocalLeft(int localLeft) {
+    public void setLocalLeft(Integer localLeft) {
         this.localLeft = localLeft;
     }
 

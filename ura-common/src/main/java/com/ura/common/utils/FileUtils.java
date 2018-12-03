@@ -61,6 +61,30 @@ public class FileUtils {
     }
   }
 
+  public static byte[] readStreamByBytes(InputStream is) throws IOException{
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    BufferedInputStream bis = null;
+    try {
+      bis = new BufferedInputStream(is);
+      short bufferSize = 1024;
+      byte[] buffer = new byte[bufferSize];
+      int len;
+      while (-1 != (len = bis.read(buffer, 0, bufferSize))) {
+        bos.write(buffer, 0, len);
+      }
+      return bos.toByteArray();
+    } finally {
+      try {
+        if (bis != null) {
+          bis.close();
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      bos.close();
+    }
+  }
+
   public static void uploadFile(byte[] file, String filepath, String filename) throws Exception{
     File targetFile = new File(filepath);
     if (!targetFile.exists()) {

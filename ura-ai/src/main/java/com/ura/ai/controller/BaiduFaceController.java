@@ -13,7 +13,6 @@ import com.ura.ai.bean.FaceDetectRespBean;
 import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.entity.FaceDetectEntity;
 import com.ura.ai.service.BaiduFaceDetectService;
-import com.ura.common.constant.AIConstant;
 import com.ura.common.utils.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +36,9 @@ public class BaiduFaceController {
     @RequestMapping("/detect")
     public R detect(@RequestParam(value = "file")MultipartFile file, String openId, String nickName, HttpServletRequest request) {
       R r = new R();
-
       if (file == null) {
         return R.error().put("msg", "图片不能为空");
       }
-
       try {
         String prefix = "face/";
         String fileName = "baidu-face-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
@@ -59,14 +56,12 @@ public class BaiduFaceController {
       } catch (Exception e) {
         r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "第三方接口异常");
       }
-
       return r;
     }
 
     @RequestMapping("/detect/url")
     public R detect(String url, String openId, String nickName) {
       R r = new R();
-
       if (url == null) {
         return R.error().put("msg", "图片地址不能为空");
       }
@@ -81,7 +76,6 @@ public class BaiduFaceController {
       } catch (Exception e) {
         r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "第三方接口异常");
       }
-
       return r;
     }
 
@@ -96,7 +90,7 @@ public class BaiduFaceController {
       FaceDetectBean faceDetectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), FaceDetectBean.class);
 
       if (null != faceDetectBean.getResult()) {
-        FaceDetectEntity faceDetectEntity = new FaceDetectEntity();
+        FaceDetectEntity faceDetectEntity;
         faceDetectEntity = getFaceDetectEntity(faceDetectBean, filePath);
         faceDetectEntity.setOpenId(openId);
         faceDetectEntity.setNickName(nickName);
@@ -122,8 +116,7 @@ public class BaiduFaceController {
     }
 
     private String getRaceType(String type) {
-//      String type = faceDetectBean.getResult().getFace_list().get(0).getRace().getType();
-      String result = "";
+      String result;
       switch (type) {
         case "yellow":
           result = "黄种人";
@@ -144,8 +137,7 @@ public class BaiduFaceController {
       return result;
     }
     private String getFaceShape(String type) {
-//      String type = faceDetectBean.getResult().getFace_list().get(0).getFace_shape().getType();
-      String result = "";
+      String result;
       switch (type) {
         case "square":
           result = "正方形";
@@ -168,8 +160,7 @@ public class BaiduFaceController {
       return result;
     }
     private String getGlasses(String type) {
-//      String type = faceDetectBean.getResult().getFace_list().get(0).getGlasses().getType();
-      String result = "";
+      String result;
       switch (type) {
         case "none":
           result = "无眼镜";
@@ -187,8 +178,7 @@ public class BaiduFaceController {
       return result;
     }
     private String getGender(String type) {
-//      String type = faceDetectBean.getResult().getFace_list().get(0).getGender().getType();
-      String result = "";
+      String result;
       switch (type) {
         case "male":
           result = "男性";
@@ -203,8 +193,7 @@ public class BaiduFaceController {
     }
 
     private String getExpression(String type) {
-//      String type = faceDetectBean.getResult().getFace_list().get(0).getExpression().getType();
-      String result = "";
+      String result;
       switch (type) {
         case "none":
           result = "不笑";

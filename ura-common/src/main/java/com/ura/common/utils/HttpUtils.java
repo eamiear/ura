@@ -1,5 +1,6 @@
 package com.ura.common.utils;
 
+import jdk.internal.util.xml.impl.Input;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.cookie.CookieSpec;
@@ -113,6 +114,34 @@ public class HttpUtils {
     return response;
   }
 
+    public static InputStream URLPost(String url) {
+        InputStream response = null;
+        PostMethod postMethod = null;
+        try {
+            postMethod = new PostMethod(url);
+            postMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+
+            //执行postMethod
+            int statusCode = client.executeMethod(postMethod);
+            if (statusCode == HttpStatus.SC_OK) {
+                response = postMethod.getResponseBodyAsStream();
+            }
+        } catch (HttpException e) {
+            logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("发生网络异常", e);
+            e.printStackTrace();
+        } finally {
+//            if (postMethod != null) {
+//                postMethod.releaseConnection();
+//                postMethod = null;
+//            }
+        }
+        return response;
+    }
+
     /**
      * POST方式提交数据
      *
@@ -207,6 +236,34 @@ public class HttpUtils {
             }
         }
 
+        return response;
+    }
+
+    public static InputStream URLGet(String url) {
+
+        InputStream response = null;
+        GetMethod getMethod = null;
+        try {
+            getMethod = new GetMethod();
+            getMethod.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf8");
+            getMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36");
+            //执行getMethod
+            int statusCode = client.executeMethod(getMethod);
+            if (statusCode == HttpStatus.SC_OK) {
+                response = getMethod.getResponseBodyAsStream();
+            }
+        } catch (HttpException e) {
+            logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("发生网络异常", e);
+            e.printStackTrace();
+        } finally {
+            if (getMethod != null) {
+                getMethod.releaseConnection();
+                getMethod = null;
+            }
+        }
         return response;
     }
 

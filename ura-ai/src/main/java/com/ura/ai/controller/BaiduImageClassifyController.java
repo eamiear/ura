@@ -6,6 +6,7 @@
 
 package com.ura.ai.controller;
 
+import com.baidu.aip.util.Base64Util;
 import com.ura.ai.bean.ClassifyGeneralDetectBean;
 import com.ura.ai.bean.ClassifyGeneralDetectResp;
 import com.ura.ai.bean.DishDetectResp;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,8 +44,30 @@ public class BaiduImageClassifyController {
      * @return
      */
     @RequestMapping("/general")
-    public R general(@RequestParam(value = "file")MultipartFile file, String openId, String nickName, HttpServletRequest request){
-        return R.success();
+    public R general(@RequestParam(value = "file")MultipartFile file, String detectType, String openId, String nickName, HttpServletRequest request){
+
+      R r = new R();
+      if (file == null) {
+        return R.error().put("msg", "图片不能为空");
+      }
+      try {
+        String prefix = getPrefix(detectType);
+        String fileName = "baidu-ic-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
+        String filePath = request.getSession().getServletContext().getRealPath(prefix);
+        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
+        String imagePath = filePath + fileName;
+        byte[] image = FileUtils.readFileByBytes(imagePath);
+        JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, imagePath);
+
+        if (jsonResult != null) {
+          r.put("msg", "检测成功").put("data", jsonResult);
+        } else {
+          r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
+        }
+      } catch (Exception e) {
+        r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "内部异常： " + e.getMessage());
+      }
+      return r;
     }
 
     @RequestMapping("/general/url")
@@ -61,13 +85,15 @@ public class BaiduImageClassifyController {
             } else {
                 r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
             }
+            is.releaseConnection();
+            is = null;
         } catch (Exception e) {
-            r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "第三方接口异常");
+            r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "内部异常： " + e.getMessage());
         }
         return r;
     }
 
-    private JSONResult handleDetect(String detectType, String openId, String nickName, byte[] image, String filePath) {
+    private JSONResult handleDetect(String detectType, String openId, String nickName, byte[] image, String filePath) throws Exception{
         JSONResult jsonResult = JSONResult.build();
         ClassifyGeneralDetectResp detectResp = null;
         HashMap<String, String> option = new HashMap<String, String>();
@@ -89,16 +115,16 @@ public class BaiduImageClassifyController {
         return jsonResult;
     }
 
-    private JSONObject getDetectObject(String detectType, byte[] image, HashMap<String, String> options) {
+    private JSONObject getDetectObject(String detectType, byte[] image, HashMap<String, String> options) throws Exception{
         JSONObject jsonObject;
         switch (detectType) {
-            case "dish":
+            case "dish":// 菜品
                 jsonObject = uraAipImageClassify.dishDetect(image, options);
                 break;
-            case "animal":
+            case "animal": // 动物
                 jsonObject = uraAipImageClassify.animalDetect(image, options);
                 break;
-            case "plant":
+            case "plant": // 植物
                 jsonObject = uraAipImageClassify.plantDetect(image, options);
                 break;
             case "ingredient":
@@ -107,10 +133,10 @@ public class BaiduImageClassifyController {
             case "flower":
                 jsonObject = uraAipImageClassify.flowerDetect(image, options);
                 break;
-            case "car":
+            case "car": // 汽车
                 jsonObject = uraAipImageClassify.carDetect(image, options);
                 break;
-            case "logo":
+            case "logo": // 商标
                 jsonObject = uraAipImageClassify.logoSearch(image, options);
                 break;
             default:
@@ -209,4 +235,29 @@ public class BaiduImageClassifyController {
         Double result = Double.valueOf(formatString);
         return result + "%";
     }
+
+  private String getPrefix(String detectType) {
+    String prefix = "";
+    switch (detectType){
+      case "dish":
+        prefix = "ic-dish";
+        break;
+      case "logo":
+        prefix = "ic-logo";
+        break;
+      case "car":
+        prefix = "ic-car";
+        break;
+      case "animal":
+        prefix = "ic-animal";
+        break;
+      case "plant":
+        prefix = "ic-plant";
+        break;
+      default:
+        prefix = "ic";
+        break;
+    }
+    return prefix;
+  }
 }

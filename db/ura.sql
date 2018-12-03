@@ -10,10 +10,42 @@ Target Server Type    : MYSQL
 Target Server Version : 50168
 File Encoding         : 65001
 
-Date: 2018-12-02 22:11:15
+Date: 2018-12-03 21:14:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `ai_bd_dish`
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_bd_dish`;
+CREATE TABLE `ai_bd_dish` (
+  `dish_id` int(11) NOT NULL AUTO_INCREMENT,
+  `log_id` varchar(255) DEFAULT NULL,
+  `result_num` int(11) DEFAULT NULL,
+  `calorie` varchar(255) DEFAULT NULL,
+  `has_calorie` varchar(100) DEFAULT NULL,
+  `dish_name` varchar(255) DEFAULT NULL,
+  `probability` varchar(255) DEFAULT NULL,
+  `image_path` varchar(1000) DEFAULT NULL,
+  `open_id` varchar(255) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `enter_type` varchar(255) DEFAULT NULL COMMENT '入口类型 web wcs',
+  PRIMARY KEY (`dish_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ai_bd_dish
+-- ----------------------------
+INSERT INTO `ai_bd_dish` VALUES ('7', '4469858353423891234', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1525962406.jpg', null, null, 'web');
+INSERT INTO `ai_bd_dish` VALUES ('8', '2331219107666343514', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1526396333.jpg', null, null, 'web');
+INSERT INTO `ai_bd_dish` VALUES ('9', '8128821674316229359', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1526396345.jpg', null, null, 'web');
+INSERT INTO `ai_bd_dish` VALUES ('10', '8793176724020262223', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1529419123.jpg', null, null, 'wcs');
+INSERT INTO `ai_bd_dish` VALUES ('11', '1216201356377266754', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1529419134.jpg', null, null, 'wcs');
+INSERT INTO `ai_bd_dish` VALUES ('12', '868531977897502009', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1529419748.jpg', null, null, 'wsc');
+INSERT INTO `ai_bd_dish` VALUES ('13', '2226192319812611736', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1529419793.jpg', null, null, 'wsc');
+INSERT INTO `ai_bd_dish` VALUES ('14', '2983315820613810620', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1529505256.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc');
+INSERT INTO `ai_bd_dish` VALUES ('15', '648513983153541761', '1', '884', 'true', '牛油果沙拉', '0.322625', '/icrDish/icrBD1530112083.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc');
 
 -- ----------------------------
 -- Table structure for `ai_bd_face`
@@ -40,7 +72,7 @@ CREATE TABLE `ai_bd_face` (
   `nickname` varchar(255) DEFAULT NULL COMMENT '微信昵称',
   `image_path` varchar(1000) DEFAULT NULL COMMENT '可以是本地路径 远程路径 具体根据实际业务来',
   PRIMARY KEY (`face_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of ai_bd_face
@@ -52,6 +84,104 @@ INSERT INTO `ai_bd_face` VALUES ('31', '0', 'SUCCESS', '744193237574287881', '15
 INSERT INTO `ai_bd_face` VALUES ('32', '0', 'SUCCESS', '747956937578138951', '1543757813', '0', '1', '824603e34276df3845a775fc40c31f5e', '1', '1', '41.34', 'none', 'round', 'male', 'none', 'yellow', null, null, '');
 INSERT INTO `ai_bd_face` VALUES ('33', '0', 'SUCCESS', '744193237584741411', '1543758474', '0', '1', '16261753dbbf72d83c63d96ee9bdbf4b', '1', '6', '43.55', 'smile', 'round', 'female', 'none', 'yellow', null, null, '');
 INSERT INTO `ai_bd_face` VALUES ('34', '0', 'SUCCESS', '747956937591433171', '1543759143', '0', '1', 'c39d3b8786d799cd0d641fada5dc4052', '1', '24', '74.96', 'smile', 'heart', 'female', 'none', 'white', null, null, '');
+INSERT INTO `ai_bd_face` VALUES ('35', '0', 'SUCCESS', '744193238057674511', '1543805767', '0', '1', '58cc9a07d00eeb88d9743bc685da9c83', '0', '22', '40.39', 'none', 'triangle', 'female', 'none', 'white', null, null, '');
+INSERT INTO `ai_bd_face` VALUES ('36', '0', 'SUCCESS', '747956938058094871', '1543805809', '0', '1', '5420e507fec070fdf4bc3c801c876b0e', '1', '27', '62.76', 'smile', 'oval', 'male', 'none', 'yellow', null, null, '');
+
+-- ----------------------------
+-- Table structure for `ai_bd_general`
+-- ----------------------------
+DROP TABLE IF EXISTS `ai_bd_general`;
+CREATE TABLE `ai_bd_general` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `log_id` varchar(255) DEFAULT NULL,
+  `result_num` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `score` varchar(100) DEFAULT NULL,
+  `year` varchar(100) DEFAULT NULL,
+  `color_result` varchar(100) DEFAULT NULL,
+  `local_width` int(11) DEFAULT NULL,
+  `local_height` int(11) DEFAULT NULL,
+  `local_top` int(11) DEFAULT NULL,
+  `local_left` int(11) DEFAULT NULL,
+  `logo_type` varchar(50) DEFAULT NULL,
+  `probability` varchar(255) DEFAULT NULL,
+  `image_path` varchar(500) DEFAULT NULL,
+  `open_id` varchar(100) DEFAULT NULL,
+  `nickname` varchar(500) DEFAULT NULL,
+  `enter_type` varchar(50) DEFAULT NULL,
+  `detect_type` varchar(50) DEFAULT NULL,
+  `baike_description` varchar(200) DEFAULT NULL,
+  `baike_image_url` varchar(50) DEFAULT NULL,
+  `baike_url` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ai_bd_general
+-- ----------------------------
+INSERT INTO `ai_bd_general` VALUES ('1', null, null, '宝马X6', '0.82910943031311', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1526395402.jpg', null, null, 'web', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('2', null, null, '俄罗斯蓝猫', '0.869141', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1526396408.jpg', null, null, 'web', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('3', null, null, '宝马X6', '0.82910943031311', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1526396478.jpg', null, null, 'web', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('4', null, null, '匠汇集', null, null, null, '26', '16', '240', '240', '1', '0.21738922119141', '/icrLogo/icrBD1526396527.jpg', null, null, 'web', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('5', null, null, '红爪', '0.52708631753922', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1526396544.jpeg', null, null, 'web', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('6', '3697289425431874414', '3', '好乐买', null, null, null, '45', '63', '26', '26', '1', '0.12543837327224', '/icrLogo/icrBD1526397566.jpeg', null, null, 'web', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('7', '6829410080498058347', '1', '西葫芦', '0.6414338350296', null, null, null, null, null, null, null, null, '/icrIngredient/icrBD1526479875.jpg', null, null, 'web', 'ingredient', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('8', '71818440341813105', null, ' 红爪', '0.52722769975662', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1526996016.jpeg', null, null, 'web', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('9', '8787199200399098809', null, ' 红爪', '0.52722769975662', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1526996022.jpeg', null, null, 'web', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('10', '6213833147870837478', null, ' 红爪', '0.52722769975662', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1526996023.jpeg', null, null, 'web', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('11', '617793941249173087', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1526996024.jpeg', null, null, 'web', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('12', '974405947134131692', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529501717.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('13', '3136101768519437753', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529501723.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('14', '8522723153371832547', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529501725.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('15', '1415328028926223243', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529501726.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('16', '8067218700457910255', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529501728.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('17', '1899592488310157083', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529502874.jpg', null, null, 'wcs', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('18', '5105459253888208095', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529503106.jpg', null, null, 'wsc', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('19', '2712401642970079381', null, ' 红爪', '0.52722769975662', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1529503198.jpeg', null, null, 'wcs', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('20', '5283198016034310013', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1529503587.jpeg', null, null, 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('21', '2668012078729782720', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1529503621.jpg', null, null, 'wcs', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('22', '4909285853755985255', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1529504058.jpg', null, null, 'wsc', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('23', '7909721516667171995', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1529504112.jpg', null, null, 'wsc', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('24', '4115871906987965637', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1529504444.jpg', null, null, 'wsc', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('25', '4449656786413799227', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1529505267.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('26', '4098741631430619754', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1529505276.jpeg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('27', '7495563487449622095', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1529505288.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('28', '3004452361317695708', '3', '宇朔', null, null, null, '158', '81', '257', '257', '1', '0.23676879882813', '/icrLogo/icrBD1529505384.png', '', '', 'wcs', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('29', '4922994809395688338', '3', '威克多', null, null, null, '22', '16', '130', '130', '1', '0.17916635366587', '/icrLogo/icrBD1529505668.jpg', '', '', 'wcs', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('30', '8589429329847125438', '1', '好丽友', null, null, null, '348', '296', '125', '125', '0', '0.33739825696276', '/icrLogo/icrBD1529505678.jpg', '', '', 'wcs', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('31', '2313362101957997103', '3', '创康牛牛', null, null, null, '144', '69', '25', '25', '1', '0.28404907226562', '/icrLogo/icrBD1529505701.jpeg', '', '', 'wcs', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('32', '291502941047212274', '1', '好丽友', null, null, null, '348', '296', '125', '125', '0', '0.33739825696276', '/icrLogo/icrBD1529505843.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('33', '8113648217635878640', '1', '西葫芦', '0.6414338350296', null, null, null, null, null, null, null, null, '/icrIngredient/icrBD1529505974.jpg', '', '', 'wcs', 'ingredient', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('34', '1342089172263543324', '1', '西葫芦', '0.6414338350296', null, null, null, null, null, null, null, null, '/icrIngredient/icrBD1529506293.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '小帅丶', 'wsc', 'ingredient', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('35', '7685779084951351016', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1530110185.jpeg', '', '', 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('36', '4680658177713368614', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1530111222.jpeg', '', '', 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('37', '7867527885460485506', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1530111296.jpeg', '', '', 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('38', '1797382535674006281', null, ' 红爪', '0.527228474617', null, null, null, null, null, null, null, null, '/icrPlant/icrBD1530111414.jpeg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc', 'plant', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('39', '6803994463160723641', null, '宝马X6', '0.8291090130806', '2008-2017', '蓝色', '390', '237', '140', '140', null, null, '/icrCar/icrBD1530112123.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc', 'car', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('40', '2805294152622082390', null, '俄罗斯蓝猫', '0.900236', null, null, null, null, null, null, null, null, '/icrAnimal/icrBD1530112148.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc', 'animal', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('41', '5679208255561968921', '3', '立宇', null, null, null, '119', '78', '72', '72', '1', '0.15580932617188', '/icrLogo/icrBD1530112176.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc', 'logo', null, null, null);
+INSERT INTO `ai_bd_general` VALUES ('42', '7306284832115947868', '1', '西葫芦', '0.6414338350296', null, null, null, null, null, null, null, null, '/icrIngredient/icrBD1530112196.jpg', 'op5Hs0EYFmR7XvvWNrbsMFVn22Kk', '%E5%B0%8F%E5%B8%85%E4%B8%B6', 'wsc', 'ingredient', null, null, null);
+
+-- ----------------------------
+-- Table structure for `app_version`
+-- ----------------------------
+DROP TABLE IF EXISTS `app_version`;
+CREATE TABLE `app_version` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `appname` varchar(50) DEFAULT '',
+  `version_no` varchar(20) DEFAULT '',
+  `version_name` varchar(25) DEFAULT '',
+  `update_msg` varchar(100) DEFAULT '',
+  `status` tinyint(1) DEFAULT NULL COMMENT '0 禁用|未发布   1 启用|发布',
+  `publish_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of app_version
+-- ----------------------------
+INSERT INTO `app_version` VALUES ('2', '优聚', '1.0.0', 'bata1', '\"\"', '1', '2018-09-26 19:34:47');
+INSERT INTO `app_version` VALUES ('1', '优聚', '0.0.1', 'beta', '\"\"', '1', '2018-09-20 19:34:50');
 
 -- ----------------------------
 -- Table structure for `gen_config`

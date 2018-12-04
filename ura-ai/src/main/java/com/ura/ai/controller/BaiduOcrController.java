@@ -96,4 +96,23 @@ public class BaiduOcrController {
 
         }
     }
+
+    private String getDirection(String type) {
+        String text = "";
+        switch (type){
+            case "--1":
+                text = "未定义";
+                break;
+            case "0":
+                text = "正向";
+                break;
+            case "-1":
+                text = "逆时针90度";
+                break;
+            case "-2":
+                text = "正向";
+                break;
+        }
+        return text;
+    }
 }

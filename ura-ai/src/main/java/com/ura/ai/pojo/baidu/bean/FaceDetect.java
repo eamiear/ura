@@ -1,8 +1,8 @@
-package com.ura.ai.bean;
+package com.ura.ai.pojo.baidu.bean;
 
 import java.util.List;
 
-public class FaceDetectBean {
+public class FaceDetect {
   private int error_code;
   private String error_msg;
   private long log_id;

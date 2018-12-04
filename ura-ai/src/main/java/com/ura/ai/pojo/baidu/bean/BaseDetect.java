@@ -3,9 +3,9 @@
  * @date 2018/12/3 14:20
  */
 
-package com.ura.ai.bean;
+package com.ura.ai.pojo.baidu.bean;
 
-public class BaiduBaseDetectBean {
+public class BaseDetect {
     private long log_id;
     private Integer result_num;
 

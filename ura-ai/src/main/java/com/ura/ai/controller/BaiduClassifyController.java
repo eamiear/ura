@@ -6,10 +6,9 @@
 
 package com.ura.ai.controller;
 
-import com.baidu.aip.util.Base64Util;
-import com.ura.ai.bean.ClassifyGeneralDetectBean;
-import com.ura.ai.bean.ClassifyGeneralDetectResp;
-import com.ura.ai.bean.DishDetectResp;
+import com.ura.ai.pojo.baidu.bean.GeneralDetect;
+import com.ura.ai.pojo.baidu.bean.ResultBean;
+import com.ura.ai.pojo.baidu.resp.*;
 import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.common.UraAipImageClassify;
 import com.ura.ai.entity.DishDetectEntity;
@@ -23,42 +22,34 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
-@RequestMapping("bd/ic")
-public class BaiduImageClassifyController {
+@RequestMapping("bd/icr")
+public class BaiduClassifyController {
 
     private UraAipImageClassify uraAipImageClassify = BaiduFactory.getUraAipImageClassify();
 
-    @RequestMapping("/url")
-    public String getUrl(String url) {
-        return HttpUtils.URLGet(url, new HashMap<>(), "utf8");
-    }
     /**
      * 图像识别
-     * @return
      */
-    @RequestMapping("/general")
+    @RequestMapping("/file")
     public R general(@RequestParam(value = "file")MultipartFile file, String detectType, String openId, String nickName, HttpServletRequest request){
-
       R r = new R();
       if (file == null) {
         return R.error().put("msg", "图片不能为空");
       }
       try {
-        String prefix = getPrefix(detectType);
-        String fileName = "baidu-ic-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
-        String filePath = request.getSession().getServletContext().getRealPath(prefix);
-        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
-        String imagePath = filePath + fileName;
-        byte[] image = FileUtils.readFileByBytes(imagePath);
-        JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, imagePath);
-
+//        String prefix = getPrefix(detectType);
+//        String fileName = "baidu-ic-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
+//        String filePath = request.getSession().getServletContext().getRealPath(prefix);
+//        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
+//        String imagePath = filePath + fileName;
+//        byte[] image = FileUtils.readFileByBytes(imagePath);
+        byte[] image = file.getBytes();
+        JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, "");
         if (jsonResult != null) {
           r.put("msg", "检测成功").put("data", jsonResult);
         } else {
@@ -70,7 +61,7 @@ public class BaiduImageClassifyController {
       return r;
     }
 
-    @RequestMapping("/general/url")
+    @RequestMapping("/url")
     public R general(String detectType, String url, String openId, String nickName) {
         R r = new R();
         if (url == null) {
@@ -95,27 +86,46 @@ public class BaiduImageClassifyController {
 
     private JSONResult handleDetect(String detectType, String openId, String nickName, byte[] image, String filePath) throws Exception{
         JSONResult jsonResult = JSONResult.build();
-        ClassifyGeneralDetectResp detectResp = null;
         HashMap<String, String> option = new HashMap<String, String>();
-        option.put("top_num", "1");
         option.put("baike_num", "1");
         if (detectType.isEmpty()) {
             detectType = "general";
         }
-        JSONObject jsonObject = getDetectObject(detectType, image, option);
-        ClassifyGeneralDetectBean detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), ClassifyGeneralDetectBean.class);
+        JSONObject jsonObject = getDetectedObject(detectType, image, option);
+        GeneralDetect detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
 
-        if (detectType.equals("dish")) {
-            DishDetectResp dishDetectResp = getDishResponseData(detectBean, openId, nickName, "");
-            jsonResult.put("detect", dishDetectResp).put("raw", detectBean);
-        } else {
-            detectResp = getBiologyData(detectBean, openId, nickName, detectType);
-            jsonResult.put("detect", detectResp).put("raw", detectBean);
+        switch (detectType) {
+            case "dish":
+                DishDetectResp dishDetectResp = handleDishDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", dishDetectResp);
+                break;
+            case "car":
+                CarDetectResp carDetectResp = handleCarDetectedResponse(detectBean, openId, nickName);
+                jsonResult.put("detect", carDetectResp);
+                break;
+            case "logo":
+                LogoDetectResp logoDetectResp = handleLogoDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", logoDetectResp);
+                break;
+            case "animal":
+            case "plant":
+                BiologyDetectResp biologyDetectResp = handleBiologyDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", biologyDetectResp);
+                break;
+            case "object":
+                break;
+            case "handwriting":
+                break;
+            case "general":
+            default:
+                GeneralDetectResp generalDetectResp = handleGeneralDetectedResponse(detectBean, openId, nickName);
+                jsonResult.put("detect", generalDetectResp);
         }
+        jsonResult.put("raw", detectBean);
         return jsonResult;
     }
 
-    private JSONObject getDetectObject(String detectType, byte[] image, HashMap<String, String> options) throws Exception{
+    private JSONObject getDetectedObject(String detectType, byte[] image, HashMap<String, String> options) throws Exception{
         JSONObject jsonObject;
         switch (detectType) {
             case "dish":// 菜品
@@ -145,8 +155,7 @@ public class BaiduImageClassifyController {
         }
         return jsonObject;
     }
-
-    private DishDetectResp getDishResponseData(ClassifyGeneralDetectBean cgb, String openId, String nickName, String imagePath) {
+    private DishDetectResp handleDishDetectedResponse(GeneralDetect cgb, String openId, String nickName, String imagePath) {
         DishDetectResp detectResp = new DishDetectResp();
         if (cgb.getResult() != null) {
             DishDetectEntity dishDetectEntity = new DishDetectEntity();
@@ -159,23 +168,82 @@ public class BaiduImageClassifyController {
             dishDetectEntity.setDishName(cgb.getResult().get(0).getName());
             dishDetectEntity.setProbability(cgb.getResult().get(0).getProbability());
             dishDetectEntity.setImagePath(imagePath);
-            dishDetectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
-            dishDetectEntity.setImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
+            dishDetectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
+            dishDetectEntity.setImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
             dishDetectEntity.setDescription(cgb.getResult().get(0).getBaike_info().getDescription());
-
             // TODO save to db
+
+            // 返回数据到客户端
             detectResp.setCalorie(cgb.getResult().get(0).getCalorie() + "KJ/100g");
             detectResp.setHasCalorie(cgb.getResult().get(0).isHas_calorie() ? "是" : "否");
             detectResp.setName(cgb.getResult().get(0).getName());
-            detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
-            detectResp.setImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
-            detectResp.setDescription(cgb.getResult().get(0).getBaike_info().getDescription());
+            detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
+            detectResp.setBaikeImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
+            detectResp.setBaikeDescription(cgb.getResult().get(0).getBaike_info().getDescription());
             detectResp.setProbability(getPercent(Double.parseDouble(cgb.getResult().get(0).getProbability()) * 100));
         }
         return detectResp;
     }
+    private BiologyDetectResp handleBiologyDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
+        BiologyDetectResp biologyDetectResp = new BiologyDetectResp();
+        if (generalDetect.getResult() != null) {
+            ResultBean result = generalDetect.getResult().get(0);
+            biologyDetectResp.setName(result.getName());
+            biologyDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
+            biologyDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            biologyDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            biologyDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+        }
+        return biologyDetectResp;
+    }
+    private LogoDetectResp handleLogoDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
+        LogoDetectResp logoDetectResp = new LogoDetectResp();
+        if (generalDetect.getResult() != null) {
+            ResultBean result = generalDetect.getResult().get(0);
+            logoDetectResp.setName(result.getName());
+            logoDetectResp.setResultNum(generalDetect.getResult_num());
+            logoDetectResp.setProbability(result.getProbability());
+            logoDetectResp.setType(result.getLogoType());
+            logoDetectResp.setWidth(result.getLocation().getWidth());
+            logoDetectResp.setHeight(result.getLocation().getHeight());
+            logoDetectResp.setLeft(result.getLocation().getLeft());
+            logoDetectResp.setTop(result.getLocation().getTop());
+        }
+        return logoDetectResp;
+    }
+    private CarDetectResp handleCarDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
+        CarDetectResp carDetectResp = new CarDetectResp();
+        if (generalDetect.getResult() != null) {
+            ResultBean result = generalDetect.getResult().get(0);
+            carDetectResp.setName(result.getName());
+            carDetectResp.setColorResult(generalDetect.getColor_result());
+            carDetectResp.setYear(result.getYear());
+            carDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            carDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            carDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+            carDetectResp.setWidth(generalDetect.getLocation_result().getWidth());
+            carDetectResp.setHeight(generalDetect.getLocation_result().getHeight());
+            carDetectResp.setLeft(generalDetect.getLocation_result().getLeft());
+            carDetectResp.setTop(generalDetect.getLocation_result().getTop());
+        }
+        return carDetectResp;
+    }
+    private GeneralDetectResp handleGeneralDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
+        GeneralDetectResp generalDetectResp = new GeneralDetectResp();
+        if (generalDetect.getResult() != null) {
+            ResultBean result = generalDetect.getResult().get(0);
+            generalDetectResp.setResultNum(generalDetect.getResult_num());
+            generalDetectResp.setTag(result.getRoot());
+            generalDetectResp.setKeyword(result.getKeyword());
+            generalDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
+            generalDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            generalDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            generalDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+        }
+        return  generalDetectResp;
+    }
 
-    private ClassifyGeneralDetectResp getBiologyData(ClassifyGeneralDetectBean cgb, String openId, String nickname, String detectType) {
+    private ClassifyGeneralDetectResp getBiologyData(GeneralDetect cgb, String openId, String nickname, String detectType) {
       ClassifyGeneralDetectResp detectResp = new ClassifyGeneralDetectResp();
       detectResp.setName(cgb.getResult().get(0).getName());
       if (cgb.getResult().get(0).getScore() != null) {
@@ -187,8 +255,8 @@ public class BaiduImageClassifyController {
       detectResp.setYear(cgb.getResult().get(0).getYear());
 
       if (!detectType.equals("logo")) {
-        detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
-        detectResp.setImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
+        detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
+        detectResp.setImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
         detectResp.setDescription(cgb.getResult().get(0).getBaike_info().getDescription());
       }
 
@@ -219,8 +287,8 @@ public class BaiduImageClassifyController {
       }
 
       if (!detectType.equals("logo")) {
-        detectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaike_url());
-        detectEntity.setBaikeImageUrl(cgb.getResult().get(0).getBaike_info().getImage_url());
+        detectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
+        detectEntity.setBaikeImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
         detectEntity.setBaikeDescription(cgb.getResult().get(0).getBaike_info().getDescription());
       }
 

@@ -1,6 +1,6 @@
-package com.ura.ai.bean;
+package com.ura.ai.pojo.baidu.resp;
 
-public class FaceDetectRespBean {
+public class FaceDetectResp {
   //年龄
   private Integer age;
   //美丑

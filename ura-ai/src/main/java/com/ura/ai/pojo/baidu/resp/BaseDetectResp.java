@@ -3,9 +3,9 @@
  * @date 2018/12/3 15:30
  */
 
-package com.ura.ai.bean;
+package com.ura.ai.pojo.baidu.resp;
 
-public class BaiduBaseDetectResp {
+public class BaseDetectResp {
     private String name;
     private String probability;
     private String baikeUrl;

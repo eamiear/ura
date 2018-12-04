@@ -8,8 +8,8 @@ package com.ura.ai.controller;
 
 import com.baidu.aip.face.AipFace;
 import com.baidu.aip.util.Base64Util;
-import com.ura.ai.bean.FaceDetectBean;
-import com.ura.ai.bean.FaceDetectRespBean;
+import com.ura.ai.pojo.baidu.bean.FaceDetect;
+import com.ura.ai.pojo.baidu.resp.FaceDetectResp;
 import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.entity.FaceDetectEntity;
 import com.ura.ai.service.BaiduFaceDetectService;
@@ -40,13 +40,15 @@ public class BaiduFaceController {
         return R.error().put("msg", "图片不能为空");
       }
       try {
-        String prefix = "face/";
-        String fileName = "baidu-face-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
-        String filePath = request.getSession().getServletContext().getRealPath(prefix);
-        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
-        String imagePath = filePath + fileName;
-        String base64 = Base64Util.encode(FileUtils.readFileByBytes(imagePath));
-        JSONResult jsonResult = handleDetection(openId, nickName, base64, "BASE64", imagePath);
+//        String prefix = "face/";
+//        String fileName = "baidu-face-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
+//        String filePath = request.getSession().getServletContext().getRealPath(prefix);
+//        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
+//        String imagePath = filePath + fileName;
+//        String base64 = Base64Util.encode(FileUtils.readFileByBytes(imagePath));
+        byte[] image = file.getBytes();
+        String base64 = Base64Util.encode(image);
+        JSONResult jsonResult = handleDetection(openId, nickName, base64, "BASE64", "");
 
         if (jsonResult != null) {
           r.put("msg", "检测成功").put("data", jsonResult);
@@ -81,24 +83,24 @@ public class BaiduFaceController {
 
     private JSONResult handleDetection(String openId, String nickName, String image, String imageType, String filePath) {
       // 返回到客户端
-      FaceDetectRespBean faceDetectRespBean = null;
+      FaceDetectResp faceDetectRespBean = null;
 
       HashMap<String, String> option = new HashMap<String, String>();
       option.put("face_field", "age,beauty,expression,faceshape,gender,glasses,race,quality,landmark,angle,location");
       option.put("max_face_num", "1");
       JSONObject jsonObject = aipFace.detect(image, imageType, option);
-      FaceDetectBean faceDetectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), FaceDetectBean.class);
+      FaceDetect faceDetect = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), FaceDetect.class);
 
-      if (null != faceDetectBean.getResult()) {
+      if (null != faceDetect.getResult()) {
         FaceDetectEntity faceDetectEntity;
-        faceDetectEntity = getFaceDetectEntity(faceDetectBean, filePath);
+        faceDetectEntity = getFaceDetectEntity(faceDetect, filePath);
         faceDetectEntity.setOpenId(openId);
         faceDetectEntity.setNickName(nickName);
-        FaceDetectEntity faceEntity = baiduFaceDetectService.getFaceByFaceToken(faceDetectBean.getResult().getFace_list().get(0).getFace_token());
-        if (faceEntity == null) {
-          boolean result = baiduFaceDetectService.save(faceDetectEntity);
-        }
-        faceDetectRespBean = new FaceDetectRespBean();
+//        FaceDetectEntity faceEntity = baiduFaceDetectService.getFaceByFaceToken(faceDetect.getResult().getFace_list().get(0).getFace_token());
+//        if (faceEntity == null) {
+//          boolean result = baiduFaceDetectService.save(faceDetectEntity);
+//        }
+        faceDetectRespBean = new FaceDetectResp();
         faceDetectRespBean.setAge(faceDetectEntity.getAge());
         faceDetectRespBean.setBeauty(faceDetectEntity.getBeauty());
         faceDetectRespBean.setExpression(getExpression(faceDetectEntity.getExpressionType()));
@@ -107,14 +109,13 @@ public class BaiduFaceController {
         faceDetectRespBean.setRaceType(getRaceType(faceDetectEntity.getRaceType()));
         faceDetectRespBean.setFaceShape(getFaceShape(faceDetectEntity.getFaceShapeType()));
       }
-      return JSONResult.build().put("detect", faceDetectRespBean).put("raw", faceDetectBean);
+      return JSONResult.build().put("detect", faceDetectRespBean).put("raw", faceDetect);
     }
 
     @RequestMapping("/compare")
     public R compare () {
         return R.success();
     }
-
     private String getRaceType(String type) {
       String result;
       switch (type) {
@@ -191,7 +192,6 @@ public class BaiduFaceController {
       }
       return result;
     }
-
     private String getExpression(String type) {
       String result;
       switch (type) {
@@ -209,7 +209,7 @@ public class BaiduFaceController {
       }
       return result;
     }
-    private FaceDetectEntity getFaceDetectEntity(FaceDetectBean faceDetectBean, String imagePath) {
+    private FaceDetectEntity getFaceDetectEntity(FaceDetect faceDetectBean, String imagePath) {
       FaceDetectEntity faceDetect = new FaceDetectEntity();
       faceDetect.setErrorCode(String.valueOf(faceDetectBean.getError_code()));
       faceDetect.setErrorMsg(faceDetectBean.getError_msg());

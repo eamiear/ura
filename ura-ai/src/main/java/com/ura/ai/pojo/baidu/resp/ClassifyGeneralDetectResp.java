@@ -3,9 +3,9 @@
  * @date 2018/12/3 14:35
  */
 
-package com.ura.ai.bean;
+package com.ura.ai.pojo.baidu.resp;
 
-public class ClassifyGeneralDetectResp extends BaiduBaseDetectResp{
+public class ClassifyGeneralDetectResp extends BaseDetectResp {
     private String score;
     private String year;
     private String colorResult;

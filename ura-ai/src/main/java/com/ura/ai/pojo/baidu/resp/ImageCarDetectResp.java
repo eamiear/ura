@@ -5,7 +5,7 @@
 
 package com.ura.ai.pojo.baidu.resp;
 
-public class CarDetectResp {
+public class ImageCarDetectResp {
     private String colorResult;
     private String name;
     private String score;

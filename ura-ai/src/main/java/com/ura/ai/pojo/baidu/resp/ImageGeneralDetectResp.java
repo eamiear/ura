@@ -1,24 +1,41 @@
 /**
  * @author eamiear
- * @date 2018/12/4 10:28
+ * @date 2018/12/4 9:42
  */
 
 package com.ura.ai.pojo.baidu.resp;
 
-// 生物检测，植物、动物
-public class BiologyDetectResp {
-    private String name;
+public class ImageGeneralDetectResp {
+    private Integer resultNum;
+    private String keyword;
+    private String tag;
     private String score;
     private String baikeUrl;
     private String baikeImageUrl;
     private String baikeDescription;
 
-    public String getName() {
-        return name;
+    public Integer getResultNum() {
+        return resultNum;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setResultNum(Integer resultNum) {
+        this.resultNum = resultNum;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public String getScore() {

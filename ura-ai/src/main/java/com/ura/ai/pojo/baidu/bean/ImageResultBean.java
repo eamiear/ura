@@ -7,7 +7,7 @@ package com.ura.ai.pojo.baidu.bean;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-public class ResultBean {
+public class ImageResultBean {
     private String probability;
     private boolean has_calorie;
     private String calorie;
@@ -18,8 +18,8 @@ public class ResultBean {
     private String logoType;
     private String root;
     private String keyword;
-    private LocationBean location;
-    private BaikeInfo baike_info;
+    private ImageLocationBean location;
+    private ImageBaikeInfo baike_info;
 
     public boolean isHas_calorie() {
         return has_calorie;
@@ -77,19 +77,19 @@ public class ResultBean {
         this.logoType = logoType;
     }
 
-    public LocationBean getLocation() {
+    public ImageLocationBean getLocation() {
         return location;
     }
 
-    public void setLocation(LocationBean location) {
+    public void setLocation(ImageLocationBean location) {
         this.location = location;
     }
 
-    public BaikeInfo getBaike_info() {
+    public ImageBaikeInfo getBaike_info() {
         return baike_info;
     }
 
-    public void setBaike_info(BaikeInfo baike_info) {
+    public void setBaike_info(ImageBaikeInfo baike_info) {
         this.baike_info = baike_info;
     }
 

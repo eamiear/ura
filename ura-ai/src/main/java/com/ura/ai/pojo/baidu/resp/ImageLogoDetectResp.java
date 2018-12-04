@@ -5,7 +5,7 @@
 
 package com.ura.ai.pojo.baidu.resp;
 
-public class LogoDetectResp {
+public class ImageLogoDetectResp {
     private Integer resultNum;
     private String type;
     private String probability;

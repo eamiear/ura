@@ -1,38 +1,17 @@
 /**
  * @author eamiear
- * @date 2018/12/3 15:33
+ * @date 2018/12/4 10:28
  */
 
 package com.ura.ai.pojo.baidu.resp;
 
-public class DishDetectResp {
-    /**
-     * 卡路里，每100g的卡路里含量
-     */
-    private String calorie;
-    /**
-     * 是否包含卡路里
-     */
-    private String hasCalorie;
-
+// 生物检测，植物、动物
+public class ImageBiologyDetectResp {
     private String name;
-    private String probability;
+    private String score;
     private String baikeUrl;
     private String baikeImageUrl;
     private String baikeDescription;
-
-    public String getCalorie() {
-        return calorie;
-    }
-    public void setCalorie(String calorie) {
-        this.calorie = calorie;
-    }
-    public String getHasCalorie() {
-        return hasCalorie;
-    }
-    public void setHasCalorie(String hasCalorie) {
-        this.hasCalorie = hasCalorie;
-    }
 
     public String getName() {
         return name;
@@ -42,12 +21,12 @@ public class DishDetectResp {
         this.name = name;
     }
 
-    public String getProbability() {
-        return probability;
+    public String getScore() {
+        return score;
     }
 
-    public void setProbability(String probability) {
-        this.probability = probability;
+    public void setScore(String score) {
+        this.score = score;
     }
 
     public String getBaikeUrl() {

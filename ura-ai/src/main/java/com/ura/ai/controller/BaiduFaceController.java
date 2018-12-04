@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("bd/face")
+@RequestMapping("rest/face")
 public class BaiduFaceController {
     private AipFace aipFace = BaiduFactory.getAipFace();
 

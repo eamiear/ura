@@ -5,7 +5,7 @@
 
 package com.ura.ai.pojo.baidu.bean;
 
-public class BaikeInfo {
+public class ImageBaikeInfo {
     private String baikeUrl;
     private String imageUrl;
     private String description;

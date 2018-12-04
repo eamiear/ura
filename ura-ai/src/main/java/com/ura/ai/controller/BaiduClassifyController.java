@@ -7,12 +7,11 @@
 package com.ura.ai.controller;
 
 import com.ura.ai.pojo.baidu.bean.GeneralDetect;
-import com.ura.ai.pojo.baidu.bean.ResultBean;
+import com.ura.ai.pojo.baidu.bean.ImageResultBean;
 import com.ura.ai.pojo.baidu.resp.*;
 import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.common.UraAipImageClassify;
 import com.ura.ai.entity.DishDetectEntity;
-import com.ura.ai.entity.GeneralDetectEntity;
 import com.ura.common.utils.*;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONObject;
@@ -26,7 +25,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("bd/icr")
+@RequestMapping("rest/icr")
 public class BaiduClassifyController {
 
     private UraAipImageClassify uraAipImageClassify = BaiduFactory.getUraAipImageClassify();
@@ -34,7 +33,7 @@ public class BaiduClassifyController {
     /**
      * 图像识别
      */
-    @RequestMapping("/file")
+    @RequestMapping("/detect/file")
     public R general(@RequestParam(value = "file")MultipartFile file, String detectType, String openId, String nickName, HttpServletRequest request){
       R r = new R();
       if (file == null) {
@@ -60,7 +59,7 @@ public class BaiduClassifyController {
       return r;
     }
 
-    @RequestMapping("/url")
+    @RequestMapping("/detect/url")
     public R general(String detectType, String url, String openId, String nickName) {
         R r = new R();
         if (url == null) {
@@ -95,21 +94,21 @@ public class BaiduClassifyController {
 
         switch (detectType) {
             case "dish":
-                DishDetectResp dishDetectResp = handleDishDetectedResponse(detectBean, openId, nickName, "");
-                jsonResult.put("detect", dishDetectResp);
+                ImageDishDetectResp imageDishDetectResp = handleDishDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", imageDishDetectResp);
                 break;
             case "car":
-                CarDetectResp carDetectResp = handleCarDetectedResponse(detectBean, openId, nickName);
-                jsonResult.put("detect", carDetectResp);
+                ImageCarDetectResp imageCarDetectResp = handleCarDetectedResponse(detectBean, openId, nickName);
+                jsonResult.put("detect", imageCarDetectResp);
                 break;
             case "logo":
-                LogoDetectResp logoDetectResp = handleLogoDetectedResponse(detectBean, openId, nickName, "");
-                jsonResult.put("detect", logoDetectResp);
+                ImageLogoDetectResp imageLogoDetectResp = handleLogoDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", imageLogoDetectResp);
                 break;
             case "animal":
             case "plant":
-                BiologyDetectResp biologyDetectResp = handleBiologyDetectedResponse(detectBean, openId, nickName, "");
-                jsonResult.put("detect", biologyDetectResp);
+                ImageBiologyDetectResp imageBiologyDetectResp = handleBiologyDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", imageBiologyDetectResp);
                 break;
             case "object":
                 break;
@@ -117,8 +116,8 @@ public class BaiduClassifyController {
                 break;
             case "general":
             default:
-                GeneralDetectResp generalDetectResp = handleGeneralDetectedResponse(detectBean, openId, nickName);
-                jsonResult.put("detect", generalDetectResp);
+                ImageGeneralDetectResp imageGeneralDetectResp = handleGeneralDetectedResponse(detectBean, openId, nickName);
+                jsonResult.put("detect", imageGeneralDetectResp);
         }
         jsonResult.put("raw", detectBean);
         return jsonResult;
@@ -154,8 +153,8 @@ public class BaiduClassifyController {
         }
         return jsonObject;
     }
-    private DishDetectResp handleDishDetectedResponse(GeneralDetect cgb, String openId, String nickName, String imagePath) {
-        DishDetectResp detectResp = new DishDetectResp();
+    private ImageDishDetectResp handleDishDetectedResponse(GeneralDetect cgb, String openId, String nickName, String imagePath) {
+        ImageDishDetectResp detectResp = new ImageDishDetectResp();
         if (cgb.getResult() != null) {
             DishDetectEntity dishDetectEntity = new DishDetectEntity();
             dishDetectEntity.setOpenId(openId);
@@ -183,63 +182,63 @@ public class BaiduClassifyController {
         }
         return detectResp;
     }
-    private BiologyDetectResp handleBiologyDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
-        BiologyDetectResp biologyDetectResp = new BiologyDetectResp();
+    private ImageBiologyDetectResp handleBiologyDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
+        ImageBiologyDetectResp imageBiologyDetectResp = new ImageBiologyDetectResp();
         if (generalDetect.getResult() != null) {
-            ResultBean result = generalDetect.getResult().get(0);
-            biologyDetectResp.setName(result.getName());
-            biologyDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
-            biologyDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
-            biologyDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
-            biologyDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+            ImageResultBean result = generalDetect.getResult().get(0);
+            imageBiologyDetectResp.setName(result.getName());
+            imageBiologyDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
+            imageBiologyDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            imageBiologyDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            imageBiologyDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
         }
-        return biologyDetectResp;
+        return imageBiologyDetectResp;
     }
-    private LogoDetectResp handleLogoDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
-        LogoDetectResp logoDetectResp = new LogoDetectResp();
+    private ImageLogoDetectResp handleLogoDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
+        ImageLogoDetectResp imageLogoDetectResp = new ImageLogoDetectResp();
         if (generalDetect.getResult() != null) {
-            ResultBean result = generalDetect.getResult().get(0);
-            logoDetectResp.setName(result.getName());
-            logoDetectResp.setResultNum(generalDetect.getResult_num());
-            logoDetectResp.setProbability(result.getProbability());
-            logoDetectResp.setType(result.getLogoType());
-            logoDetectResp.setWidth(result.getLocation().getWidth());
-            logoDetectResp.setHeight(result.getLocation().getHeight());
-            logoDetectResp.setLeft(result.getLocation().getLeft());
-            logoDetectResp.setTop(result.getLocation().getTop());
+            ImageResultBean result = generalDetect.getResult().get(0);
+            imageLogoDetectResp.setName(result.getName());
+            imageLogoDetectResp.setResultNum(generalDetect.getResult_num());
+            imageLogoDetectResp.setProbability(result.getProbability());
+            imageLogoDetectResp.setType(result.getLogoType());
+            imageLogoDetectResp.setWidth(result.getLocation().getWidth());
+            imageLogoDetectResp.setHeight(result.getLocation().getHeight());
+            imageLogoDetectResp.setLeft(result.getLocation().getLeft());
+            imageLogoDetectResp.setTop(result.getLocation().getTop());
         }
-        return logoDetectResp;
+        return imageLogoDetectResp;
     }
-    private CarDetectResp handleCarDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
-        CarDetectResp carDetectResp = new CarDetectResp();
+    private ImageCarDetectResp handleCarDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
+        ImageCarDetectResp imageCarDetectResp = new ImageCarDetectResp();
         if (generalDetect.getResult() != null) {
-            ResultBean result = generalDetect.getResult().get(0);
-            carDetectResp.setName(result.getName());
-            carDetectResp.setColorResult(generalDetect.getColor_result());
-            carDetectResp.setYear(result.getYear());
-            carDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
-            carDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
-            carDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
-            carDetectResp.setWidth(generalDetect.getLocation_result().getWidth());
-            carDetectResp.setHeight(generalDetect.getLocation_result().getHeight());
-            carDetectResp.setLeft(generalDetect.getLocation_result().getLeft());
-            carDetectResp.setTop(generalDetect.getLocation_result().getTop());
+            ImageResultBean result = generalDetect.getResult().get(0);
+            imageCarDetectResp.setName(result.getName());
+            imageCarDetectResp.setColorResult(generalDetect.getColor_result());
+            imageCarDetectResp.setYear(result.getYear());
+            imageCarDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            imageCarDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            imageCarDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+            imageCarDetectResp.setWidth(generalDetect.getLocation_result().getWidth());
+            imageCarDetectResp.setHeight(generalDetect.getLocation_result().getHeight());
+            imageCarDetectResp.setLeft(generalDetect.getLocation_result().getLeft());
+            imageCarDetectResp.setTop(generalDetect.getLocation_result().getTop());
         }
-        return carDetectResp;
+        return imageCarDetectResp;
     }
-    private GeneralDetectResp handleGeneralDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
-        GeneralDetectResp generalDetectResp = new GeneralDetectResp();
+    private ImageGeneralDetectResp handleGeneralDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
+        ImageGeneralDetectResp imageGeneralDetectResp = new ImageGeneralDetectResp();
         if (generalDetect.getResult() != null) {
-            ResultBean result = generalDetect.getResult().get(0);
-            generalDetectResp.setResultNum(generalDetect.getResult_num());
-            generalDetectResp.setTag(result.getRoot());
-            generalDetectResp.setKeyword(result.getKeyword());
-            generalDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
-            generalDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
-            generalDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
-            generalDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
+            ImageResultBean result = generalDetect.getResult().get(0);
+            imageGeneralDetectResp.setResultNum(generalDetect.getResult_num());
+            imageGeneralDetectResp.setTag(result.getRoot());
+            imageGeneralDetectResp.setKeyword(result.getKeyword());
+            imageGeneralDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
+            imageGeneralDetectResp.setBaikeUrl(result.getBaike_info().getBaikeUrl());
+            imageGeneralDetectResp.setBaikeImageUrl(result.getBaike_info().getImageUrl());
+            imageGeneralDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
         }
-        return  generalDetectResp;
+        return imageGeneralDetectResp;
     }
 
     private String getPercent(double num) {

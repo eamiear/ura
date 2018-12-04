@@ -1,16 +1,15 @@
 /**
  * @author eamiear
- * @date 2018/12/4 10:30
+ * @date 2018/12/4 10:52
  */
 
-package com.ura.ai.pojo.baidu.resp;
+package com.ura.ai.pojo.baidu.bean;
 
-// 主体检测
-public class SubjectDetectResp {
+public class ImageLocationBean {
     private Integer width;
     private Integer height;
-    private Integer left;
     private Integer top;
+    private Integer left;
 
     public Integer getWidth() {
         return width;
@@ -28,19 +27,19 @@ public class SubjectDetectResp {
         this.height = height;
     }
 
-    public Integer getLeft() {
-        return left;
-    }
-
-    public void setLeft(Integer left) {
-        this.left = left;
-    }
-
     public Integer getTop() {
         return top;
     }
 
     public void setTop(Integer top) {
         this.top = top;
+    }
+
+    public Integer getLeft() {
+        return left;
+    }
+
+    public void setLeft(Integer left) {
+        this.left = left;
     }
 }

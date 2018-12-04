@@ -9,8 +9,8 @@ import java.util.List;
 
 public class GeneralDetect extends BaseDetect {
     private String color_result;
-    private List<ResultBean> result;
-    private LocationBean location_result;
+    private List<ImageResultBean> result;
+    private ImageLocationBean location_result;
 
     public String getColor_result() {
         return color_result;
@@ -20,19 +20,19 @@ public class GeneralDetect extends BaseDetect {
         this.color_result = color_result;
     }
 
-    public List<ResultBean> getResult() {
+    public List<ImageResultBean> getResult() {
         return result;
     }
 
-    public void setResult(List<ResultBean> result) {
+    public void setResult(List<ImageResultBean> result) {
         this.result = result;
     }
 
-    public LocationBean getLocation_result() {
+    public ImageLocationBean getLocation_result() {
         return location_result;
     }
 
-    public void setLocation_result(LocationBean location_result) {
+    public void setLocation_result(ImageLocationBean location_result) {
         this.location_result = location_result;
     }
 

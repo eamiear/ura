@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 @RestController
@@ -241,60 +240,6 @@ public class BaiduClassifyController {
             generalDetectResp.setBaikeDescription(result.getBaike_info().getDescription());
         }
         return  generalDetectResp;
-    }
-
-    private ClassifyGeneralDetectResp getBiologyData(GeneralDetect cgb, String openId, String nickname, String detectType) {
-      ClassifyGeneralDetectResp detectResp = new ClassifyGeneralDetectResp();
-      detectResp.setName(cgb.getResult().get(0).getName());
-      if (cgb.getResult().get(0).getScore() != null) {
-          detectResp.setScore(getPercent(Double.parseDouble(cgb.getResult().get(0).getScore()) * 100));
-      } else {
-          detectResp.setProbability(getPercent(Double.parseDouble(cgb.getResult().get(0).getProbability()) * 100));
-      }
-      detectResp.setColorResult(cgb.getColor_result());
-      detectResp.setYear(cgb.getResult().get(0).getYear());
-
-      if (!detectType.equals("logo")) {
-        detectResp.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
-        detectResp.setImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
-        detectResp.setDescription(cgb.getResult().get(0).getBaike_info().getDescription());
-      }
-
-      // TODO save to db
-      GeneralDetectEntity detectEntity = new GeneralDetectEntity();
-      detectEntity.setOpenId(openId);
-      detectEntity.setNickname(nickname);
-      detectEntity.setDetectType(detectType);
-      detectEntity.setLogId(String.valueOf(cgb.getLog_id()));
-      detectEntity.setResultNum(cgb.getResult_num());
-      detectEntity.setName(cgb.getResult().get(0).getName());
-
-      detectEntity.setYear(cgb.getResult().get(0).getYear());
-      detectEntity.setColorResult(cgb.getColor_result());
-      detectEntity.setScore(cgb.getResult().get(0).getScore());
-      detectEntity.setProbability(cgb.getResult().get(0).getProbability());
-
-      if (detectType.equals("car")) {
-        detectEntity.setLocalWidth(cgb.getLocation_result().getWidth());
-        detectEntity.setLocalHeight(cgb.getLocation_result().getHeight());
-        detectEntity.setLocalLeft(cgb.getLocation_result().getLeft());
-        detectEntity.setLocalTop(cgb.getLocation_result().getTop());
-      } else if (detectType.equals("logo")){
-        detectEntity.setLocalWidth(cgb.getResult().get(0).getLocation().getWidth());
-        detectEntity.setLocalHeight(cgb.getResult().get(0).getLocation().getHeight());
-        detectEntity.setLocalLeft(cgb.getResult().get(0).getLocation().getLeft());
-        detectEntity.setLocalTop(cgb.getResult().get(0).getLocation().getTop());
-      }
-
-      if (!detectType.equals("logo")) {
-        detectEntity.setBaikeUrl(cgb.getResult().get(0).getBaike_info().getBaikeUrl());
-        detectEntity.setBaikeImageUrl(cgb.getResult().get(0).getBaike_info().getImageUrl());
-        detectEntity.setBaikeDescription(cgb.getResult().get(0).getBaike_info().getDescription());
-      }
-
-      detectEntity.setLogoType(String.valueOf(cgb.getResult().get(0).getLogoType()));
-      detectEntity.setImagePath("");
-      return detectResp;
     }
 
     private String getPercent(double num) {

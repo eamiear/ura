@@ -12,7 +12,7 @@ import java.util.List;
 public class ClassifyGeneralDetectBean extends BaiduBaseDetectBean {
     private String color_result;
     private List<Result> result;
-    private LocationResult location_result;
+    private Location location_result;
 
     public String getColor_result() {
         return color_result;
@@ -30,11 +30,11 @@ public class ClassifyGeneralDetectBean extends BaiduBaseDetectBean {
         this.result = result;
     }
 
-    public LocationResult getLocation_result() {
+    public Location getLocation_result() {
         return location_result;
     }
 
-    public void setLocation_result(LocationResult location_result) {
+    public void setLocation_result(Location location_result) {
         this.location_result = location_result;
     }
 
@@ -47,7 +47,7 @@ public class ClassifyGeneralDetectBean extends BaiduBaseDetectBean {
         private String year;
         @JSONField(name = "type")
         private String logoType;
-        private LocationResult location;
+        private Location location;
         private BaiKeInfo baike_info;
 
         public boolean isHas_calorie() {
@@ -106,11 +106,11 @@ public class ClassifyGeneralDetectBean extends BaiduBaseDetectBean {
             this.logoType = logoType;
         }
 
-        public LocationResult getLocation() {
+        public Location getLocation() {
             return location;
         }
 
-        public void setLocation(LocationResult location) {
+        public void setLocation(Location location) {
             this.location = location;
         }
 
@@ -123,7 +123,7 @@ public class ClassifyGeneralDetectBean extends BaiduBaseDetectBean {
         }
     }
 
-    public static class LocationResult{
+    public static class Location{
         private Integer width;
         private Integer height;
         private Integer top;

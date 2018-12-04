@@ -114,8 +114,8 @@ public class HttpUtils {
     return response;
   }
 
-    public static InputStream URLPost(String url) {
-        InputStream response = null;
+    public static String URLPost(String url) {
+        String response = null;
         PostMethod postMethod = null;
         try {
             postMethod = new PostMethod(url);
@@ -125,7 +125,7 @@ public class HttpUtils {
             //执行postMethod
             int statusCode = client.executeMethod(postMethod);
             if (statusCode == HttpStatus.SC_OK) {
-                response = postMethod.getResponseBodyAsStream();
+                response = postMethod.getResponseBodyAsString();
             }
         } catch (HttpException e) {
             logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);
@@ -134,10 +134,10 @@ public class HttpUtils {
             logger.error("发生网络异常", e);
             e.printStackTrace();
         } finally {
-//            if (postMethod != null) {
-//                postMethod.releaseConnection();
-//                postMethod = null;
-//            }
+            if (postMethod != null) {
+                postMethod.releaseConnection();
+                postMethod = null;
+            }
         }
         return response;
     }
@@ -239,9 +239,9 @@ public class HttpUtils {
         return response;
     }
 
-    public static InputStream URLGet(String url) {
+    public static String URLGet(String url) {
 
-        InputStream response = null;
+      String response = null;
         GetMethod getMethod = null;
         try {
             getMethod = new GetMethod();
@@ -250,7 +250,7 @@ public class HttpUtils {
             //执行getMethod
             int statusCode = client.executeMethod(getMethod);
             if (statusCode == HttpStatus.SC_OK) {
-                response = getMethod.getResponseBodyAsStream();
+                response = getMethod.getResponseBodyAsString();
             }
         } catch (HttpException e) {
             logger.error("发生致命的异常，可能是协议不对或者返回的内容有问题", e);

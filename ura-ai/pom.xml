@@ -42,6 +42,11 @@
 			<artifactId>core</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+    <dependency>
+      <groupId>com.ura</groupId>
+      <artifactId>taip</artifactId>
+      <version>0.0.1</version>
+    </dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatisplus-spring-boot-starter</artifactId>

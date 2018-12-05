@@ -84,38 +84,53 @@ public class BaiduClassifyController {
 
     private JSONResult handleDetect(String detectType, String openId, String nickName, byte[] image, String filePath) throws Exception{
         JSONResult jsonResult = JSONResult.build();
-        HashMap<String, String> option = new HashMap<String, String>();
-        option.put("baike_num", "1");
+        HashMap<String, String> options = new HashMap<String, String>();
+        options.put("baike_num", "1");
         if (detectType.isEmpty()) {
             detectType = "general";
         }
-        JSONObject jsonObject = getDetectedObject(detectType, image, option);
-        GeneralDetect detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
+//        JSONObject jsonObject = getDetectedObject(detectType, image, options);
+//        GeneralDetect detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
 
+        JSONObject jsonObject = null;
+        GeneralDetect detectBean = null;
         switch (detectType) {
             case "dish":
+                jsonObject = uraAipImageClassify.dishDetect(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
                 ImageDishDetectResp imageDishDetectResp = handleDishDetectedResponse(detectBean, openId, nickName, "");
                 jsonResult.put("detect", imageDishDetectResp);
                 break;
             case "car":
+                jsonObject = uraAipImageClassify.carDetect(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
                 ImageCarDetectResp imageCarDetectResp = handleCarDetectedResponse(detectBean, openId, nickName);
                 jsonResult.put("detect", imageCarDetectResp);
                 break;
             case "logo":
+                jsonObject = uraAipImageClassify.logoSearch(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
                 ImageLogoDetectResp imageLogoDetectResp = handleLogoDetectedResponse(detectBean, openId, nickName, "");
                 jsonResult.put("detect", imageLogoDetectResp);
                 break;
             case "animal":
+                jsonObject = uraAipImageClassify.animalDetect(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
+                ImageBiologyDetectResp animalDetectResp = handleBiologyDetectedResponse(detectBean, openId, nickName, "");
+                jsonResult.put("detect", animalDetectResp);
+                break;
             case "plant":
+                jsonObject = uraAipImageClassify.plantDetect(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
                 ImageBiologyDetectResp imageBiologyDetectResp = handleBiologyDetectedResponse(detectBean, openId, nickName, "");
                 jsonResult.put("detect", imageBiologyDetectResp);
                 break;
             case "object":
                 break;
-            case "handwriting":
-                break;
             case "general":
             default:
+                jsonObject = uraAipImageClassify.advancedGeneral(image, options);
+                detectBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), GeneralDetect.class);
                 ImageGeneralDetectResp imageGeneralDetectResp = handleGeneralDetectedResponse(detectBean, openId, nickName);
                 jsonResult.put("detect", imageGeneralDetectResp);
         }
@@ -123,7 +138,7 @@ public class BaiduClassifyController {
         return jsonResult;
     }
 
-    private JSONObject getDetectedObject(String detectType, byte[] image, HashMap<String, String> options) throws Exception{
+    /*private JSONObject getDetectedObject(String detectType, byte[] image, HashMap<String, String> options) throws Exception{
         JSONObject jsonObject;
         switch (detectType) {
             case "dish":// 菜品
@@ -152,7 +167,7 @@ public class BaiduClassifyController {
                 break;
         }
         return jsonObject;
-    }
+    }*/
     private ImageDishDetectResp handleDishDetectedResponse(GeneralDetect cgb, String openId, String nickName, String imagePath) {
         ImageDishDetectResp detectResp = new ImageDishDetectResp();
         if (cgb.getResult() != null) {

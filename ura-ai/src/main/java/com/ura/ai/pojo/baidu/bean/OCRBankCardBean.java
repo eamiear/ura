@@ -5,10 +5,16 @@
 
 package com.ura.ai.pojo.baidu.bean;
 
-import java.util.List;
-
 public class OCRBankCardBean {
-    private List<Result> result;
+    private Result result;
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
 
     public static class Result{
         private String bank_card_number;

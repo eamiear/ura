@@ -26,9 +26,41 @@ public class OCRGeneralBean {
     /**
      * 识别结果数组
      */
-    private List<OCRGeneralResp.WordsResult> words_result;
+    private List<WordsResult> words_result;
+
+    public Integer getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Integer direction) {
+        this.direction = direction;
+    }
+
+    public Integer getWords_result_num() {
+        return words_result_num;
+    }
+
+    public void setWords_result_num(Integer words_result_num) {
+        this.words_result_num = words_result_num;
+    }
+
+    public List<WordsResult> getWords_result() {
+        return words_result;
+    }
+
+    public void setWords_result(List<WordsResult> words_result) {
+        this.words_result = words_result;
+    }
 
     public class WordsResult{
+        private String words;
 
+        public String getWords() {
+            return words;
+        }
+
+        public void setWords(String words) {
+            this.words = words;
+        }
     }
 }

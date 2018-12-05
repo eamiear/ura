@@ -48,10 +48,10 @@ public class BaiduClassifyController {
 //        byte[] image = FileUtils.readFileByBytes(imagePath);
         byte[] image = file.getBytes();
         JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, "");
-        if (jsonResult != null) {
+        if (jsonResult.get("detect") != null) {
           r.put("msg", "检测成功").put("data", jsonResult);
         } else {
-          r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
+          r.put("code", StatusCodeConstant.THIRD_INTERFACE_NODATA).put("msg", "无效识别");
         }
       } catch (Exception e) {
         r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "内部异常： " + e.getMessage());
@@ -69,10 +69,10 @@ public class BaiduClassifyController {
             GetMethod is =  HttpUtils.URLGet(url, new HashMap<String, String>());
             byte[] image = FileUtils.readStreamByBytes(is.getResponseBodyAsStream());
             JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, "");
-            if (jsonResult != null) {
+            if (jsonResult.get("detect") != null) {
                 r.put("msg", "检测成功").put("data", jsonResult);
             } else {
-                r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
+                r.put("code", StatusCodeConstant.THIRD_INTERFACE_NODATA).put("msg", "无效识别");
             }
             is.releaseConnection();
             is = null;
@@ -169,8 +169,9 @@ public class BaiduClassifyController {
         return jsonObject;
     }*/
     private ImageDishDetectResp handleDishDetectedResponse(GeneralDetect cgb, String openId, String nickName, String imagePath) {
-        ImageDishDetectResp detectResp = new ImageDishDetectResp();
+        ImageDishDetectResp detectResp = null;
         if (cgb.getResult() != null) {
+            detectResp = new ImageDishDetectResp();
             DishDetectEntity dishDetectEntity = new DishDetectEntity();
             dishDetectEntity.setOpenId(openId);
             dishDetectEntity.setNickname(nickName);
@@ -198,8 +199,9 @@ public class BaiduClassifyController {
         return detectResp;
     }
     private ImageBiologyDetectResp handleBiologyDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
-        ImageBiologyDetectResp imageBiologyDetectResp = new ImageBiologyDetectResp();
+        ImageBiologyDetectResp imageBiologyDetectResp = null;
         if (generalDetect.getResult() != null) {
+            imageBiologyDetectResp = new ImageBiologyDetectResp();
             ImageResultBean result = generalDetect.getResult().get(0);
             imageBiologyDetectResp.setName(result.getName());
             imageBiologyDetectResp.setScore(getPercent(Double.parseDouble(result.getScore()) * 100));
@@ -210,8 +212,9 @@ public class BaiduClassifyController {
         return imageBiologyDetectResp;
     }
     private ImageLogoDetectResp handleLogoDetectedResponse(GeneralDetect generalDetect, String openId, String nickName, String imagePath) {
-        ImageLogoDetectResp imageLogoDetectResp = new ImageLogoDetectResp();
+        ImageLogoDetectResp imageLogoDetectResp = null;
         if (generalDetect.getResult() != null) {
+            imageLogoDetectResp = new ImageLogoDetectResp();
             ImageResultBean result = generalDetect.getResult().get(0);
             imageLogoDetectResp.setName(result.getName());
             imageLogoDetectResp.setResultNum(generalDetect.getResult_num());
@@ -225,8 +228,9 @@ public class BaiduClassifyController {
         return imageLogoDetectResp;
     }
     private ImageCarDetectResp handleCarDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
-        ImageCarDetectResp imageCarDetectResp = new ImageCarDetectResp();
+        ImageCarDetectResp imageCarDetectResp = null;
         if (generalDetect.getResult() != null) {
+            imageCarDetectResp = new ImageCarDetectResp();
             ImageResultBean result = generalDetect.getResult().get(0);
             imageCarDetectResp.setName(result.getName());
             imageCarDetectResp.setColorResult(generalDetect.getColor_result());
@@ -242,8 +246,9 @@ public class BaiduClassifyController {
         return imageCarDetectResp;
     }
     private ImageGeneralDetectResp handleGeneralDetectedResponse(GeneralDetect generalDetect, String openId, String nickName) {
-        ImageGeneralDetectResp imageGeneralDetectResp = new ImageGeneralDetectResp();
+        ImageGeneralDetectResp imageGeneralDetectResp = null;
         if (generalDetect.getResult() != null) {
+            imageGeneralDetectResp = new ImageGeneralDetectResp();
             ImageResultBean result = generalDetect.getResult().get(0);
             imageGeneralDetectResp.setResultNum(generalDetect.getResult_num());
             imageGeneralDetectResp.setTag(result.getRoot());

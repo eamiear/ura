@@ -38,10 +38,10 @@ public class BaiduOcrController {
         try {
             byte[] image = file.getBytes();
             JSONResult jsonResult = getOCRResult(ocrType, image, openId, nickName);
-            if (jsonResult != null) {
+            if (jsonResult.get("detect") != null) {
                 r.put("msg", "检测成功").put("data", jsonResult);
             } else {
-                r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
+                r.put("code", StatusCodeConstant.THIRD_INTERFACE_NODATA).put("msg", "无效识别");
             }
         } catch (Exception e) {
             r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "内部异常： " + e.getMessage());
@@ -58,10 +58,10 @@ public class BaiduOcrController {
             GetMethod is =  HttpUtils.URLGet(url, new HashMap<String, String>());
             byte[] image = FileUtils.readStreamByBytes(is.getResponseBodyAsStream());
             JSONResult jsonResult = getOCRResult(ocrType, image, openId, nickName);
-            if (jsonResult != null) {
+            if (jsonResult.get("detect") != null) {
                 r.put("msg", "检测成功").put("data", jsonResult);
             } else {
-                r.put("code", StatusCodeConstant.THIRD_INTERFACE_ERROR).put("msg", "检测失败");
+                r.put("code", StatusCodeConstant.THIRD_INTERFACE_NODATA).put("msg", "无效识别");
             }
             is.releaseConnection();
             is = null;
@@ -101,7 +101,7 @@ public class BaiduOcrController {
             case "plate":
                 jsonObject = aipOcr.plateLicense(image, options);
                 OCRPlateLicenseBean ocrPlateLicenseBean = com.alibaba.fastjson.JSONObject.parseObject(jsonObject.toString(), OCRPlateLicenseBean.class);
-                JSONObject plateLicense = handleOCRPlateBeanResponse(ocrPlateLicenseBean);
+                OCRVehicleLicenseResp plateLicense = handleOCRPlateBeanResponse(ocrPlateLicenseBean);
                 jsonResult.put("detect", plateLicense).put("raw", ocrPlateLicenseBean);
                 break;
             case "receipt":
@@ -137,8 +137,9 @@ public class BaiduOcrController {
     }
 
     private OCRIdCardResp handleOCRIdCardResponse(OCRIdCardBean ocrIdCardBean) {
-        OCRIdCardResp ocrIdCardResp = new OCRIdCardResp();
+        OCRIdCardResp ocrIdCardResp = null;
         if (ocrIdCardBean.getWords_result() != null) {
+            ocrIdCardResp = new OCRIdCardResp();
             OCRIdCardBean.WordsResult result = ocrIdCardBean.getWords_result().get(0);
             ocrIdCardResp.setName(result.getName().getWords());
             ocrIdCardResp.setAddress(result.getAddress().getWords());
@@ -157,25 +158,28 @@ public class BaiduOcrController {
         return ocrIdCardResp;
     }
     private OCRBankCardResp handleOCRBankCardResponse(OCRBankCardBean ocrBankCardBean) {
-        OCRBankCardResp ocrBankCardResp = new OCRBankCardResp();
+        OCRBankCardResp ocrBankCardResp = null;
         if (ocrBankCardBean.getResult() != null) {
+            ocrBankCardResp = new OCRBankCardResp();
             ocrBankCardResp.setBankName(ocrBankCardBean.getResult().getBank_name());
             ocrBankCardResp.setBankCardNumber(ocrBankCardBean.getResult().getBank_card_number());
             ocrBankCardResp.setBankCardType(getBankCardType(ocrBankCardBean.getResult().getBank_card_type()));
         }
         return ocrBankCardResp;
     }
-    private JSONObject handleOCRPlateBeanResponse(OCRPlateLicenseBean ocrPlateLicenseBean){
-        JSONObject jsonObject = new JSONObject();
+    private OCRVehicleLicenseResp handleOCRPlateBeanResponse(OCRPlateLicenseBean ocrPlateLicenseBean){
+        OCRVehicleLicenseResp ocrVehicleLicenseResp = null;
         if (ocrPlateLicenseBean.getWords_result() != null) {
-            jsonObject.put("number", ocrPlateLicenseBean.getWords_result().getColor());
-            jsonObject.put("color", ocrPlateLicenseBean.getWords_result().getNumber());
+            ocrVehicleLicenseResp = new OCRVehicleLicenseResp();
+            ocrVehicleLicenseResp.setColor(ocrPlateLicenseBean.getWords_result().getColor());
+            ocrVehicleLicenseResp.setNumber(ocrPlateLicenseBean.getWords_result().getNumber());
         }
-        return jsonObject;
+        return ocrVehicleLicenseResp;
     }
     private OCRVehicleResp handleOCRVehicleResponse(OCRVehicleBean ocrVehicleBean){
-        OCRVehicleResp ocrVehicleResp = new OCRVehicleResp();
+        OCRVehicleResp ocrVehicleResp = null;
         if (ocrVehicleBean.getWords_result() != null) {
+            ocrVehicleResp = new OCRVehicleResp();
             OCRVehicleBean.WordsResult result = ocrVehicleBean.getWords_result().get(0);
             ocrVehicleResp.setAddress(result.getAddress().getWords());
             ocrVehicleResp.setBrandModel(result.getBrandModel().getWords());

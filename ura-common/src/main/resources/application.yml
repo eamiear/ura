@@ -32,7 +32,7 @@ spring:
 #          config:
 #            multi-statement-allow: true
 
-logging:
-  level:
-    root: ERROR
-    org.springframework: ERROR
+#logging:
+#  level:
+#    root: ERROR
+#    org.springframework: ERROR

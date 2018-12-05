@@ -2,7 +2,7 @@ spring:
   profiles:
     active: core
 
-logging:
-  level:
-    root: ERROR
-    org.springframework: ERROR
+#logging:
+#  level:
+#    root: ERROR
+#    org.springframework: ERROR

@@ -44,5 +44,5 @@ public class StatusCodeConstant {
   //
   public static final int THIRD_INTERFACE_ERROR = 8001;
   public static final int THIRD_INTERFACE_EXCEPTION = 8002;
-
+  public static final int THIRD_INTERFACE_NODATA = 8003;
 }

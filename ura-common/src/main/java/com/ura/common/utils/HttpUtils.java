@@ -1,6 +1,5 @@
 package com.ura.common.utils;
 
-import jdk.internal.util.xml.impl.Input;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.cookie.CookieSpec;

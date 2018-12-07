@@ -406,6 +406,10 @@ public class TencentPtuController {
         faceCrossData.setDegree(df.format(tscore));
         faceCrossage.setData(faceCrossData);
       }
+      is.releaseConnection();
+      getUrl2.releaseConnection();
+      is = null;
+      getUrl2 = null;
       r.put("msg", faceCrossage.getMsg()).put("data", JSONResult.build().put("detect", faceCrossage.getData()));
     } catch (Exception e) {
       r.put("code", StatusCodeConstant.THIRD_INTERFACE_EXCEPTION).put("msg", "内部异常： " + e.getMessage());

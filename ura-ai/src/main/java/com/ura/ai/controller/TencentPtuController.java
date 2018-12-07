@@ -39,9 +39,9 @@ import java.util.Objects;
 @RequestMapping("rest/ptu")
 public class TencentPtuController {
   private static Logger logger = LoggerFactory.getLogger(TencentPtuController.class);
-  TAipFace tAipFace = TencentFactory.createTAipFace();
-  TAipPtu tAipPtu = TencentFactory.createTAipPtu();
-  AipFace aipFace = BaiduFactory.getAipFace();
+  private TAipFace tAipFace = TencentFactory.createTAipFace();
+  private TAipPtu tAipPtu = TencentFactory.createTAipPtu();
+  private AipFace aipFace = BaiduFactory.getAipFace();
 
   // 人脸融合
   @RequestMapping("/face/merge/file")

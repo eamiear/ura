@@ -5,8 +5,6 @@
 
 package com.ura.common.utils;
 
-import sun.misc.BASE64Encoder;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -90,6 +88,15 @@ public class ImageUtils {
     return target;
   }
 
+  /**
+   * 实现图像的等比缩放和缩放后的截取, 处理成功返回true, 否则返回false
+   *
+   * @param inFilePath  要截取文件的路径
+   * @param outFilePath 截取后输出的路径
+   * @param width       要截取宽度
+   * @param height      要截取的高度
+   * @return
+   */
   public static boolean compress(String inFilePath, String outFilePath, int width, int height) {
     boolean ret = false;
     File file = new File(inFilePath);
@@ -97,12 +104,29 @@ public class ImageUtils {
     InputStream in = null;
     try {
       in = new FileInputStream(file);
-//        ret = compress(compress)
-    } catch (Exception e) {
-
+      ret = compress(in, saveFile, width, height);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+      ret = false;
+    } finally {
+      if (null != in) {
+        try {
+          in.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
     }
+    return ret;
   }
 
+  /**
+   * 实现图像的等比缩放和缩放后的截取, 处理成功返回true, 否则返回false
+   * @param in 图片输入流
+   * @param saveFile 压缩后的图片输出流
+   * @param width 要截取宽度
+   * @param height 要截取的高度
+   */
   public static boolean compress(InputStream in, File saveFile, int width, int height) {
     BufferedImage srcImage = null;
     try {
@@ -131,16 +155,101 @@ public class ImageUtils {
     //
     int w = srcImage.getWidth();
     int h = srcImage.getHeight();
+    // 如果缩放后的图像和要求的图像宽度一样，就对缩放的图像的高度进行截取
     if (w == width) {
       int x = 0;
       int y = h / 2 - height / 2;
       try {
-
+        saveSubImage(srcImage, new Rectangle(x, y, width, height), saveFile);
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
+    } else if (h == height) {
+      // 否则如果是缩放后的图像的高度和要求的图像高度一样，就对缩放后的图像的宽度进行截取
+      int x = w / 2 - width / 2;
+      int y = 0;
+      try {
+        saveSubImage(srcImage, new Rectangle(x, y, width, height), saveFile);
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        return false;
       }
     }
+    return true;
   }
 
-  public static void saveSubImage(BufferedImage image, Rectangle subImageBounds, File subImageFile) throws IOException {
+  /**
+   * 实现图像的等比缩放和缩放后的截取, 处理成功返回true, 否则返回false
+   *
+   * @param in         图片输入流
+   * @param saveFile   压缩后的图片输出流
+   * @param proportion 压缩比
+   * @return
+   */
+  public static boolean compress(InputStream in, File saveFile, int proportion) {
+    if (null == in || null == saveFile || proportion < 1) {
+      return false;
+    }
+    BufferedImage srcImage = null;
+    try {
+      srcImage = ImageIO.read(in);
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+    // 原图的大小
+    int width = srcImage.getWidth() / proportion;
+    int height = srcImage.getHeight() / proportion;
+    srcImage = resize(srcImage, width, height);
 
+    // 缩放后的图像的宽和高
+    int w = srcImage.getWidth();
+    int h = srcImage.getHeight();
+    // 如果缩放后的图像和要求的图像宽度一样，就对缩放的图像的高度进行截取
+    if (w == width) {
+      // 计算X轴坐标
+      int x = 0;
+      int y = h / 2 - height / 2;
+      try {
+        saveSubImage(srcImage, new Rectangle(x, y, width, height), saveFile);
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+    // 否则如果是缩放后的图像的高度和要求的图像高度一样，就对缩放后的图像的宽度进行截取
+    else if (h == height) {
+      // 计算X轴坐标
+      int x = w / 2 - width / 2;
+      int y = 0;
+      try {
+        saveSubImage(srcImage, new Rectangle(x, y, width, height), saveFile);
+      } catch (IOException e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * 实现缩放后的截图
+   *
+   * @param image          缩放后的图像
+   * @param subImageBounds 要截取的子图的范围
+   * @param subImageFile   要保存的文件
+   * @throws IOException
+   */
+  private static void saveSubImage(BufferedImage image, Rectangle subImageBounds, File subImageFile) throws IOException {
+    if (subImageBounds.x < 0 || subImageBounds.y < 0
+      || subImageBounds.width - subImageBounds.x > image.getWidth()
+      || subImageBounds.height - subImageBounds.y > image.getHeight()) {
+      return;
+    }
+    BufferedImage subImage = image.getSubimage(subImageBounds.x, subImageBounds.y, subImageBounds.width, subImageBounds.height);
+    String fileName = subImageFile.getName();
+    String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+    ImageIO.write(subImage, formatName, subImageFile);
   }
 }

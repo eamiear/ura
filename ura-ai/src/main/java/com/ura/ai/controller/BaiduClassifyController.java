@@ -13,6 +13,9 @@ import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.common.UraAipImageClassify;
 import com.ura.ai.entity.DishDetectEntity;
 import com.ura.common.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("rest/icr")
+@Api(tags = "图像识别")
 public class BaiduClassifyController {
 
   private UraAipImageClassify uraAipImageClassify = BaiduFactory.getUraAipImageClassify();
@@ -34,18 +38,17 @@ public class BaiduClassifyController {
    * 图像识别
    */
   @RequestMapping("/detect/file")
-  public R general(@RequestParam(value = "file") MultipartFile file, String detectType, String openId, String nickName, HttpServletRequest request) {
+  @ApiOperation(value = "通用图片识别")
+  public R general(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("检测类型") String detectType,
+    @ApiParam("微信openId") String openId,
+    @ApiParam("微信昵称") String nickName) {
     R r = new R();
     if (file == null) {
       return R.error().put("msg", "图片不能为空");
     }
     try {
-//        String prefix = getPrefix(detectType);
-//        String fileName = "baidu-ic-" + new Date().getTime() / 1000 + FileUtils.getExtend(file.getOriginalFilename());
-//        String filePath = request.getSession().getServletContext().getRealPath(prefix);
-//        FileUtils.uploadFile(file.getBytes(), filePath, fileName);
-//        String imagePath = filePath + fileName;
-//        byte[] image = FileUtils.readFileByBytes(imagePath);
       byte[] image = file.getBytes();
       JSONResult jsonResult = handleDetect(detectType, openId, nickName, image, "");
       if (jsonResult.get("detect") != null) {
@@ -60,7 +63,12 @@ public class BaiduClassifyController {
   }
 
   @RequestMapping("/detect/url")
-  public R general(String detectType, String url, String openId, String nickName) {
+  @ApiOperation(value = "通用图片识别")
+  public R general(
+    @ApiParam("检测类型") String detectType,
+    @ApiParam("图片url") String url,
+    @ApiParam("微信openId") String openId,
+    @ApiParam("微信昵称") String nickName) {
     R r = new R();
     if (url == null) {
       return R.error().put("msg", "图片地址不能为空");

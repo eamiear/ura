@@ -19,6 +19,9 @@ import com.ura.common.utils.*;
 import com.ura.taip.face.TAipFace;
 import com.ura.taip.ptu.TAipPtu;
 import com.ura.taip.util.FileUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -37,6 +40,7 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping("rest/ptu")
+@Api(tags = "图片特效")
 public class TencentPtuController {
   private static Logger logger = LoggerFactory.getLogger(TencentPtuController.class);
   private TAipFace tAipFace = TencentFactory.createTAipFace();
@@ -45,7 +49,10 @@ public class TencentPtuController {
 
   // 人脸融合
   @RequestMapping("/face/merge/file")
-  public R faceMerge(@RequestParam(value = "file")MultipartFile file, Integer model) {
+  @ApiOperation("人脸融合")
+  public R faceMerge(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("模型") Integer model) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -67,7 +74,8 @@ public class TencentPtuController {
     return r;
   }
   @RequestMapping("/face/merge/url")
-  public R faceMerge(String url, Integer model) {
+  @ApiOperation("人脸融合")
+  public R faceMerge(@ApiParam("图片url") String url, @ApiParam("模型") Integer model) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -92,7 +100,10 @@ public class TencentPtuController {
 
   // 美妆
   @RequestMapping("/face/cosmetic/file")
-  public R faceCosmetic(@RequestParam(value = "file") MultipartFile file, Integer cosmetic) {
+  @ApiOperation("美妆")
+  public R faceCosmetic(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("美妆编码") Integer cosmetic) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -113,7 +124,8 @@ public class TencentPtuController {
     return r;
   }
   @RequestMapping("/face/cosmetic/url")
-  public R faceCosmetic(String url, Integer cosmetic) {
+  @ApiOperation("美妆")
+  public R faceCosmetic(@ApiParam("图片url") String url, @ApiParam("美妆编码") Integer cosmetic) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -137,7 +149,10 @@ public class TencentPtuController {
   }
   // 变妆
   @RequestMapping("/face/decoration/file")
-  public R faceDecoration(@RequestParam(value = "file") MultipartFile file, Integer decoration) {
+  @ApiOperation("变妆")
+  public R faceDecoration(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("变妆编码") Integer decoration) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -158,7 +173,8 @@ public class TencentPtuController {
     return r;
   }
   @RequestMapping("/face/decoration/url")
-  public R faceDecoration(String url, Integer decoration) {
+  @ApiOperation("变妆")
+  public R faceDecoration(@ApiParam("图片url") String url, @ApiParam("变妆编码") Integer decoration) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -182,7 +198,10 @@ public class TencentPtuController {
   }
   // 图片滤镜
   @RequestMapping("/image/filter/file")
-  public R imageFilter(@RequestParam(value = "file") MultipartFile file, Integer filter) {
+  @ApiOperation("图片滤镜")
+  public R imageFilter(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -203,7 +222,8 @@ public class TencentPtuController {
     return r;
   }
   @RequestMapping("/image/filter/url")
-  public R imageFilter(String url, Integer filter) {
+  @ApiOperation("图片滤镜")
+  public R imageFilter(@ApiParam("图片url") String url, @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -227,7 +247,10 @@ public class TencentPtuController {
   }
   // 图片滤镜 ailab
   @RequestMapping("/vision/filter/file")
-  public R visionFilter(@RequestParam(value = "file") MultipartFile file, Integer filter) {
+  @ApiOperation("AILab图片滤镜")
+  public R visionFilter(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -248,7 +271,8 @@ public class TencentPtuController {
     return r;
   }
   @RequestMapping("/vision/filter/url")
-  public R visionFilter(String url, Integer filter) {
+  @ApiOperation("AILab图片滤镜")
+  public R visionFilter(@ApiParam("图片url") String url, @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -272,7 +296,10 @@ public class TencentPtuController {
   }
 
   @RequestMapping("/face/sticker/file")
-  public R faceSticker(@RequestParam(value = "file") MultipartFile file, Integer sticker) {
+  @ApiOperation("大头贴")
+  public R faceSticker(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("大头贴编码") Integer sticker) {
     R r = new R();
     if (Objects.isNull(file)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "文件不能为空");
@@ -294,7 +321,8 @@ public class TencentPtuController {
   }
 
   @RequestMapping("/face/sticker/url")
-  public R faceSticker(String url, Integer sticker) {
+  @ApiOperation("大头贴")
+  public R faceSticker(@ApiParam("图片url") String url, @ApiParam("大头贴编码") Integer sticker) {
     R r = new R();
     if (StringUtils.isBlank(url)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
@@ -319,7 +347,8 @@ public class TencentPtuController {
 
   // 人脸对比|跨年龄对比
   @RequestMapping("/face/cross/file")
-  public R faceDetectCrossage(@RequestParam(value = "files") MultipartFile[] files) {
+  @ApiOperation("颜龄检测")
+  public R faceDetectCrossage(@ApiParam("图片文件") @RequestParam(value = "files") MultipartFile[] files) {
     R r = new R();
     if (ArrayUtils.isEmpty(files) || (ArrayUtils.isNotEmpty(files) && files.length < 2)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "图片不能为空或不得少于两张图片");
@@ -368,7 +397,8 @@ public class TencentPtuController {
   }
 
   @RequestMapping("/face/cross/url")
-  public R faceCrossage(String url, String url2) {
+  @ApiOperation("颜龄检测")
+  public R faceCrossage(@ApiParam("图片url") String url, @ApiParam("图片url") String url2) {
     R r = new R();
     if (StringUtils.isBlank(url) || StringUtils.isBlank(url2)) {
       return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");

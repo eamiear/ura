@@ -14,6 +14,9 @@ import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.entity.FaceDetectEntity;
 import com.ura.ai.service.BaiduFaceDetectService;
 import com.ura.common.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("rest/face")
+@Api(tags = "人脸检测")
 public class BaiduFaceController {
   private AipFace aipFace = BaiduFactory.getAipFace();
 
@@ -33,7 +37,9 @@ public class BaiduFaceController {
   private BaiduFaceDetectService baiduFaceDetectService;
 
   @RequestMapping("/detect")
-  public R detect(@RequestParam(value = "file") MultipartFile file, String openId, String nickName, HttpServletRequest request) {
+  @ApiOperation("人脸检测，图片文件")
+  public R detect(
+    @ApiParam("人脸图片文件") @RequestParam(value = "file") MultipartFile file, String openId, String nickName, HttpServletRequest request) {
     R r = new R();
     if (file == null) {
       return R.error().put("msg", "图片不能为空");
@@ -61,7 +67,8 @@ public class BaiduFaceController {
   }
 
   @RequestMapping("/detect/url")
-  public R detect(String url, String openId, String nickName) {
+  @ApiOperation("人脸检测，图片url")
+  public R detect(@ApiParam("图片url") String url, String openId, String nickName) {
     R r = new R();
     if (url == null) {
       return R.error().put("msg", "图片地址不能为空");

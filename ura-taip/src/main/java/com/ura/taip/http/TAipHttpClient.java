@@ -1,5 +1,7 @@
 package com.ura.taip.http;
 
+import com.ura.taip.nlp.NLPConsts;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,8 +13,6 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import cn.xsshome.taip.nlp.NLPConsts;
 
 public class TAipHttpClient {
     /**

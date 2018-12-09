@@ -11,6 +11,9 @@ import com.ura.ai.common.UraAipImageClassify;
 import com.ura.ai.pojo.baidu.bean.*;
 import com.ura.ai.pojo.baidu.resp.*;
 import com.ura.common.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +28,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("rest/ocr")
+@Api(tags = "OCR识别")
 public class BaiduOcrController {
   private static AipOcr aipOcr = BaiduFactory.getAipOcr();
   private static UraAipImageClassify uraAipImage = BaiduFactory.getUraAipImageClassify();
 
   @RequestMapping("/detect/file")
-  public R detect(@RequestParam(value = "file") MultipartFile file, String ocrType, String openId, String nickName) {
+  @ApiOperation("ocr检测")
+  public R detect(
+    @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
+    @ApiParam("ocr类型") String ocrType, String openId, String nickName) {
     R r = new R();
     if (file == null) {
       return R.error().put("msg", "请上传图片");
@@ -50,7 +57,8 @@ public class BaiduOcrController {
   }
 
   @RequestMapping("/detect/url")
-  public R detect(String url, String openId, String ocrType, String nickName) {
+  @ApiOperation("ocr检测")
+  public R detect(@ApiParam("图片url") String url, String openId, @ApiParam("ocr类型") String ocrType, String nickName) {
     R r = new R();
     if (null == url) {
       return R.error().put("msg", "请输入网络图片url");

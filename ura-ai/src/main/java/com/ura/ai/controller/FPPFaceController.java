@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.util.Base64;
@@ -31,7 +30,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/rest/fpp")
 @Api(tags = "face++ 接口")
-public class FacePlusSkinDetectController {
+public class FPPFaceController {
   @RequestMapping("/detect/file")
   @ApiOperation("肤质检测")
   public R detect(

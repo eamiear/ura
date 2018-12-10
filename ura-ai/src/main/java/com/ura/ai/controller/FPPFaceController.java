@@ -15,9 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
@@ -31,7 +29,7 @@ import java.util.Objects;
 @RequestMapping("/rest/fpp")
 @Api(tags = "face++ 接口")
 public class FPPFaceController {
-  @RequestMapping("/detect/file")
+  @PostMapping("/detect/file")
   @ApiOperation("肤质检测")
   public R detect(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file) {
@@ -49,7 +47,7 @@ public class FPPFaceController {
     }
   }
 
-  @RequestMapping("/detect/url")
+  @RequestMapping(value = "/detect/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("肤质检测")
   public R detect(@ApiParam("图片url") String url) {
     if (StringUtils.isBlank(url)) {

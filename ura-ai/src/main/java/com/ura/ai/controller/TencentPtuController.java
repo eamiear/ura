@@ -12,13 +12,11 @@ import com.baidu.aip.face.MatchRequest;
 import com.baidu.aip.util.Base64Util;
 import com.ura.ai.common.BaiduFactory;
 import com.ura.ai.common.TencentFactory;
-import com.ura.ai.pojo.baidu.bean.FaceDetect;
 import com.ura.ai.pojo.baidu.bean.FaceMatch;
 import com.ura.ai.pojo.tencent.bean.FaceCrossage;
 import com.ura.common.utils.*;
 import com.ura.taip.face.TAipFace;
 import com.ura.taip.ptu.TAipPtu;
-import com.ura.taip.util.FileUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,9 +25,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.DecimalFormat;
@@ -48,7 +44,7 @@ public class TencentPtuController {
   private AipFace aipFace = BaiduFactory.getAipFace();
 
   // 人脸融合
-  @RequestMapping("/face/merge/file")
+  @PostMapping("/face/merge/file")
   @ApiOperation("人脸融合")
   public R faceMerge(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -73,7 +69,8 @@ public class TencentPtuController {
     }
     return r;
   }
-  @RequestMapping("/face/merge/url")
+
+  @RequestMapping(value = "/face/merge/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("人脸融合")
   public R faceMerge(@ApiParam("图片url") String url, @ApiParam("模型") Integer model) {
     R r = new R();
@@ -99,7 +96,7 @@ public class TencentPtuController {
   }
 
   // 美妆
-  @RequestMapping("/face/cosmetic/file")
+  @PostMapping("/face/cosmetic/file")
   @ApiOperation("美妆")
   public R faceCosmetic(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -123,7 +120,8 @@ public class TencentPtuController {
     }
     return r;
   }
-  @RequestMapping("/face/cosmetic/url")
+
+  @RequestMapping(value = "/face/cosmetic/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("美妆")
   public R faceCosmetic(@ApiParam("图片url") String url, @ApiParam("美妆编码") Integer cosmetic) {
     R r = new R();
@@ -148,7 +146,7 @@ public class TencentPtuController {
     return r;
   }
   // 变妆
-  @RequestMapping("/face/decoration/file")
+  @PostMapping("/face/decoration/file")
   @ApiOperation("变妆")
   public R faceDecoration(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -172,7 +170,8 @@ public class TencentPtuController {
     }
     return r;
   }
-  @RequestMapping("/face/decoration/url")
+
+  @RequestMapping(value = "/face/decoration/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("变妆")
   public R faceDecoration(@ApiParam("图片url") String url, @ApiParam("变妆编码") Integer decoration) {
     R r = new R();
@@ -197,7 +196,7 @@ public class TencentPtuController {
     return r;
   }
   // 图片滤镜
-  @RequestMapping("/image/filter/file")
+  @PostMapping("/image/filter/file")
   @ApiOperation("图片滤镜")
   public R imageFilter(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -221,7 +220,8 @@ public class TencentPtuController {
     }
     return r;
   }
-  @RequestMapping("/image/filter/url")
+
+  @RequestMapping(value = "/image/filter/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("图片滤镜")
   public R imageFilter(@ApiParam("图片url") String url, @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
@@ -246,7 +246,7 @@ public class TencentPtuController {
     return r;
   }
   // 图片滤镜 ailab
-  @RequestMapping("/vision/filter/file")
+  @PostMapping("/vision/filter/file")
   @ApiOperation("AILab图片滤镜")
   public R visionFilter(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -270,7 +270,8 @@ public class TencentPtuController {
     }
     return r;
   }
-  @RequestMapping("/vision/filter/url")
+
+  @RequestMapping(value = "/vision/filter/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("AILab图片滤镜")
   public R visionFilter(@ApiParam("图片url") String url, @ApiParam("滤镜特效编码") Integer filter) {
     R r = new R();
@@ -295,7 +296,7 @@ public class TencentPtuController {
     return r;
   }
 
-  @RequestMapping("/face/sticker/file")
+  @PostMapping("/face/sticker/file")
   @ApiOperation("大头贴")
   public R faceSticker(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -320,7 +321,7 @@ public class TencentPtuController {
     return r;
   }
 
-  @RequestMapping("/face/sticker/url")
+  @RequestMapping(value = "/face/sticker/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("大头贴")
   public R faceSticker(@ApiParam("图片url") String url, @ApiParam("大头贴编码") Integer sticker) {
     R r = new R();
@@ -346,7 +347,7 @@ public class TencentPtuController {
   }
 
   // 人脸对比|跨年龄对比
-  @RequestMapping("/face/cross/file")
+  @PostMapping("/face/cross/file")
   @ApiOperation("颜龄检测")
   public R faceDetectCrossage(@ApiParam("图片文件") @RequestParam(value = "files") MultipartFile[] files) {
     R r = new R();
@@ -396,7 +397,7 @@ public class TencentPtuController {
     return r;
   }
 
-  @RequestMapping("/face/cross/url")
+  @RequestMapping(value = "/face/cross/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("颜龄检测")
   public R faceCrossage(@ApiParam("图片url") String url, @ApiParam("图片url") String url2) {
     R r = new R();

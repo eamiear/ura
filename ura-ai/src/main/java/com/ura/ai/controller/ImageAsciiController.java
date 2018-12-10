@@ -50,11 +50,11 @@ public class ImageAsciiController {
     }
   }
 
-  @RequestMapping("/ascii/url")
+  @RequestMapping(value = "/ascii/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("网络图片转为ASCII图片")
   public R image2ascii(@ApiParam(name = "图片url") String url) {
     if (null == url) {
-      return R.error().put("msg", "请输入网络图片url");
+      return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "请输入网络图片url");
     }
     try {
       GetMethod getMethod = HttpUtils.URLGet(url, new HashMap<String, String>());

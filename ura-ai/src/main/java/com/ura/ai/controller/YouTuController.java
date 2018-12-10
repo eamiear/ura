@@ -19,13 +19,12 @@ import com.ura.common.utils.FileUtils;
 import com.ura.common.utils.JSONResult;
 import com.ura.common.utils.R;
 import com.ura.common.utils.StatusCodeConstant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -33,8 +32,9 @@ import java.util.Objects;
 
 @RestController
 @RequestMapping(value = "rest/youtu")
+@Api(tags = "优图接口")
 public class YouTuController {
-  @RequestMapping("/detect/file")
+  @PostMapping("/detect/file")
   @ApiOperation("识别")
   public R detect(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -54,7 +54,7 @@ public class YouTuController {
     }
   }
 
-  @RequestMapping("/detect/url")
+  @RequestMapping(value = "/detect/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation("识别")
   public R detect(@ApiParam("图片url") String url,
                   @ApiParam("检测类型") Integer ocrType) {

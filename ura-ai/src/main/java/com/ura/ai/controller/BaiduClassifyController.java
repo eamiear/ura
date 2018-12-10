@@ -18,9 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.json.JSONObject;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +35,7 @@ public class BaiduClassifyController {
   /**
    * 图像识别
    */
-  @RequestMapping("/detect/file")
+  @PostMapping("/detect/file")
   @ApiOperation(value = "通用图片识别")
   public R general(
     @ApiParam("图片文件") @RequestParam(value = "file") MultipartFile file,
@@ -46,7 +44,7 @@ public class BaiduClassifyController {
     @ApiParam("微信昵称") String nickName) {
     R r = new R();
     if (file == null) {
-      return R.error().put("msg", "图片不能为空");
+      return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "图片不能为空");
     }
     try {
       byte[] image = file.getBytes();
@@ -62,7 +60,7 @@ public class BaiduClassifyController {
     return r;
   }
 
-  @RequestMapping("/detect/url")
+  @RequestMapping(value = "/detect/url", method = {RequestMethod.GET, RequestMethod.POST})
   @ApiOperation(value = "通用图片识别")
   public R general(
     @ApiParam("检测类型") String detectType,
@@ -71,7 +69,7 @@ public class BaiduClassifyController {
     @ApiParam("微信昵称") String nickName) {
     R r = new R();
     if (url == null) {
-      return R.error().put("msg", "图片地址不能为空");
+      return R.error().put("code", StatusCodeConstant.PARAM_NOT_EMPTY).put("msg", "图片地址不能为空");
     }
     try {
       GetMethod is = HttpUtils.URLGet(url, new HashMap<String, String>());

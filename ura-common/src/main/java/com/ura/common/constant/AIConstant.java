@@ -6,13 +6,18 @@
 package com.ura.common.constant;
 
 public class AIConstant {
-    public static final String BD_FACE_APPID = "14981609";
+  // 百度
+  public static final String BD_FACE_APPID = "14981609";
     public static final String BD_FACE_APPKEY = "vFdFDzH7ZVlSDgOSRZyvFBZp";
     public static final String BD_FACE_APPSECRET = "IMBVuKOc5THlNgO7iGfwEH3IQ3OGbWtm";
-
+  // 腾讯
     public static final String TECENT_FACE_APPID = "";
     public static final String TECENT_FACE_APPKEY = "";
-
+  // face++
+  public static final String FPP_API_KEY = "";
+  public static final String FPP_API_SECRET = "";
+  //face++ 人脸检测接口地址
+  public static final String FPP_FACE_DETECT_URL = "https://api-cn.faceplusplus.com/facepp/v3/detect";
     public enum OcrType {
         BASIC_GENERAL(0),//通用文字识别
         BASIC_ACCURATE_GENERAL(1),//通用文字识别（高精度版）
